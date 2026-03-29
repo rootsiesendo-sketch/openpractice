@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>OpenPractice — Your dental license transfer, done right</title>
+<meta name="description" content="The platform for healthcare professionals navigating interstate license transfers. Every portal, every deadline, every state — organized in one place."/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&family=Mulish:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#0d1b2a;--ink2:#1c3252;--ink3:#2a4a6b;
+  --teal:#1a7f74;--teal-mid:#23a99b;--teal-lt:#e6f4f3;
+  --cream:#f9f7f2;--cream2:#f3f0e8;--white:#fff;
+  --gray:#6b7584;--gray-lt:#e6eaf0;--gray-mid:#c4cdd8;
+  --green:#16a364;--amber:#c97a0a;--red:#c93b3b;
+  --gold:#b8922a;
+}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+body{font-family:'Mulish',sans-serif;background:var(--cream);color:var(--ink);overflow-x:hidden}
+::selection{background:var(--teal-lt);color:var(--teal)}
+
+/* ── TYPOGRAPHY ── */
+.f-serif{font-family:'Fraunces',serif}
+
+/* ── NAV ── */
+nav{
+position:fixed;top:0;left:0;right:0;z-index:200;
+padding:0 40px;height:64px;
+display:flex;align-items:center;justify-content:space-between;
+background:rgba(249,247,242,.92);backdrop-filter:blur(12px);
+border-bottom:1px solid transparent;
+transition:border-color .3s,box-shadow .3s;
+}
+nav.scrolled{border-color:var(--gray-lt);box-shadow:0 1px 20px rgba(13,27,42,.06)}
+.nav-logo{
+font-family:'Fraunces',serif;font-size:15px;font-weight:400;
+letter-spacing:3px;text-transform:uppercase;color:var(--ink);text-decoration:none;
+}
+.nav-links{display:flex;align-items:center;gap:32px}
+.nav-links a{font-size:13px;font-weight:500;color:var(--gray);text-decoration:none;transition:color .2s}
+.nav-links a:hover{color:var(--ink)}
+.nav-cta{
+padding:9px 22px;background:var(--ink);color:var(--white)!important;
+border-radius:6px;font-weight:600!important;font-size:13px!important;
+transition:all .2s!important;
+}
+.nav-cta:hover{background:var(--teal)!important;color:var(--white)!important}
+.nav-mobile-btn{display:none;background:none;border:none;cursor:pointer;padding:4px}
+.nav-mobile-btn svg{width:20px;height:20px;stroke:var(--ink);fill:none;stroke-width:2;stroke-linecap:round}
+
+/* ── HERO ── */
+.hero{
+min-height:100vh;display:flex;flex-direction:column;justify-content:center;
+padding:100px 40px 80px;position:relative;overflow:hidden;
+background:var(--ink);
+}
+/* Texture overlay */
+.hero::before{
+content:'';position:absolute;inset:0;
+background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+opacity:.4;pointer-events:none;
+}
+.hero-inner{max-width:1100px;margin:0 auto;width:100%;position:relative;z-index:1}
+.hero-eyebrow{
+display:inline-flex;align-items:center;gap:8px;
+font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:3px;
+color:var(--teal-mid);margin-bottom:28px;
+}
+.hero-eyebrow-dot{width:5px;height:5px;border-radius:50%;background:var(--teal-mid);flex-shrink:0}
+.hero-h1{
+font-family:'Fraunces',serif;
+font-size:clamp(38px,5.5vw,76px);
+font-weight:300;line-height:1.06;
+color:var(--white);
+margin-bottom:28px;
+max-width:820px;
+letter-spacing:-.02em;
+}
+.hero-h1 i{font-style:italic;color:var(--teal-mid)}
+.hero-h1 span{
+display:inline-block;
+border-bottom:2px solid rgba(26,127,116,.4);
+}
+.hero-sub{
+font-size:18px;color:rgba(255,255,255,.45);
+line-height:1.75;max-width:520px;margin-bottom:48px;font-weight:300;
+}
+.hero-actions{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:72px}
+.btn-primary-hero{
+padding:15px 32px;background:var(--teal);color:var(--white);
+border-radius:7px;font-size:15px;font-weight:700;
+font-family:'Mulish',sans-serif;text-decoration:none;
+transition:all .22s;display:inline-flex;align-items:center;gap:8px;
+border:none;cursor:pointer;
+}
+.btn-primary-hero:hover{background:var(--teal-mid);transform:translateY(-2px);box-shadow:0 8px 28px rgba(26,127,116,.35)}
+.btn-primary-hero svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;transition:transform .2s}
+.btn-primary-hero:hover svg{transform:translateX(3px)}
+.btn-ghost-hero{
+padding:15px 28px;background:transparent;color:rgba(255,255,255,.5);
+border:1.5px solid rgba(255,255,255,.12);border-radius:7px;
+font-size:15px;font-weight:500;font-family:'Mulish',sans-serif;
+text-decoration:none;transition:all .22s;cursor:pointer;
+}
+.btn-ghost-hero:hover{color:var(--white);border-color:rgba(255,255,255,.3);background:rgba(255,255,255,.05)}
+
+/* Hero state preview */
+.hero-preview{
+background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
+border-radius:14px;padding:20px 24px;
+display:flex;align-items:center;gap:20px;flex-wrap:wrap;
+}
+.hp-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:rgba(255,255,255,.25);flex-shrink:0}
+.hp-selects{display:flex;align-items:center;gap:12px;flex:1;flex-wrap:wrap}
+.hp-sel-wrap{position:relative;flex:1;min-width:140px}
+.hp-sel-wrap::after{content:'';position:absolute;right:12px;top:50%;transform:translateY(-50%);width:0;height:0;border-left:4px solid transparent;border-right:4px solid transparent;border-top:5px solid rgba(255,255,255,.3);pointer-events:none}
+.hp-sel{
+width:100%;padding:10px 32px 10px 14px;
+background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);
+border-radius:7px;color:var(--white);font-size:13px;font-family:'Mulish',sans-serif;
+outline:none;appearance:none;cursor:pointer;transition:all .2s;
+}
+.hp-sel:focus{border-color:var(--teal-mid);background:rgba(255,255,255,.1)}
+.hp-sel option{background:var(--ink);color:var(--white)}
+.hp-arrow{color:rgba(255,255,255,.2);flex-shrink:0}
+.hp-arrow svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2}
+.hp-result{flex-shrink:0}
+.hp-btn{
+padding:10px 20px;background:var(--teal);color:var(--white);
+border:none;border-radius:6px;font-size:13px;font-weight:700;
+font-family:'Mulish',sans-serif;cursor:pointer;transition:all .2s;
+white-space:nowrap;
+}
+.hp-btn:hover{background:var(--teal-mid)}
+.hp-summary{display:none;align-items:center;gap:16px;flex-wrap:wrap;margin-top:16px;padding-top:16px;border-top:1px solid rgba(255,255,255,.06)}
+.hp-summary.show{display:flex;animation:fadeUp .3s ease}
+.hp-stat{text-align:center;flex:1;min-width:80px}
+.hp-stat-val{font-family:'Fraunces',serif;font-size:24px;font-weight:300;color:var(--white)}
+.hp-stat-lbl{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:rgba(255,255,255,.3);margin-top:2px}
+.hp-stat-nerb{font-size:12px;font-weight:600}
+.hp-ok{color:#4ecba8}
+.hp-warn{color:#f4c35a}
+
+/* ── SECTION SHELL ── */
+.section{padding:100px 40px;max-width:1100px;margin:0 auto}
+.section-full{padding:100px 40px}
+.sec-eyebrow{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:3px;color:var(--teal);margin-bottom:14px}
+.sec-h2{font-family:'Fraunces',serif;font-size:clamp(30px,4vw,52px);font-weight:300;color:var(--ink);line-height:1.12;letter-spacing:-.02em;margin-bottom:16px}
+.sec-h2 i{font-style:italic;color:var(--teal)}
+.sec-sub{font-size:17px;color:var(--gray);line-height:1.75;max-width:560px;font-weight:300}
+
+/* ── PROBLEM ── */
+.problem-section{background:var(--cream2);border-top:1px solid var(--gray-lt);border-bottom:1px solid var(--gray-lt)}
+.problem-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;max-width:1100px;margin:0 auto}
+.problem-list{margin-top:40px;display:flex;flex-direction:column;gap:0}
+.problem-item{display:flex;gap:16px;padding:22px 0;border-bottom:1px solid var(--gray-lt);align-items:flex-start}
+.problem-item:last-child{border-bottom:none}
+.pi-num{
+font-family:'Fraunces',serif;font-size:13px;font-weight:400;
+color:var(--gray-mid);flex-shrink:0;width:24px;padding-top:2px;
+}
+.pi-body{}
+.pi-title{font-size:15px;font-weight:700;color:var(--ink);margin-bottom:4px}
+.pi-desc{font-size:14px;color:var(--gray);line-height:1.65}
+.problem-visual{position:relative}
+.chaos-card{
+background:var(--white);border-radius:14px;border:1px solid var(--gray-lt);
+padding:24px;box-shadow:0 8px 40px rgba(13,27,42,.08);
+position:relative;overflow:hidden;
+}
+.cc-header{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--gray);margin-bottom:16px}
+.cc-item{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--gray-lt);font-size:13px;color:var(--gray)}
+.cc-item:last-child{border-bottom:none}
+.cc-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.cc-red{background:var(--red)}.cc-amber{background:var(--amber)}.cc-gray{background:var(--gray-lt)}
+.cc-badge{margin-left:auto;font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px}
+.ccb-urgent{background:#fdeaea;color:var(--red)}
+.ccb-lost{background:#fff4e0;color:var(--amber)}
+.ccb-unknown{background:var(--gray-lt);color:var(--gray)}
+.chaos-card-float{
+position:absolute;top:-16px;right:-16px;
+background:var(--white);border-radius:10px;border:1px solid var(--gray-lt);
+padding:12px 14px;box-shadow:0 4px 16px rgba(13,27,42,.1);
+font-size:12px;color:var(--ink);font-weight:600;
+transform:rotate(3deg);
+}
+.chaos-card-float2{
+position:absolute;bottom:-12px;left:-12px;
+background:var(--ink);border-radius:10px;
+padding:12px 14px;box-shadow:0 4px 16px rgba(13,27,42,.2);
+font-size:12px;color:rgba(255,255,255,.6);
+transform:rotate(-2deg);
+}
+.chaos-card-float2 strong{color:var(--white)}
+
+/* ── HOW IT WORKS ── */
+.how-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:56px;background:var(--gray-lt);border-radius:16px;overflow:hidden}
+.how-step{background:var(--white);padding:36px 32px}
+.how-step:first-child{border-radius:16px 0 0 16px}
+.how-step:last-child{border-radius:0 16px 16px 0}
+.hs-num{
+font-family:'Fraunces',serif;font-size:48px;font-weight:300;
+color:var(--gray-lt);line-height:1;margin-bottom:20px;
+}
+.hs-icon{
+width:48px;height:48px;border-radius:12px;background:var(--teal-lt);
+display:flex;align-items:center;justify-content:center;margin-bottom:20px;
+}
+.hs-icon svg{width:22px;height:22px;stroke:var(--teal);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.hs-title{font-family:'Fraunces',serif;font-size:21px;font-weight:400;color:var(--ink);margin-bottom:10px;line-height:1.2}
+.hs-desc{font-size:14px;color:var(--gray);line-height:1.7}
+
+/* ── FEATURES ── */
+.features-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:52px}
+.feature-card{
+background:var(--white);border-radius:14px;border:1px solid var(--gray-lt);
+padding:28px 30px;transition:all .22s;
+}
+.feature-card:hover{border-color:var(--teal-lt);box-shadow:0 6px 24px rgba(26,127,116,.08);transform:translateY(-2px)}
+.feature-card.fc-wide{grid-column:span 2;display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:center}
+.fc-icon{width:44px;height:44px;border-radius:11px;display:flex;align-items:center;justify-content:center;margin-bottom:18px}
+.fc-icon svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.fci-teal{background:var(--teal-lt);color:var(--teal)}
+.fci-green{background:#e8f8f0;color:#16a364}
+.fci-amber{background:#fff4e0;color:#c97a0a}
+.fci-ink{background:rgba(13,27,42,.07);color:var(--ink)}
+.fci-purple{background:#f0e8ff;color:#8b3bd4}
+.fci-blue{background:#e8f0ff;color:#3b6fd4}
+.fc-title{font-family:'Fraunces',serif;font-size:19px;font-weight:400;color:var(--ink);margin-bottom:8px;line-height:1.2}
+.fc-desc{font-size:14px;color:var(--gray);line-height:1.7}
+.fc-tag{display:inline-block;margin-top:12px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;padding:3px 10px;border-radius:20px;background:var(--teal-lt);color:var(--teal)}
+
+/* Wide feature — portal preview */
+.portal-mini{display:flex;flex-direction:column;gap:7px}
+.pm-item{
+display:flex;align-items:center;gap:10px;
+padding:10px 14px;border-radius:8px;
+background:var(--cream);border:1px solid var(--gray-lt);
+font-size:13px;
+}
+.pm-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.pm-name{flex:1;font-weight:500;color:var(--ink)}
+.pm-status{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;padding:2px 8px;border-radius:20px}
+.pms-sent{background:var(--teal-lt);color:var(--teal)}
+.pms-prog{background:#fff4e0;color:#c97a0a}
+.pms-todo{background:var(--gray-lt);color:var(--gray)}
+.pms-done{background:#e8f8f0;color:#16a364}
+
+/* ── STATES ── */
+.states-section{background:var(--ink);color:var(--white)}
+.states-inner{max-width:1100px;margin:0 auto;padding:100px 40px}
+.states-grid{
+display:grid;grid-template-columns:repeat(10,1fr);gap:5px;
+margin-top:52px;
+}
+.state-dot{
+aspect-ratio:1;border-radius:5px;
+background:rgba(255,255,255,.07);
+display:flex;align-items:center;justify-content:center;
+font-size:9px;font-weight:700;color:rgba(255,255,255,.25);
+cursor:default;transition:all .2s;
+letter-spacing:0;
+}
+.state-dot:hover{background:rgba(26,127,116,.3);color:var(--teal-mid)}
+.state-dot.covered{background:rgba(26,127,116,.15);color:rgba(255,255,255,.4)}
+.states-stats{display:flex;gap:48px;margin-top:48px;flex-wrap:wrap}
+.ss-stat{}
+.ss-val{font-family:'Fraunces',serif;font-size:48px;font-weight:300;color:var(--white);line-height:1}
+.ss-lbl{font-size:13px;color:rgba(255,255,255,.35);margin-top:4px}
+
+/* ── PRICING ── */
+.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:52px;align-items:start}
+.price-card{
+background:var(--white);border-radius:16px;border:2px solid var(--gray-lt);
+padding:32px 28px;transition:all .22s;position:relative;overflow:hidden;
+}
+.price-card:hover{box-shadow:0 8px 32px rgba(13,27,42,.1)}
+.price-card.pc-featured{border-color:var(--teal);background:var(--ink)}
+.price-card.pc-featured::before{
+content:'Most popular';
+position:absolute;top:20px;right:-28px;
+background:var(--teal);color:var(--white);
+font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;
+padding:5px 36px;transform:rotate(45deg);
+}
+.pc-plan{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:2.5px;color:var(--gray);margin-bottom:12px}
+.pc-featured .pc-plan{color:rgba(255,255,255,.4)}
+.pc-price{font-family:'Fraunces',serif;font-size:48px;font-weight:300;color:var(--ink);line-height:1;margin-bottom:4px}
+.pc-featured .pc-price{color:var(--white)}
+.pc-period{font-size:13px;color:var(--gray);margin-bottom:20px}
+.pc-featured .pc-period{color:rgba(255,255,255,.35)}
+.pc-desc{font-size:14px;color:var(--gray);line-height:1.65;margin-bottom:24px;padding-bottom:24px;border-bottom:1px solid var(--gray-lt)}
+.pc-featured .pc-desc{color:rgba(255,255,255,.45);border-color:rgba(255,255,255,.08)}
+.pc-features{display:flex;flex-direction:column;gap:10px;margin-bottom:28px}
+.pc-feat{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:var(--ink)}
+.pc-featured .pc-feat{color:rgba(255,255,255,.7)}
+.pc-feat svg{width:14px;height:14px;stroke:var(--teal);fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;margin-top:1px}
+.pc-featured .pc-feat svg{stroke:var(--teal-mid)}
+.pc-btn{
+display:block;width:100%;padding:13px;border-radius:7px;
+text-align:center;font-size:14px;font-weight:700;
+font-family:'Mulish',sans-serif;text-decoration:none;cursor:pointer;
+border:2px solid var(--ink);background:transparent;color:var(--ink);
+transition:all .22s;
+}
+.pc-btn:hover{background:var(--ink);color:var(--white)}
+.pc-featured .pc-btn{background:var(--teal);color:var(--white);border-color:var(--teal)}
+.pc-featured .pc-btn:hover{background:var(--teal-mid);border-color:var(--teal-mid)}
+
+/* ── TESTIMONIALS ── */
+.testimonial-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:52px}
+.testimonial{background:var(--white);border-radius:14px;border:1px solid var(--gray-lt);padding:28px}
+.t-quote{font-size:15px;color:var(--ink);line-height:1.7;margin-bottom:20px;font-style:italic;font-family:'Fraunces',serif;font-weight:300}
+.t-quote::before{content:'\201C';font-size:24px;color:var(--teal-mid);line-height:0;vertical-align:-.4em;margin-right:2px}
+.t-attr{display:flex;align-items:center;gap:10px}
+.t-av{width:36px;height:36px;border-radius:50%;background:var(--teal);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--white);flex-shrink:0}
+.t-name{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:2px}
+.t-role{font-size:11px;color:var(--gray)}
+.t-stars{display:flex;gap:2px;margin-bottom:14px}
+.t-star{color:var(--gold);font-size:13px}
+
+/* ── CTA SECTION ── */
+.cta-section{
+background:var(--ink);padding:100px 40px;text-align:center;
+position:relative;overflow:hidden;
+}
+.cta-section::before{
+content:'';position:absolute;top:50%;left:50%;
+transform:translate(-50%,-50%);
+width:600px;height:600px;border-radius:50%;
+background:radial-gradient(circle,rgba(26,127,116,.12),transparent 65%);
+pointer-events:none;
+}
+.cta-inner{max-width:620px;margin:0 auto;position:relative;z-index:1}
+.cta-h2{font-family:'Fraunces',serif;font-size:clamp(32px,4.5vw,56px);font-weight:300;color:var(--white);line-height:1.1;letter-spacing:-.02em;margin-bottom:18px}
+.cta-h2 i{font-style:italic;color:var(--teal-mid)}
+.cta-sub{font-size:17px;color:rgba(255,255,255,.4);line-height:1.7;margin-bottom:40px;font-weight:300}
+.cta-actions{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap}
+
+/* ── FOOTER ── */
+footer{background:var(--ink);border-top:1px solid rgba(255,255,255,.06);padding:48px 40px 32px}
+.footer-inner{max-width:1100px;margin:0 auto}
+.footer-top{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:48px;margin-bottom:48px}
+.footer-brand{}
+.footer-logo{font-family:'Fraunces',serif;font-size:14px;font-weight:300;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.4);display:block;margin-bottom:14px}
+.footer-tagline{font-size:13px;color:rgba(255,255,255,.25);line-height:1.65;max-width:220px}
+.footer-col-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:rgba(255,255,255,.2);margin-bottom:16px}
+.footer-links{display:flex;flex-direction:column;gap:9px}
+.footer-links a{font-size:13px;color:rgba(255,255,255,.35);text-decoration:none;transition:color .2s}
+.footer-links a:hover{color:rgba(255,255,255,.7)}
+.footer-bottom{display:flex;justify-content:space-between;align-items:center;padding-top:24px;border-top:1px solid rgba(255,255,255,.06);flex-wrap:wrap;gap:12px}
+.footer-copy{font-size:12px;color:rgba(255,255,255,.2)}
+.footer-legal{display:flex;gap:20px}
+.footer-legal a{font-size:12px;color:rgba(255,255,255,.2);text-decoration:none;transition:color .2s}
+.footer-legal a:hover{color:rgba(255,255,255,.5)}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+
+.reveal{opacity:0;transform:translateY(20px);transition:opacity .65s ease,transform .65s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+.hero-eyebrow{animation:fadeUp .6s ease .1s both}
+.hero-h1{animation:fadeUp .7s ease .2s both}
+.hero-sub{animation:fadeUp .7s ease .35s both}
+.hero-actions{animation:fadeUp .7s ease .45s both}
+.hero-preview{animation:fadeUp .7s ease .55s both}
+
+/* ── RESPONSIVE ── */
+@media(max-width:1000px){
+.features-grid{grid-template-columns:1fr}
+.feature-card.fc-wide{grid-column:span 1;grid-template-columns:1fr}
+.pricing-grid{grid-template-columns:1fr}
+.testimonial-grid{grid-template-columns:1fr}
+.problem-grid{grid-template-columns:1fr}
+.problem-visual{display:none}
+.footer-top{grid-template-columns:1fr 1fr}
+.states-grid{grid-template-columns:repeat(8,1fr)}
+}
+@media(max-width:700px){
+nav{padding:0 20px}
+.nav-links{display:none}
+.nav-mobile-btn{display:flex}
+.hero{padding:90px 20px 60px}
+.hero-h1{font-size:clamp(32px,8vw,52px)}
+.section,.section-full,.states-inner{padding:64px 20px}
+.how-grid{grid-template-columns:1fr}
+.how-step{border-radius:0}
+.how-step:first-child{border-radius:12px 12px 0 0}
+.how-step:last-child{border-radius:0 0 12px 12px}
+.states-grid{grid-template-columns:repeat(6,1fr)}
+.states-stats{gap:28px}
+.ss-val{font-size:36px}
+.footer-top{grid-template-columns:1fr}
+.footer-bottom{flex-direction:column;text-align:center}
+.cta-section{padding:72px 20px}
+.hp-selects{flex-direction:column}
+}
+</style>
+
+</head>
+<body>
+
+<!-- NAV -->
+
+<nav id="mainNav">
+  <a class="nav-logo" href="#">OpenPractice</a>
+  <div class="nav-links">
+    <a href="#how">How it works</a>
+    <a href="#features">Features</a>
+    <a href="#states">All 50 states</a>
+    <a href="#pricing">Pricing</a>
+    <a href="https://claude.ai/public/artifacts/96e1b1f9-c774-4fc1-bfe8-d173e4d47302" class="nav-cta" target="_blank" rel="noopener">Get started free</a>
+  </div>
+  <button class="nav-mobile-btn" aria-label="Menu">
+    <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+  </button>
+</nav>
+
+<!-- HERO -->
+
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">
+      <div class="hero-eyebrow-dot"></div>
+      Built specifically for dentists
+    </div>
+
+    <h1 class="hero-h1">
+      Your license transfer<br>
+      <i>shouldn't take a year</i>
+    </h1>
+
+    <p class="hero-sub">
+      OpenPractice organises every step, portal, and deadline for your interstate dental license transfer — so nothing falls through the cracks.
+    </p>
+
+    <div class="hero-actions">
+      <a href="https://claude.ai/public/artifacts/96e1b1f9-c774-4fc1-bfe8-d173e4d47302" class="btn-primary-hero" target="_blank" rel="noopener">
+        Start for free
+        <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </a>
+      <a href="#how" class="btn-ghost-hero">See how it works</a>
+    </div>
+
+    <!-- State preview -->
+    <div class="hero-preview">
+      <div class="hp-label">Try it</div>
+      <div class="hp-selects">
+        <div class="hp-sel-wrap">
+          <select class="hp-sel" id="hp-from">
+            <option value="">Currently licensed in…</option>
+          </select>
+        </div>
+        <div class="hp-arrow"><svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+        <div class="hp-sel-wrap">
+          <select class="hp-sel" id="hp-to">
+            <option value="">Moving to…</option>
+          </select>
+        </div>
+      </div>
+      <div class="hp-result">
+        <button class="hp-btn" onclick="showHeroPreview()">Check requirements</button>
+      </div>
+    </div>
+
+    <!-- Result row -->
+    <div class="hp-summary" id="hpSummary">
+      <div class="hp-stat">
+        <div class="hp-stat-val" id="hp-fee">—</div>
+        <div class="hp-stat-lbl">Application fee</div>
+      </div>
+      <div class="hp-stat">
+        <div class="hp-stat-val" id="hp-weeks">—</div>
+        <div class="hp-stat-lbl">Weeks to license</div>
+      </div>
+      <div class="hp-stat">
+        <div class="hp-stat-val hp-stat-nerb" id="hp-nerb">—</div>
+        <div class="hp-stat-lbl">Accepts NERB</div>
+      </div>
+      <div class="hp-stat">
+        <div class="hp-stat-val" id="hp-portals">10</div>
+        <div class="hp-stat-lbl">Portals to navigate</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- PROBLEM -->
+
+<section class="problem-section section-full">
+  <div class="problem-grid section">
+    <div>
+      <div class="sec-eyebrow reveal">The reality without OpenPractice</div>
+      <h2 class="sec-h2 reveal">A process designed<br><i>to confuse you</i></h2>
+      <p class="sec-sub reveal">Interstate dental licensing involves up to 10 separate organisations, each with their own portal, timeline, and requirements. Most dentists piece it together from PDFs and forum posts.</p>
+
+      <div class="problem-list">
+        <div class="problem-item reveal">
+          <div class="pi-num">01</div>
+          <div class="pi-body">
+            <div class="pi-title">No single source of truth</div>
+            <div class="pi-desc">Requirements are scattered across state board websites, NERB, IdentoGo, NPDB, and DEA. Each has different instructions and timelines.</div>
+          </div>
+        </div>
+        <div class="problem-item reveal">
+          <div class="pi-num">02</div>
+          <div class="pi-body">
+            <div class="pi-title">Direct-send credentials get lost</div>
+            <div class="pi-desc">Your transcript, NERB scores, and license verification must be sent directly from institution to board. Dentists routinely miss this and delay their application by months.</div>
+          </div>
+        </div>
+        <div class="problem-item reveal">
+          <div class="pi-num">03</div>
+          <div class="pi-body">
+            <div class="pi-title">The fingerprinting trap</div>
+            <div class="pi-desc">Background check results take 3–4 weeks to reach the board. Most dentists book this too late and push their license date back by a full month.</div>
+          </div>
+        </div>
+        <div class="problem-item reveal">
+          <div class="pi-num">04</div>
+          <div class="pi-body">
+            <div class="pi-title">Every state is different</div>
+            <div class="pi-desc">California requires WREB scores. Texas requires a jurisprudence exam. Colorado is one of the fastest; New York is one of the slowest. There's no map.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="problem-visual reveal">
+      <div class="chaos-card">
+        <div class="chaos-card-float">📎 TexasBoardApp_FINAL_v3.pdf</div>
+        <div class="chaos-card-float2">Status: <strong>unknown</strong></div>
+        <div class="cc-header">My license transfer checklist.txt</div>
+        <div class="cc-item"><div class="cc-dot cc-red"></div>IdentoGo appointment<div class="cc-badge ccb-urgent">Overdue</div></div>
+        <div class="cc-item"><div class="cc-dot cc-amber"></div>NY verification sent?<div class="cc-badge ccb-unknown">Maybe?</div></div>
+        <div class="cc-item"><div class="cc-dot cc-amber"></div>NERB scores requested<div class="cc-badge ccb-lost">2 weeks ago</div></div>
+        <div class="cc-item"><div class="cc-dot cc-gray"></div>Jurisprudence exam<div class="cc-badge ccb-unknown">What is this</div></div>
+        <div class="cc-item"><div class="cc-dot cc-gray"></div>Parchment transcript<div class="cc-badge ccb-unknown">In progress?</div></div>
+        <div class="cc-item"><div class="cc-dot cc-gray"></div>DEA update<div class="cc-badge ccb-unknown">Post-license?</div></div>
+        <div style="margin-top:16px;padding:10px 12px;background:#fdeaea;border-radius:7px;font-size:12px;color:var(--red);font-weight:600">⚠ Board contacted — application incomplete</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+
+<section id="how" class="section-full" style="background:var(--white)">
+  <div class="section">
+    <div class="sec-eyebrow reveal">How OpenPractice works</div>
+    <h2 class="sec-h2 reveal">Three inputs.<br><i>Everything else handled.</i></h2>
+
+    <div class="how-grid reveal">
+      <div class="how-step">
+        <div class="hs-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M6 20v-2a6 6 0 0 1 12 0v2"/></svg></div>
+        <div class="hs-title">Tell us about your move</div>
+        <div class="hs-desc">Name, specialty, origin state, destination state. Takes two minutes. No credit card required to start.</div>
+      </div>
+      <div class="how-step">
+        <div class="hs-icon"><svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
+        <div class="hs-title">We build your roadmap</div>
+        <div class="hs-desc">Your personalised checklist, week-by-week timeline, and all 10 credential portals — pre-configured for your specific state pair.</div>
+      </div>
+      <div class="how-step">
+        <div class="hs-icon"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></div>
+        <div class="hs-title">Work through it, step by step</div>
+        <div class="hs-desc">Check off tasks, log confirmation numbers, upload documents. OpenPractice reminds you when something needs attention.</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FEATURES -->
+
+<section id="features" class="section">
+  <div class="sec-eyebrow reveal">What's included</div>
+  <h2 class="sec-h2 reveal">Everything a dentist needs.<br><i>Nothing they don't.</i></h2>
+
+  <div class="features-grid">
+
+    <div class="feature-card fc-wide reveal">
+      <div>
+        <div class="fc-icon fci-teal"><svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></div>
+        <div class="fc-title">Credentials &amp; Portals</div>
+        <div class="fc-desc">Every portal you need — from your origin board to IdentoGo to Parchment — with step-by-step instructions, direct links, and a tracker for each. Log your confirmation numbers as you go.</div>
+        <span class="fc-tag">10 portals per transfer</span>
+      </div>
+      <div class="portal-mini">
+        <div class="pm-item"><div class="pm-dot" style="background:var(--green)"></div><div class="pm-name">NY License Verification</div><div class="pm-status pms-sent">Sent</div></div>
+        <div class="pm-item"><div class="pm-dot" style="background:var(--green)"></div><div class="pm-name">NERB Score Transcript</div><div class="pm-status pms-sent">Sent</div></div>
+        <div class="pm-item"><div class="pm-dot" style="background:var(--amber)"></div><div class="pm-name">IdentoGo Fingerprinting</div><div class="pm-status pms-prog">In progress</div></div>
+        <div class="pm-item"><div class="pm-dot" style="background:var(--teal)"></div><div class="pm-name">TSBDE Application</div><div class="pm-status pms-prog">In progress</div></div>
+        <div class="pm-item"><div class="pm-dot" style="background:var(--gray-mid)"></div><div class="pm-name">TX Jurisprudence Exam</div><div class="pm-status pms-todo">Not started</div></div>
+      </div>
+    </div>
+
+    <div class="feature-card reveal">
+      <div class="fc-icon fci-green"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+      <div class="fc-title">Week-by-week Timeline</div>
+      <div class="fc-desc">A rolling timeline showing exactly what needs to happen each week to stay on track. Adjusts to your state pair and updates as you complete steps.</div>
+      <span class="fc-tag">All 50 states</span>
+    </div>
+
+    <div class="feature-card reveal">
+      <div class="fc-icon fci-blue"><svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
+      <div class="fc-title">State Comparison</div>
+      <div class="fc-desc">Compare any two states side by side — fees, timelines, exam score acceptance, jurisprudence requirements, and complexity score. Useful before you decide where to move.</div>
+      <span class="fc-tag">50 × 50 comparisons</span>
+    </div>
+
+    <div class="feature-card reveal">
+      <div class="fc-icon fci-purple"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+      <div class="fc-title">AI Licensing Assistant</div>
+      <div class="fc-desc">A live AI assistant trained on dental licensing specifics. Ask it anything about your transfer — it knows your state pair, your specialty, and the real requirements.</div>
+      <span class="fc-tag">Powered by Claude</span>
+    </div>
+
+    <div class="feature-card reveal">
+      <div class="fc-icon fci-amber"><svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></div>
+      <div class="fc-title">Deadline Reminders</div>
+      <div class="fc-desc">Weekly Monday summaries and instant alerts when something needs your attention — fingerprinting not booked, credential pending too long, or a board processing change.</div>
+      <span class="fc-tag">Email notifications</span>
+    </div>
+
+    <div class="feature-card reveal">
+      <div class="fc-icon fci-ink"><svg viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></div>
+      <div class="fc-title">Document Storage</div>
+      <div class="fc-desc">Upload and organise your credential documents — confirmation receipts, notarised copies, ID photos. Sorted by folder, searchable, accessible anywhere.</div>
+      <span class="fc-tag">PDF, JPG, DOC</span>
+    </div>
+
+  </div>
+</section>
+
+<!-- STATES -->
+
+<section id="states" class="states-section">
+  <div class="states-inner">
+    <div class="sec-eyebrow reveal" style="color:var(--teal-mid)">Coverage</div>
+    <h2 class="sec-h2 reveal" style="color:var(--white)">Every state.<br><i>Real data.</i></h2>
+    <p class="sec-sub reveal" style="color:rgba(255,255,255,.4)">All 50 states covered with verified fees, timelines, exam score acceptance, and board portal links. Updated when requirements change.</p>
+
+    <div class="states-grid" id="statesGrid"></div>
+
+    <div class="states-stats">
+      <div class="ss-stat reveal">
+        <div class="ss-val">50</div>
+        <div class="ss-lbl">States covered</div>
+      </div>
+      <div class="ss-stat reveal">
+        <div class="ss-val">2,450</div>
+        <div class="ss-lbl">Possible state pairs</div>
+      </div>
+      <div class="ss-stat reveal">
+        <div class="ss-val">10</div>
+        <div class="ss-lbl">Portals per transfer</div>
+      </div>
+      <div class="ss-stat reveal">
+        <div class="ss-val">$0</div>
+        <div class="ss-lbl">To get started</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+
+<section class="section-full" style="background:var(--cream2);border-top:1px solid var(--gray-lt)">
+  <div class="section">
+    <div class="sec-eyebrow reveal">From dentists who've done it</div>
+    <h2 class="sec-h2 reveal">The process is hard.<br><i>It doesn't have to be chaotic.</i></h2>
+
+    <div class="testimonial-grid">
+      <div class="testimonial reveal">
+        <div class="t-stars">
+          <span class="t-star">★</span><span class="t-star">★</span><span class="t-star">★</span><span class="t-star">★</span><span class="t-star">★</span>
+        </div>
+        <div class="t-quote">I had no idea I needed to request my NERB scores separately from my transcript. OpenPractice caught this in week one — saved me at least six weeks of delay.</div>
+        <div class="t-attr">
+          <div class="t-av">MR</div>
+          <div>
+            <div class="t-name">Dr. Marcus R.</div>
+            <div class="t-role">General Dentist · Illinois → Texas</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial reveal">
+        <div class="t-stars">
+          <span class="t-star">★</span><span class="t-star">★</span><span class="t-star">★</span><span class="t-star">★</span><span class="t-star">★</span>
+        </div>
+        <div class="t-quote">The California to Florida comparison alone was worth it. CA requires WREB; FL accepts NERB. I would have applied with the wrong scores and had my application rejected.</div>
+        <div class="t-attr">
+          <div class="t-av" style="background:#3b6fd4">SL</div>
+          <div>
+            <div class="t-name">Dr. Sarah L.</div>
+            <div class="t-role">Orthodontist · California → Florida</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial reveal">
+        <div class="t-stars">
+          <span class="t-star">★</span><span class="t-star">★</span><span class="t-star">★</span><span class="t-star">★</span><span class="t-star">★</span>
+        </div>
+        <div class="t-quote">Our practice had three dentists relocating at the same time. The admin dashboard meant I could see exactly where each one was stuck without chasing them for updates.</div>
+        <div class="t-attr">
+          <div class="t-av" style="background:#8b3bd4">KC</div>
+          <div>
+            <div class="t-name">Karen C.</div>
+            <div class="t-role">Office Manager · Sunrise Dental Group</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- PRICING -->
+
+<section id="pricing" class="section">
+  <div class="sec-eyebrow reveal">Pricing</div>
+  <h2 class="sec-h2 reveal">Start free.<br><i>Upgrade when you need more.</i></h2>
+  <p class="sec-sub reveal">No credit card to start. Upgrade to Pro when you're ready for unlimited documents, priority support, and email notifications.</p>
+
+  <div class="pricing-grid">
+    <div class="price-card reveal">
+      <div class="pc-plan">Free</div>
+      <div class="pc-price">$0</div>
+      <div class="pc-period">forever</div>
+      <div class="pc-desc">Everything you need to understand your transfer and get started.</div>
+      <div class="pc-features">
+        <div class="pc-feat"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Full roadmap and checklist</div>
+        <div class="pc-feat"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>All 10 credential portals</div>
+        <div class="pc-feat"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Week-by-week timeline</div>
+        <div class="pc-feat"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>State comparison tool</div>
+        <div class="pc-feat"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>5 document uploads</div>
+        <div class="pc-feat"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>AI assistant (10 msgs/day)</div>
+      </div>
+      <a href="https://claude.ai/public/artifacts/96e1b1f9-c774-4fc1-bfe8-d173e4d47302" class="pc-btn" target="_blank" rel="noopener">Get started free</a>
+    </div>
+
+    <div class="price-card pc-featured reveal">
+      <div class="pc-plan">Pro</div>
+      <div class="pc-price">$29</div>
+      <div class="pc-period">per month · or $249/year (save 28%)</div>
+      <div class="pc-desc">For dentists actively in the transfer process who need the full experience.</div>
+      <div class="pc-features">
+        <div class="pc-feat"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Everything in Free</div>
+        <div class="pc-feat"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Unlimited document storage</div>
+        <div class="pc-feat"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Unlimited AI assistant</div>
+        <div class="pc-feat"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Weekly email summaries</div>
+        <div class="pc-feat"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Deadline reminders</div>
+        <div class="pc-feat"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Priority support</div>
+      </div>
+      <a href="https://claude.ai/public/artifacts/96e1b1f9-c774-4fc1-bfe8-d173e4d47302" class="pc-btn" target="_blank" rel="noopener">Start Pro free for 14 days</a>
+    </div>
+
+    <div class="price-card reveal">
+      <div class="pc-plan">Practice</div>
+      <div class="pc-price">$99</div>
+      <div class="pc-period">per month · up to 5 dentists</div>
+      <div class="pc-desc">For practices managing multiple dentists relocating at the same time.</div>
+      <div class="pc-features">
+        <div class="pc-feat"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Everything in Pro</div>
+        <div class="pc-feat"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Admin dashboard</div>
+        <div class="pc-feat"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Invite and monitor team</div>
+        <div class="pc-feat"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Progress alerts per dentist</div>
+        <div class="pc-feat"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Centralized billing</div>
+        <div class="pc-feat"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>$20/mo per additional seat</div>
+      </div>
+      <a href="#" class="pc-btn">Contact us</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- CTA -->
+
+<section class="cta-section">
+  <div class="cta-inner">
+    <div class="sec-eyebrow reveal" style="color:var(--teal-mid);text-align:center">Get started today</div>
+    <h2 class="cta-h2 reveal">Your new license<br>starts <i>right here</i></h2>
+    <p class="cta-sub reveal">Free to start. No credit card. Your personalised roadmap ready in two minutes.</p>
+    <div class="cta-actions reveal">
+      <a href="https://claude.ai/public/artifacts/96e1b1f9-c774-4fc1-bfe8-d173e4d47302" class="btn-primary-hero" target="_blank" rel="noopener">
+        Create free account
+        <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </a>
+      <a href="#" class="btn-ghost-hero">See a demo</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <span class="footer-logo">OpenPractice</span>
+        <p class="footer-tagline">The only platform built for dentists navigating interstate license transfers.</p>
+      </div>
+      <div>
+        <div class="footer-col-title">Product</div>
+        <div class="footer-links">
+          <a href="#how">How it works</a>
+          <a href="#features">Features</a>
+          <a href="#states">State coverage</a>
+          <a href="#pricing">Pricing</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Resources</div>
+        <div class="footer-links">
+          <a href="#">State requirements guide</a>
+          <a href="#">Fingerprinting guide</a>
+          <a href="#">Direct-send credentials</a>
+          <a href="#">Blog</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Company</div>
+        <div class="footer-links">
+          <a href="#">About</a>
+          <a href="#">Contact</a>
+          <a href="#">Support</a>
+          <a href="#">For dental schools</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-copy">&copy; 2025 OpenPractice. All rights reserved.</div>
+      <div class="footer-legal">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+        <a href="#">Cookie Policy</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+var STATES = ["Alabama","Alaska","Arizona","Arkansas","California","Colorado","Connecticut","Delaware","Florida","Georgia","Hawaii","Idaho","Illinois","Indiana","Iowa","Kansas","Kentucky","Louisiana","Maine","Maryland","Massachusetts","Michigan","Minnesota","Mississippi","Missouri","Montana","Nebraska","Nevada","New Hampshire","New Jersey","New Mexico","New York","North Carolina","North Dakota","Ohio","Oklahoma","Oregon","Pennsylvania","Rhode Island","South Carolina","South Dakota","Tennessee","Texas","Utah","Vermont","Virginia","Washington","West Virginia","Wisconsin","Wyoming"];
+
+var STATE_ABBR = {"Alabama":"AL","Alaska":"AK","Arizona":"AZ","Arkansas":"AR","California":"CA","Colorado":"CO","Connecticut":"CT","Delaware":"DE","Florida":"FL","Georgia":"GA","Hawaii":"HI","Idaho":"ID","Illinois":"IL","Indiana":"IN","Iowa":"IA","Kansas":"KS","Kentucky":"KY","Louisiana":"LA","Maine":"ME","Maryland":"MD","Massachusetts":"MA","Michigan":"MI","Minnesota":"MN","Mississippi":"MS","Missouri":"MO","Montana":"MT","Nebraska":"NE","Nevada":"NV","New Hampshire":"NH","New Jersey":"NJ","New Mexico":"NM","New York":"NY","North Carolina":"NC","North Dakota":"ND","Ohio":"OH","Oklahoma":"OK","Oregon":"OR","Pennsylvania":"PA","Rhode Island":"RI","South Carolina":"SC","South Dakota":"SD","Tennessee":"TN","Texas":"TX","Utah":"UT","Vermont":"VT","Virginia":"VA","Washington":"WA","West Virginia":"WV","Wisconsin":"WI","Wyoming":"WY"};
+
+var DB = {
+  "Alabama":{fee:200,wkMin:10,wkMax:14,nerb:true},"Alaska":{fee:600,wkMin:12,wkMax:16,nerb:true},
+  "Arizona":{fee:250,wkMin:8,wkMax:12,nerb:true},"Arkansas":{fee:300,wkMin:10,wkMax:14,nerb:true},
+  "California":{fee:400,wkMin:20,wkMax:26,nerb:false},"Colorado":{fee:150,wkMin:6,wkMax:10,nerb:true},
+  "Connecticut":{fee:565,wkMin:16,wkMax:20,nerb:true},"Delaware":{fee:200,wkMin:10,wkMax:14,nerb:true},
+  "Florida":{fee:325,wkMin:12,wkMax:18,nerb:true},"Georgia":{fee:275,wkMin:10,wkMax:14,nerb:true},
+  "Hawaii":{fee:350,wkMin:14,wkMax:18,nerb:true},"Idaho":{fee:200,wkMin:8,wkMax:12,nerb:true},
+  "Illinois":{fee:500,wkMin:14,wkMax:18,nerb:true},"Indiana":{fee:225,wkMin:10,wkMax:14,nerb:true},
+  "Iowa":{fee:275,wkMin:10,wkMax:14,nerb:true},"Kansas":{fee:200,wkMin:8,wkMax:12,nerb:true},
+  "Kentucky":{fee:350,wkMin:12,wkMax:16,nerb:true},"Louisiana":{fee:450,wkMin:12,wkMax:16,nerb:true},
+  "Maine":{fee:300,wkMin:10,wkMax:14,nerb:true},"Maryland":{fee:350,wkMin:12,wkMax:16,nerb:true},
+  "Massachusetts":{fee:360,wkMin:14,wkMax:18,nerb:true},"Michigan":{fee:229,wkMin:10,wkMax:14,nerb:true},
+  "Minnesota":{fee:350,wkMin:10,wkMax:14,nerb:true},"Mississippi":{fee:300,wkMin:10,wkMax:14,nerb:true},
+  "Missouri":{fee:275,wkMin:8,wkMax:12,nerb:true},"Montana":{fee:200,wkMin:8,wkMax:12,nerb:true},
+  "Nebraska":{fee:225,wkMin:8,wkMax:12,nerb:true},"Nevada":{fee:400,wkMin:12,wkMax:16,nerb:true},
+  "New Hampshire":{fee:275,wkMin:10,wkMax:14,nerb:true},"New Jersey":{fee:450,wkMin:14,wkMax:20,nerb:true},
+  "New Mexico":{fee:200,wkMin:10,wkMax:14,nerb:true},"New York":{fee:370,wkMin:16,wkMax:22,nerb:true},
+  "North Carolina":{fee:375,wkMin:12,wkMax:16,nerb:true},"North Dakota":{fee:175,wkMin:6,wkMax:10,nerb:true},
+  "Ohio":{fee:300,wkMin:10,wkMax:14,nerb:true},"Oklahoma":{fee:350,wkMin:10,wkMax:14,nerb:true},
+  "Oregon":{fee:487,wkMin:14,wkMax:18,nerb:false},"Pennsylvania":{fee:350,wkMin:12,wkMax:18,nerb:true},
+  "Rhode Island":{fee:375,wkMin:12,wkMax:16,nerb:true},"South Carolina":{fee:300,wkMin:10,wkMax:14,nerb:true},
+  "South Dakota":{fee:200,wkMin:8,wkMax:12,nerb:true},"Tennessee":{fee:350,wkMin:10,wkMax:16,nerb:true},
+  "Texas":{fee:200,wkMin:10,wkMax:14,nerb:true},"Utah":{fee:175,wkMin:8,wkMax:12,nerb:true},
+  "Vermont":{fee:275,wkMin:10,wkMax:14,nerb:true},"Virginia":{fee:302,wkMin:12,wkMax:16,nerb:true},
+  "Washington":{fee:400,wkMin:14,wkMax:18,nerb:false},"West Virginia":{fee:250,wkMin:10,wkMax:14,nerb:true},
+  "Wisconsin":{fee:300,wkMin:10,wkMax:14,nerb:true},"Wyoming":{fee:150,wkMin:6,wkMax:10,nerb:true}
+};
+
+/* ── POPULATE SELECTS ── */
+['hp-from','hp-to'].forEach(function(id) {
+  var el = document.getElementById(id);
+  STATES.forEach(function(s) {
+    var o = document.createElement('option'); o.value = s; o.textContent = s;
+    el.appendChild(o);
+  });
+});
+
+/* ── HERO PREVIEW ── */
+function showHeroPreview() {
+  var from = document.getElementById('hp-from').value;
+  var to   = document.getElementById('hp-to').value;
+  if (!from || !to) return;
+  if (from === to) { alert('Please select two different states.'); return; }
+
+  var info = DB[to] || {fee:200,wkMin:10,wkMax:14,nerb:true};
+  document.getElementById('hp-fee').textContent    = '$' + info.fee;
+  document.getElementById('hp-weeks').textContent  = info.wkMin + '–' + info.wkMax;
+  var nerbEl = document.getElementById('hp-nerb');
+  nerbEl.textContent  = info.nerb ? 'Yes' : 'No';
+  nerbEl.className    = 'hp-stat-val hp-stat-nerb ' + (info.nerb ? 'hp-ok' : 'hp-warn');
+  document.getElementById('hpSummary').classList.add('show');
+}
+
+/* ── STATES GRID ── */
+var grid = document.getElementById('statesGrid');
+STATES.forEach(function(s) {
+  var d = document.createElement('div');
+  d.className = 'state-dot covered';
+  d.textContent = STATE_ABBR[s] || s.substring(0,2).toUpperCase();
+  d.title = s;
+  grid.appendChild(d);
+});
+
+/* ── SCROLL REVEAL ── */
+var observer = new IntersectionObserver(function(entries) {
+  entries.forEach(function(e) {
+    if (e.isIntersecting) { e.target.classList.add('visible'); }
+  });
+}, {threshold: 0.12});
+document.querySelectorAll('.reveal').forEach(function(el) { observer.observe(el); });
+
+/* ── NAV SCROLL ── */
+window.addEventListener('scroll', function() {
+  var nav = document.getElementById('mainNav');
+  if (window.scrollY > 20) nav.classList.add('scrolled');
+  else nav.classList.remove('scrolled');
+}, {passive: true});
+
+/* ── STAGGER HERO REVEALS ── */
+// Already handled by CSS animation-delay
+</script>
+
+</body>
+</html>
