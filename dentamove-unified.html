@@ -2256,7 +2256,16 @@ html{scroll-behavior:smooth}
 .page-panel.active{display:flex}
 .page-panel-scroll{flex:1;overflow-y:auto;background:var(--cream)}
 @media(max-width:900px){.page-panel{left:0}}
-</style>
+</style> <script>
+function go(pageId,mode){
+  document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active');p.style.display='none';});
+  var el=document.getElementById(pageId);
+  if(!el)return;
+  el.style.display=el.classList.contains('scrollable')?'block':'flex';
+  el.classList.add('active');
+  window.scrollTo(0,0);
+}
+</script>
 </head>
 <body>
 
