@@ -4426,7 +4426,7 @@ var APP = {
 function go(pageId, mode) {
   
   document.querySelectorAll('.page').forEach(p=>{p.classList.remove('active');p.style.display='none';});
-  var el=document.getElementById(pageId); el.style.display=''; el.classList.add('active');
+  var el=document.getElementById(pageId); el.style.display='flex'; el.classList.add('active');
   window.scrollTo(0,0);
 
   // Init about page reveal
