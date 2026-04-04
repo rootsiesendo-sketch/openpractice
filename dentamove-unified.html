@@ -2485,7 +2485,7 @@ html{scroll-behavior:smooth}
       <div id="nav-payments" onclick="showPage('payments')">
         <span class="ni-icon"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></span>Upgrade to Pro
       </div>
-      <div class="nav-item" onclick="go('pg-landing')">
+      <div class="nav-item" onclick="sbLogout()">
         <span class="ni-icon"><svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></span>Log out
       </div>
     </nav>
@@ -5405,34 +5405,54 @@ function renderChecklist() {
 }
 
 
-// Auto-launch with demo data so app opens directly on the dashboard
-(function(){
-  APP.name      = 'Dr. Jane Smith';
-  APP.specialty = 'General Dentist';
-  APP.from      = 'New York';
-  APP.to        = 'Texas';
+/* ══════════════════════════
+   SUPABASE AUTH
+══════════════════════════ */
+const SUPABASE_URL = 'https://cdeolkktvnjsznejenfn.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_xx_VkpA7o3BQ8zKlMbLqgw_FIQw9R6y';
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-  var info = STATE_DB[APP.to] || {fee:200,wkMin:10,wkMax:14,nerb:true,juris:true,bg:'FBI + TX DPS'};
+let currentUser = null;
+
+(async function(){
+  const { data: { session } } = await sb.auth.getSession();
+  if (session) {
+    currentUser = session.user;
+    await loadProfileAndLaunch(currentUser.id);
+  }
+})();
+
+async function loadProfileAndLaunch(userId) {
+  const { data } = await sb.from('profiles').select('*').eq('id', userId).single();
+  if (data) {
+    APP.name      = 'Dr. ' + (data.full_name || 'User');
+    APP.specialty = data.specialty   || 'General Dentist';
+    APP.from      = data.from_state  || 'New York';
+    APP.to        = data.to_state    || 'Texas';
+  }
+  launchAppFromProfile();
+}
+
+function launchAppFromProfile() {
+  const info = STATE_DB[APP.to] || {fee:200,wkMin:10,wkMax:14,nerb:true,juris:true,bg:'FBI + TX DPS'};
   APP.tasks    = buildTasks(APP.from, APP.to, info);
   APP.timeline = buildTimeline(APP.from, APP.to, info);
-  APP.portals  = buildPortals(APP.from, APP.to, info);
   APP.done     = new Set();
-  APP.portals.forEach(p => {
+  PORTALS = buildPortals(APP.from, APP.to, info);
+  PORTALS.forEach(p => {
     APP.credState[p.id] = p.stages
       ? {stages: p.stages.map(() => ({done:false, date:'', conf:''})), notes:''}
       : {stageIdx: 0, notes:''};
   });
 
-  // Sidebar
-  document.getElementById('sbAv').textContent  = 'JS';
+  const initials = APP.name.replace(/Dr\.?\s*/i,'').trim().split(' ').map(w=>w[0]||'').join('').toUpperCase().slice(0,2)||'DR';
+  document.getElementById('sbAv').textContent    = initials;
   document.getElementById('sbName').textContent  = APP.name;
   document.getElementById('sbRole').textContent  = APP.specialty;
-  document.getElementById('sbFrom').textContent  = 'NY';
-  document.getElementById('sbTo').textContent  = 'TX';
-
-  // Topbar + fact box
-  document.getElementById('tbSub').textContent = APP.from + ' → ' + APP.to;
-  document.getElementById('fbTitle').innerHTML = '<i>' + APP.to + '</i> requirements';
+  document.getElementById('sbFrom').textContent  = APP.from.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
+  document.getElementById('sbTo').textContent    = APP.to.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
+  document.getElementById('tbSub').textContent   = APP.from + ' → ' + APP.to;
+  document.getElementById('fbTitle').innerHTML   = '<i>' + APP.to + '</i> requirements';
   document.getElementById('fbFee').textContent   = '$' + info.fee;
   document.getElementById('fbNerb').textContent  = info.nerb ? 'Yes' : 'No — WREB required';
   document.getElementById('fbNerb').className    = 'fb-v ' + (info.nerb ? 'ok' : 'warn');
@@ -5443,15 +5463,77 @@ function renderChecklist() {
   document.getElementById('rhMeta').textContent  = APP.specialty + ' · $' + info.fee + ' fee · ' + info.wkMin + '–' + info.wkMax + ' week estimate';
   document.getElementById('credsIntro').textContent = 'Every portal you need for your ' + APP.from + ' → ' + APP.to + ' license transfer.';
 
-  var d = new Date();
+  const d = new Date();
   d.setDate(d.getDate() + Math.round((info.wkMin + info.wkMax) / 2) * 7);
   document.getElementById('scDate').textContent  = d.toLocaleDateString('en-US', {month:'short', year:'numeric'});
   document.getElementById('scRange').textContent = info.wkMin + '–' + info.wkMax + ' wk range';
 
   renderDashboard();
   renderCreds();
-})();
+  go('pg-app');
+}
 
+async function launchApp() {
+  const firstName = document.getElementById('inp-first').value.trim() || 'Jane';
+  const lastName  = document.getElementById('inp-last').value.trim()  || 'Smith';
+  const email     = document.getElementById('inp-email').value.trim();
+  const password  = document.getElementById('inp-pw').value;
+  const specialty = document.getElementById('inp-spec').value || 'General Dentist';
+  const fromState = document.getElementById('inp-from').value || 'New York';
+  const toState   = document.getElementById('inp-to').value   || 'Texas';
+
+  const btn = document.getElementById('sc-btn3');
+  btn.classList.add('loading'); btn.disabled = true;
+
+  try {
+    const { data, error } = await sb.auth.signUp({ email, password });
+    if (error) throw error;
+
+    currentUser = data.user;
+    await sb.from('profiles').upsert({
+      id:         data.user.id,
+      full_name:  firstName + ' ' + lastName,
+      specialty:  specialty,
+      from_state: fromState,
+      to_state:   toState,
+    });
+
+    APP.name      = 'Dr. ' + firstName + ' ' + lastName;
+    APP.specialty = specialty;
+    APP.from      = fromState;
+    APP.to        = toState;
+
+    document.getElementById('sc-step3').style.display = 'none';
+    document.getElementById('sc-success').classList.add('show');
+    document.getElementById('ss-sub-text').textContent = `Welcome, ${firstName}. Your ${fromState} → ${toState} roadmap is ready.`;
+
+  } catch(err) {
+    btn.classList.remove('loading'); btn.disabled = false;
+    showErr(err.message || 'Signup failed. Please try again.');
+  }
+}
+
+async function loginExistingUser() {
+  const email    = document.getElementById('inp-email').value.trim();
+  const password = document.getElementById('inp-pw').value;
+  if (!email || !password) { showErr('Enter your email and password to log in.'); return; }
+  try {
+    const { data, error } = await sb.auth.signInWithPassword({ email, password });
+    if (error) throw error;
+    currentUser = data.user;
+    await loadProfileAndLaunch(currentUser.id);
+  } catch(err) {
+    showErr(err.message || 'Login failed.');
+  }
+}
+
+async function sbLogout() {
+  await sb.auth.signOut();
+  currentUser = null;
+  sbLogout();
+}
+(function(){
+  
 /* ══ MOBILE MENU ══ */
 function openMobMenu() {
   document.querySelector('.sidebar').classList.add('mob-open');
