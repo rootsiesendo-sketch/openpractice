@@ -2263,7 +2263,7 @@ html{scroll-behavior:smooth}
 <!-- ═══════════════════════════════════
      PAGE 1: LANDING
 ═══════════════════════════════════ -->
-<div class="page scrollable" id="pg-landing">
+<div class="page scrollable" id="pg-app">
   <div style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 24px;text-align:center;background:var(--cream)">
     <div class="land-logo">DentaMove</div>
     <h1 class="land-h1">Moving states?<br><i>Your license<br>comes with you.</i></h1>
@@ -2422,7 +2422,7 @@ html{scroll-behavior:smooth}
 <!-- ═══════════════════════════════════
      PAGE 4: APP
 ═══════════════════════════════════ -->
-<div class="page active" id="pg-app">
+<div class="page active" id="pg-landing">
 <div class="mob-overlay" id="mobOverlay" onclick="closeMobMenu()"></div>
 
   <!-- Sidebar -->
@@ -5470,7 +5470,7 @@ function launchAppFromProfile() {
 
   renderDashboard();
   renderCreds();
-  go('pg-app');
+  go('pg-landing');
 }
 
 async function launchApp() {
