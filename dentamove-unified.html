@@ -2256,7 +2256,8 @@ html{scroll-behavior:smooth}
 .page-panel.active{display:flex}
 .page-panel-scroll{flex:1;overflow-y:auto;background:var(--cream)}
 @media(max-width:900px){.page-panel{left:0}}
-</style> <script>
+</style>
+<script>
 function go(pageId,mode){
   document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active');p.style.display='none';});
   var el=document.getElementById(pageId);
@@ -2264,10 +2265,14 @@ function go(pageId,mode){
   el.style.display=el.classList.contains('scrollable')?'block':'flex';
   el.classList.add('active');
   window.scrollTo(0,0);
+  if(pageId==='pg-about'){setTimeout(initReveal,100);}
 }
+var scCurrentStep=1;
+var scSpec='';
 function scNext(n){
-  var steps=document.querySelectorAll('.sc-step');
-  steps.forEach(function(s,i){s.classList.toggle('active',i===n-1);});
+  if(n>scCurrentStep&&!validateScStep(scCurrentStep))return;
+  scCurrentStep=n;
+  document.querySelectorAll('.sc-step').forEach(function(s,i){s.classList.toggle('active',i===n-1);});
   ['prog0','prog1','prog2'].forEach(function(id,i){
     var el=document.getElementById(id);
     if(!el)return;
@@ -2275,7 +2280,9 @@ function scNext(n){
     if(i<n-1)el.classList.add('done');
     else if(i===n-1)el.classList.add('active');
   });
- function validateScStep(n){
+  hideErr();
+}
+function validateScStep(n){
   if(n===1){
     var v1=document.getElementById('inp-first').value.length>0;
     var v2=document.getElementById('inp-last').value.length>0;
@@ -2283,16 +2290,28 @@ function scNext(n){
     var v4=document.getElementById('inp-pw').value.length>=8;
     return v1&&v2&&v3&&v4;
   }
+  if(n===2){
+    if(!document.getElementById('inp-spec').value){showErr('Please select your specialty.');return false;}
+    return true;
+  }
   return true;
 }
-function hideErr(){}
-function showErr(msg){var el=document.getElementById('scErr');if(el){el.textContent=msg;el.classList.add('show');}} 
-var scSpec='';
 function selectSpec(el){
-scSpec=el.textContent.trim();
-document.querySelectorAll('.spec-opt').forEach(function(b){b.classList.remove('sel');});
-el.classList.add('sel')
+  scSpec=el.textContent.trim();
+  document.querySelectorAll('.spec-opt').forEach(function(b){b.classList.remove('sel');});
+  el.classList.add('sel');
+  var inp=document.getElementById('inp-spec');
+  if(inp)inp.value=scSpec;
 }
+function hideErr(){var el=document.getElementById('scErr');if(el)el.classList.remove('show');}
+function showErr(msg){var el=document.getElementById('scErr');if(el){el.textContent=msg;el.classList.add('show');}}
+function initReveal(){}
+</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL='https://cdeolkktvnjsznejenfn.supabase.co';
+const SUPABASE_KEY='sb_publishable_xx_VkpA7o3BQ8zKlMbLqgw_FIQw9R6y';
+const _supabase=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 </script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
