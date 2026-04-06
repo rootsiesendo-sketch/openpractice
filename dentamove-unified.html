@@ -2265,7 +2265,29 @@ function go(pageId,mode){
   el.classList.add('active');
   window.scrollTo(0,0);
 }
-</script>
+function scNext(n){
+  var steps=document.querySelectorAll('.sc-step');
+  steps.forEach(function(s,i){s.classList.toggle('active',i===n-1);});
+  ['prog0','prog1','prog2'].forEach(function(id,i){
+    var el=document.getElementById(id);
+    if(!el)return;
+    el.classList.remove('active','done');
+    if(i<n-1)el.classList.add('done');
+    else if(i===n-1)el.classList.add('active');
+  });
+ function validateScStep(n){
+  if(n===1){
+    var v1=document.getElementById('inp-first').value.length>0;
+    var v2=document.getElementById('inp-last').value.length>0;
+    var v3=/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(document.getElementById('inp-email').value);
+    var v4=document.getElementById('inp-pw').value.length>=8;
+    return v1&&v2&&v3&&v4;
+  }
+  return true;
+}
+function hideErr(){}
+function showErr(msg){var el=document.getElementById('scErr');if(el){el.textContent=msg;el.classList.add('show');}} 
+}</script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 const SUPABASE_URL = 'https://cdeolkktvnjsznejenfn.supabase.co';
