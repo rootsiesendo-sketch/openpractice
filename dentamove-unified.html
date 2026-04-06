@@ -2269,6 +2269,7 @@ function go(pageId,mode){
 }
 var scCurrentStep=1;
 var scSpec='';
+var ALL_STATES=["Alabama","Alaska","Arizona","Arkansas","California","Colorado","Connecticut","Delaware","Florida","Georgia","Hawaii","Idaho","Illinois","Indiana","Iowa","Kansas","Kentucky","Louisiana","Maine","Maryland","Massachusetts","Michigan","Minnesota","Mississippi","Missouri","Montana","Nebraska","Nevada","New Hampshire","New Jersey","New Mexico","New York","North Carolina","North Dakota","Ohio","Oklahoma","Oregon","Pennsylvania","Rhode Island","South Carolina","South Dakota","Tennessee","Texas","Utah","Vermont","Virginia","Washington","West Virginia","Wisconsin","Wyoming"];
 function scNext(n){
   if(n>scCurrentStep&&!validateScStep(scCurrentStep))return;
   scCurrentStep=n;
@@ -2288,10 +2289,12 @@ function validateScStep(n){
     var v2=document.getElementById('inp-last').value.length>0;
     var v3=/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(document.getElementById('inp-email').value);
     var v4=document.getElementById('inp-pw').value.length>=8;
-    return v1&&v2&&v3&&v4;
+    if(!(v1&&v2&&v3&&v4)){showErr('Please fill in all fields correctly.');return false;}
+    return true;
   }
   if(n===2){
-    if(!document.getElementById('inp-spec').value){showErr('Please select your specialty.');return false;}
+    var spec=document.getElementById('inp-spec');
+    if(!spec||!spec.value){showErr('Please select your specialty.');return false;}
     return true;
   }
   return true;
@@ -2305,7 +2308,20 @@ function selectSpec(el){
 }
 function hideErr(){var el=document.getElementById('scErr');if(el)el.classList.remove('show');}
 function showErr(msg){var el=document.getElementById('scErr');if(el){el.textContent=msg;el.classList.add('show');}}
-function initReveal(){}
+function initReveal(){
+  var obs=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting)e.target.classList.add('vis');});},{threshold:0.15});
+  document.querySelectorAll('.reveal').forEach(function(el){obs.observe(el);});
+}
+document.addEventListener('DOMContentLoaded',function(){
+  ['inp-from','inp-to'].forEach(function(id){
+    var el=document.getElementById(id);
+    if(!el)return;
+    ALL_STATES.forEach(function(s){
+      var o=document.createElement('option');
+      o.value=s;o.textContent=s;el.appendChild(o);
+    });
+  });
+});
 </script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
