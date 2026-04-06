@@ -2308,7 +2308,20 @@ function selectSpec(el){
 }
 function hideErr(){var el=document.getElementById('scErr');if(el)el.classList.remove('show');}
 function showErr(msg){var el=document.getElementById('scErr');if(el){el.textContent=msg;el.classList.add('show');}}
-function launchApp(){go('pg-app');}
+function launchApp(){
+  var email=document.getElementById('inp-email').value.trim();
+  var password=document.getElementById('inp-pw').value;
+  var firstName=document.getElementById('inp-first').value.trim();
+  var lastName=document.getElementById('inp-last').value.trim();
+  var from=document.getElementById('inp-from').value;
+  var to=document.getElementById('inp-to').value;
+  var btn=document.getElementById('sc-btn3');
+  if(btn)btn.disabled=true;
+  _supabase.auth.signUp({email:email,password:password,options:{data:{first_name:firstName,last_name:lastName,specialty:scSpec,from_state:from,to_state:to}}}).then(function(result){
+    if(result.error){showErr(result.error.message);if(btn)btn.disabled=false;}
+    else{go('pg-app');}
+  });
+}
 function initReveal(){
   var obs=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting)e.target.classList.add('vis');});},{threshold:0.15});
   document.querySelectorAll('.reveal').forEach(function(el){obs.observe(el);});
