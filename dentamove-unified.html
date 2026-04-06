@@ -2308,7 +2308,7 @@ function selectSpec(el){
 }
 function hideErr(){var el=document.getElementById('scErr');if(el)el.classList.remove('show');}
 function showErr(msg){var el=document.getElementById('scErr');if(el){el.textContent=msg;el.classList.add('show');}}
-function initReveal(){
+function initReveal(){function launchApp(){go('pg-app');}
   var obs=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting)e.target.classList.add('vis');});},{threshold:0.15});
   document.querySelectorAll('.reveal').forEach(function(el){obs.observe(el);});
 }
