@@ -2287,7 +2287,13 @@ function scNext(n){
 }
 function hideErr(){}
 function showErr(msg){var el=document.getElementById('scErr');if(el){el.textContent=msg;el.classList.add('show');}} 
-}</script>
+var scSpec='';
+function selectSpec(el){
+scSpec=el.textContent.trim();
+document.querySelectorAll('.spec-opt').forEach(function(b){b.classList.remove('sel');});
+el.classList.add('sel')
+}
+</script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 const SUPABASE_URL = 'https://cdeolkktvnjsznejenfn.supabase.co';
