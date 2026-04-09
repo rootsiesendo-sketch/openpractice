@@ -2257,105 +2257,18 @@ html{scroll-behavior:smooth}
 .page-panel-scroll{flex:1;overflow-y:auto;background:var(--cream)}
 @media(max-width:900px){.page-panel{left:0}}
 </style>
-<script>
-function go(pageId,mode){
-  document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active');p.style.display='none';});
-  var el=document.getElementById(pageId);
-  if(!el)return;
-  el.style.display=el.classList.contains('scrollable')?'block':'flex';
-  el.classList.add('active');
-  window.scrollTo(0,0);
-  if(pageId==='pg-about'){setTimeout(initReveal,100);}
-}
-var scCurrentStep=1;
-var scSpec='';
-var ALL_STATES=["Alabama","Alaska","Arizona","Arkansas","California","Colorado","Connecticut","Delaware","Florida","Georgia","Hawaii","Idaho","Illinois","Indiana","Iowa","Kansas","Kentucky","Louisiana","Maine","Maryland","Massachusetts","Michigan","Minnesota","Mississippi","Missouri","Montana","Nebraska","Nevada","New Hampshire","New Jersey","New Mexico","New York","North Carolina","North Dakota","Ohio","Oklahoma","Oregon","Pennsylvania","Rhode Island","South Carolina","South Dakota","Tennessee","Texas","Utah","Vermont","Virginia","Washington","West Virginia","Wisconsin","Wyoming"];
-function scNext(n){
-  if(n>scCurrentStep&&!validateScStep(scCurrentStep))return;
-  scCurrentStep=n;
-  document.querySelectorAll('.sc-step').forEach(function(s,i){s.classList.toggle('active',i===n-1);});
-  ['prog0','prog1','prog2'].forEach(function(id,i){
-    var el=document.getElementById(id);
-    if(!el)return;
-    el.classList.remove('active','done');
-    if(i<n-1)el.classList.add('done');
-    else if(i===n-1)el.classList.add('active');
-  });
-  hideErr();
-}
-function validateScStep(n){
-  if(n===1){
-    var v1=document.getElementById('inp-first').value.length>0;
-    var v2=document.getElementById('inp-last').value.length>0;
-    var v3=/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(document.getElementById('inp-email').value);
-    var v4=document.getElementById('inp-pw').value.length>=8;
-    if(!(v1&&v2&&v3&&v4)){showErr('Please fill in all fields correctly.');return false;}
-    return true;
-  }
-  if(n===2){
-    var spec=document.getElementById('inp-spec');
-    if(!spec||!spec.value){showErr('Please select your specialty.');return false;}
-    return true;
-  }
-  return true;
-}
-function selectSpec(el){
-  scSpec=el.textContent.trim();
-  document.querySelectorAll('.spec-opt').forEach(function(b){b.classList.remove('sel');});
-  el.classList.add('sel');
-  var inp=document.getElementById('inp-spec');
-  if(inp)inp.value=scSpec;var btn=document.getElementById('sc-btn2');if(btn)btn.disabled=false;
-}
-function hideErr(){var el=document.getElementById('scErr');if(el)el.classList.remove('show');}
-function showErr(msg){var el=document.getElementById('scErr');if(el){el.textContent=msg;el.classList.add('show');}}
-function launchApp(){
-  var email=document.getElementById('inp-email').value.trim();
-  var password=document.getElementById('inp-pw').value;
-  var firstName=document.getElementById('inp-first').value.trim();
-  var lastName=document.getElementById('inp-last').value.trim();
-  var from=document.getElementById('inp-from').value;
-  var to=document.getElementById('inp-to').value;
-  var btn=document.getElementById('sc-btn3');
-  if(btn)btn.disabled=true;
-  _supabase.auth.signUp({email:email,password:password,options:{data:{first_name:firstName,last_name:lastName,specialty:scSpec,from_state:from,to_state:to}}}).then(function(result){
-    if(result.error){showErr(result.error.message);if(btn)btn.disabled=false;}
-    else{go('pg-app');}
-  });
-}
-function initReveal(){
-  var obs=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting)e.target.classList.add('vis');});},{threshold:0.15});
-  document.querySelectorAll('.reveal').forEach(function(el){obs.observe(el);});
-}
-document.addEventListener('DOMContentLoaded',function(){
-  ['inp-from','inp-to'].forEach(function(id){
-    var el=document.getElementById(id);
-    if(!el)return;
-    ALL_STATES.forEach(function(s){
-      var o=document.createElement('option');
-      o.value=s;o.textContent=s;el.appendChild(o);
-    });
-  });
-});
-</script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-const SUPABASE_URL='https://cdeolkktvnjsznejenfn.supabase.co';
-const SUPABASE_KEY='sb_publishable_xx_VkpA7o3BQ8zKlMbLqgw_FIQw9R6y';
-const _supabase=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
-</script>
-
 </head>
 <body>
 
 <!-- ═══════════════════════════════════
      PAGE 1: LANDING
 ═══════════════════════════════════ -->
-<div class="page scrollable active" id="pg-app">
+<div class="page scrollable" id="pg-landing">
   <div style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 24px;text-align:center;background:var(--cream)">
     <div class="land-logo">DentaMove</div>
     <h1 class="land-h1">Moving states?<br><i>Your license<br>comes with you.</i></h1>
     <p class="land-sub">A step-by-step guide to transferring your dental license — built for dentists who are relocating.</p>
-    <button class="btn btn-ink" onclick="go('pg-signup')">Get started</button>
+    <button class="btn btn-ink" onclick="go('pg-about')">Get started</button>
   </div>
   <button class="land-login" onclick="go('pg-signup','login')">Already have an account</button>
 </div>
@@ -2477,7 +2390,7 @@ const _supabase=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
         <button class="spec-opt" onclick="selectSpec(this)">Other</button>
       </div>
       <input type="hidden" id="inp-spec"/>
-      <button class="sc-submit" id="sc-btn2" onclick="scNext(3)"  style="margin-top:20px"><span class="sc-text">Continue</span><div class="sc-loading"><div class="spin"></div></div></button>
+      <button class="sc-submit" id="sc-btn2" onclick="scNext(3)" disabled style="margin-top:20px"><span class="sc-text">Continue</span><div class="sc-loading"><div class="spin"></div></div></button>
       <button class="sc-back" onclick="scNext(1)">Back</button>
     </div>
 
@@ -2492,7 +2405,7 @@ const _supabase=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
         <div class="field" id="f-to" style="margin-bottom:0"><label>Moving to</label><div class="sel-wrap"><select id="inp-to" onchange="checkStates()"><option value="">Destination…</option></select></div></div>
       </div>
       <div class="state-preview" id="statePreview"></div>
-      <button class="sc-submit" id="sc-btn3" onclick="launchApp()" ><span class="sc-text">Build my roadmap</span><div class="sc-loading"><div class="spin"></div></div></button>
+      <button class="sc-submit" id="sc-btn3" onclick="launchApp()" disabled><span class="sc-text">Build my roadmap</span><div class="sc-loading"><div class="spin"></div></div></button>
       <button class="sc-back" onclick="scNext(2)">Back</button>
     </div>
 
@@ -2509,7 +2422,7 @@ const _supabase=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 <!-- ═══════════════════════════════════
      PAGE 4: APP
 ═══════════════════════════════════ -->
-<div class="page" id="pg-landing">
+<div class="page active" id="pg-app">
 <div class="mob-overlay" id="mobOverlay" onclick="closeMobMenu()"></div>
 
   <!-- Sidebar -->
@@ -2572,7 +2485,7 @@ const _supabase=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
       <div id="nav-payments" onclick="showPage('payments')">
         <span class="ni-icon"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></span>Upgrade to Pro
       </div>
-      <div class="nav-item" onclick="sbLogout()">
+      <div class="nav-item" onclick="go('pg-landing')">
         <span class="ni-icon"><svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></span>Log out
       </div>
     </nav>
@@ -3730,7 +3643,7 @@ const _supabase=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
           <div id="prev-weekly">
             <div class="email-preview">
               <div class="ep-chrome"><div class="ep-dot" style="background:#ff5f57"></div><div class="ep-dot" style="background:#febc2e"></div><div class="ep-dot" style="background:#28c840"></div><div class="ep-bar">mail.google.com</div></div>
-              <div class="ep-hdr"><div class="ep-from">From: <strong>DentaMove</strong> &lt;hello@dentamove.com&gt;</div><div class="ep-subject">Your weekly licensing update &mdash; NY &rarr; TX</div><div class="ep-date">Monday, March 31 &middot; 8:00 AM</div></div>
+              <div class="ep-hdr"><div class="ep-from">From: <strong>DentaMove</strong> &lt;<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="86eee3eaeae9c6e2e3e8f2e7ebe9f0e3a8e5e9eb">[email&#160;protected]</a>&gt;</div><div class="ep-subject">Your weekly licensing update &mdash; NY &rarr; TX</div><div class="ep-date">Monday, March 31 &middot; 8:00 AM</div></div>
               <div class="ep-body">
                 <div class="ep-logo">DentaMove</div>
                 <div class="ep-h1">Week 3 update, <i>Dr. Smith</i></div>
@@ -3764,7 +3677,7 @@ const _supabase=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
           <div id="prev-deadline" style="display:none">
             <div class="email-preview">
               <div class="ep-chrome"><div class="ep-dot" style="background:#ff5f57"></div><div class="ep-dot" style="background:#febc2e"></div><div class="ep-dot" style="background:#28c840"></div><div class="ep-bar">mail.google.com</div></div>
-              <div class="ep-hdr"><div class="ep-from">From: <strong>DentaMove</strong> &lt;hello@dentamove.com&gt;</div><div class="ep-subject">Action required: fingerprinting not yet booked</div><div class="ep-date">Wednesday, April 2 &middot; 9:15 AM</div></div>
+              <div class="ep-hdr"><div class="ep-from">From: <strong>DentaMove</strong> &lt;<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="d9b1bcb5b5b699bdbcb7adb8b4b6afbcf7bab6b4">[email&#160;protected]</a>&gt;</div><div class="ep-subject">Action required: fingerprinting not yet booked</div><div class="ep-date">Wednesday, April 2 &middot; 9:15 AM</div></div>
               <div class="ep-body">
                 <div class="ep-logo">DentaMove</div>
                 <div class="ep-h1">This needs your <i>attention today</i></div>
@@ -3784,7 +3697,7 @@ const _supabase=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
           <div id="prev-milestone" style="display:none">
             <div class="email-preview">
               <div class="ep-chrome"><div class="ep-dot" style="background:#ff5f57"></div><div class="ep-dot" style="background:#febc2e"></div><div class="ep-dot" style="background:#28c840"></div><div class="ep-bar">mail.google.com</div></div>
-              <div class="ep-hdr"><div class="ep-from">From: <strong>DentaMove</strong> &lt;hello@dentamove.com&gt;</div><div class="ep-subject">Phase 1 complete &mdash; credentials all sent</div><div class="ep-date">Friday, April 11 &middot; 2:47 PM</div></div>
+              <div class="ep-hdr"><div class="ep-from">From: <strong>DentaMove</strong> &lt;<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="a2cac7cececde2c6c7ccd6c3cfcdd4c78cc1cdcf">[email&#160;protected]</a>&gt;</div><div class="ep-subject">Phase 1 complete &mdash; credentials all sent</div><div class="ep-date">Friday, April 11 &middot; 2:47 PM</div></div>
               <div class="ep-body">
                 <div class="ep-logo">DentaMove</div>
                 <div class="ep-h1">Phase 1 <i>complete</i></div>
@@ -3841,7 +3754,7 @@ const _supabase=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
         <div class="rp-card">
           <div class="rp-hdr"><div class="rp-title">Delivery address</div></div>
           <div class="rp-body">
-            <div style="font-size:14px;font-weight:600;color:var(--ink);margin-bottom:4px">jane.smith@dental.com</div>
+            <div style="font-size:14px;font-weight:600;color:var(--ink);margin-bottom:4px"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="600a010e054e130d0914082004050e14010c4e030f0d">[email&#160;protected]</a></div>
             <div style="font-size:12px;color:var(--gray);margin-bottom:12px">All notifications sent here</div>
             <button onclick="showToast('Update email in Settings')" style="padding:8px 16px;border:1.5px solid var(--gray-lt);border-radius:6px;font-size:12px;font-weight:600;font-family:'Mulish',sans-serif;cursor:pointer;background:var(--white);color:var(--gray);transition:all .18s" onmouseover="this.style.borderColor='var(--teal)';this.style.color='var(--teal)'" onmouseout="this.style.borderColor='var(--gray-lt)';this.style.color='var(--gray)'">Change email address</button>
           </div>
@@ -4511,9 +4424,8 @@ var APP = {
    PAGE ROUTING
 ══════════════════════════ */
 function go(pageId, mode) {
-  
-  document.querySelectorAll('.page').forEach(p=>{p.classList.remove('active');p.style.display='none';});
-  var el=document.getElementById(pageId); el.style.display='flex'; el.classList.add('active');
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(pageId).classList.add('active');
   window.scrollTo(0,0);
 
   // Init about page reveal
@@ -4624,7 +4536,33 @@ function checkStates(){
 }
 
 // Launch
-function launchApp(){
+async function launchApp(){
+  // --- Supabase sign-up ---
+  var email    = document.getElementById('inp-email').value.trim();
+  var password = document.getElementById('inp-pw').value;
+  var btn3     = document.getElementById('sc-btn3');
+
+  btn3.classList.add('loading');
+  btn3.disabled = true;
+
+  try {
+    var { data, error } = await _supabase.auth.signUp({ email, password });
+    if (error) {
+      alert('Sign-up error: ' + error.message);
+      btn3.classList.remove('loading');
+      btn3.disabled = false;
+      return;
+    }
+    console.log('Supabase signUp success, user:', data.user?.id);
+  } catch(err) {
+    alert('Unexpected error during sign-up. Check console.');
+    console.error(err);
+    btn3.classList.remove('loading');
+    btn3.disabled = false;
+    return;
+  }
+  // --- End sign-up ---
+
   APP.name = (document.getElementById('inp-first').value.trim()||'Jane')+' '+(document.getElementById('inp-last').value.trim()||'Smith');
   APP.name = 'Dr. '+APP.name;
   APP.specialty = document.getElementById('inp-spec').value||'General Dentist';
@@ -4643,9 +4581,7 @@ function launchApp(){
       : {stageIdx:0,notes:''};
   });
 
-  // Show success briefly then go to app
-  var btn=document.getElementById('sc-btn3');
-  btn.classList.add('loading');btn.disabled=true;
+  // Show success
   document.getElementById('sc-step3').style.display='none';
   document.getElementById('sc-success').classList.add('show');
   document.getElementById('ss-sub-text').textContent=`Welcome, ${APP.name.replace('Dr.','')}. Your ${APP.from} → ${APP.to} roadmap is ready.`;
@@ -5493,54 +5429,34 @@ function renderChecklist() {
 }
 
 
-/* ══════════════════════════
-   SUPABASE AUTH
-══════════════════════════ */
-const SUPABASE_URL = 'https://cdeolkktvnjsznejenfn.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_xx_VkpA7o3BQ8zKlMbLqgw_FIQw9R6y';
-const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+// Auto-launch with demo data so app opens directly on the dashboard
+(function(){
+  APP.name      = 'Dr. Jane Smith';
+  APP.specialty = 'General Dentist';
+  APP.from      = 'New York';
+  APP.to        = 'Texas';
 
-let currentUser = null;
-
-(async function(){
-  const { data: { session } } = await sb.auth.getSession();
-  if (session) {
-    currentUser = session.user;
-    await loadProfileAndLaunch(currentUser.id);
-  }
-})();
-
-async function loadProfileAndLaunch(userId) {
-  const { data } = await sb.from('profiles').select('*').eq('id', userId).single();
-  if (data) {
-    APP.name      = 'Dr. ' + (data.full_name || 'User');
-    APP.specialty = data.specialty   || 'General Dentist';
-    APP.from      = data.from_state  || 'New York';
-    APP.to        = data.to_state    || 'Texas';
-  }
-  launchAppFromProfile();
-}
-
-function launchAppFromProfile() {
-  const info = STATE_DB[APP.to] || {fee:200,wkMin:10,wkMax:14,nerb:true,juris:true,bg:'FBI + TX DPS'};
+  var info = STATE_DB[APP.to] || {fee:200,wkMin:10,wkMax:14,nerb:true,juris:true,bg:'FBI + TX DPS'};
   APP.tasks    = buildTasks(APP.from, APP.to, info);
   APP.timeline = buildTimeline(APP.from, APP.to, info);
+  APP.portals  = buildPortals(APP.from, APP.to, info);
   APP.done     = new Set();
-  PORTALS = buildPortals(APP.from, APP.to, info);
-  PORTALS.forEach(p => {
+  APP.portals.forEach(p => {
     APP.credState[p.id] = p.stages
       ? {stages: p.stages.map(() => ({done:false, date:'', conf:''})), notes:''}
       : {stageIdx: 0, notes:''};
   });
 
-  const initials = APP.name.replace(/Dr\.?\s*/i,'').trim().split(' ').map(w=>w[0]||'').join('').toUpperCase().slice(0,2)||'DR';
-  document.getElementById('sbAv').textContent    = initials;
+  // Sidebar
+  document.getElementById('sbAv').textContent  = 'JS';
   document.getElementById('sbName').textContent  = APP.name;
   document.getElementById('sbRole').textContent  = APP.specialty;
-  document.getElementById('sbFrom').textContent  = APP.from.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
-  document.getElementById('sbTo').textContent    = APP.to.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
-  document.getElementById('tbSub').textContent   = APP.from + ' → ' + APP.to;
-  document.getElementById('fbTitle').innerHTML   = '<i>' + APP.to + '</i> requirements';
+  document.getElementById('sbFrom').textContent  = 'NY';
+  document.getElementById('sbTo').textContent  = 'TX';
+
+  // Topbar + fact box
+  document.getElementById('tbSub').textContent = APP.from + ' → ' + APP.to;
+  document.getElementById('fbTitle').innerHTML = '<i>' + APP.to + '</i> requirements';
   document.getElementById('fbFee').textContent   = '$' + info.fee;
   document.getElementById('fbNerb').textContent  = info.nerb ? 'Yes' : 'No — WREB required';
   document.getElementById('fbNerb').className    = 'fb-v ' + (info.nerb ? 'ok' : 'warn');
@@ -5551,77 +5467,15 @@ function launchAppFromProfile() {
   document.getElementById('rhMeta').textContent  = APP.specialty + ' · $' + info.fee + ' fee · ' + info.wkMin + '–' + info.wkMax + ' week estimate';
   document.getElementById('credsIntro').textContent = 'Every portal you need for your ' + APP.from + ' → ' + APP.to + ' license transfer.';
 
-  const d = new Date();
+  var d = new Date();
   d.setDate(d.getDate() + Math.round((info.wkMin + info.wkMax) / 2) * 7);
   document.getElementById('scDate').textContent  = d.toLocaleDateString('en-US', {month:'short', year:'numeric'});
   document.getElementById('scRange').textContent = info.wkMin + '–' + info.wkMax + ' wk range';
 
   renderDashboard();
   renderCreds();
-  go('pg-landing');
-}
+})();
 
-async function launchApp() {
-  const firstName = document.getElementById('inp-first').value.trim() || 'Jane';
-  const lastName  = document.getElementById('inp-last').value.trim()  || 'Smith';
-  const email     = document.getElementById('inp-email').value.trim();
-  const password  = document.getElementById('inp-pw').value;
-  const specialty = document.getElementById('inp-spec').value || 'General Dentist';
-  const fromState = document.getElementById('inp-from').value || 'New York';
-  const toState   = document.getElementById('inp-to').value   || 'Texas';
-
-  const btn = document.getElementById('sc-btn3');
-  btn.classList.add('loading'); btn.disabled = true;
-
-  try {
-    const { data, error } = await sb.auth.signUp({ email, password });
-    if (error) throw error;
-
-    currentUser = data.user;
-    await sb.from('profiles').upsert({
-      id:         data.user.id,
-      full_name:  firstName + ' ' + lastName,
-      specialty:  specialty,
-      from_state: fromState,
-      to_state:   toState,
-    });
-
-    APP.name      = 'Dr. ' + firstName + ' ' + lastName;
-    APP.specialty = specialty;
-    APP.from      = fromState;
-    APP.to        = toState;
-
-    document.getElementById('sc-step3').style.display = 'none';
-    document.getElementById('sc-success').classList.add('show');
-    document.getElementById('ss-sub-text').textContent = `Welcome, ${firstName}. Your ${fromState} → ${toState} roadmap is ready.`;
-
-  } catch(err) {
-    btn.classList.remove('loading'); btn.disabled = false;
-    showErr(err.message || 'Signup failed. Please try again.');
-  }
-}
-
-async function loginExistingUser() {
-  const email    = document.getElementById('inp-email').value.trim();
-  const password = document.getElementById('inp-pw').value;
-  if (!email || !password) { showErr('Enter your email and password to log in.'); return; }
-  try {
-    const { data, error } = await sb.auth.signInWithPassword({ email, password });
-    if (error) throw error;
-    currentUser = data.user;
-    await loadProfileAndLaunch(currentUser.id);
-  } catch(err) {
-    showErr(err.message || 'Login failed.');
-  }
-}
-
-async function sbLogout() {
-  await sb.auth.signOut();
-  currentUser = null;
-  sbLogout();
-}
-(function(){
-  
 /* ══ MOBILE MENU ══ */
 function openMobMenu() {
   document.querySelector('.sidebar').classList.add('mob-open');
@@ -7121,18 +6975,4 @@ function payGoBack() { payShowView('pricing'); }
 function settingsShowPanel(id) {
   document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('active');});
   document.querySelectorAll('.sn-item').forEach(function(n){n.classList.remove('active');});
-  var panel=document.getElementById('sett-panel-'+id);
-  var nav=document.getElementById('sett-sn-'+id);
-  if(panel)panel.classList.add('active');
-  if(nav)nav.classList.add('active');
-}
-ssList.remove('active');});
-  document.querySelectorAll('.sn-item').forEach(function(n){n.classList.remove('active');});
-  var panel=document.getElementById('sett-panel-'+id);
-  var nav=document.getElementById('sett-sn-'+id);
-  if(panel)panel.classList.add('active');
-  if(nav)nav.classList.add('active');
-}
-</script>
-</body>
-</html>
+  var panel=document.getElemen
