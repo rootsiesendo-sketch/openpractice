@@ -6050,7 +6050,7 @@ var CMP_DB = {
 
 /* Complexity score 1–10 */
 function complexity(s) {
-  var d = DB[s]; if (!d) return 5;
+  var d = CMP_DB[s]; if (!d) return 5;
   var score = 0;
   score += Math.round((d.wkMax / 26) * 4);        // timeline weight (max 4)
   score += Math.round((d.fee / 600) * 2);          // fee weight (max 2)
@@ -6102,7 +6102,7 @@ function runCompare() {
 
   document.getElementById('tbSub').textContent = sA + ' vs ' + sB;
 
-  var a = DB[sA], b = DB[sB];
+  var a = CMP_DB[sA], b = CMP_DB[sB];
   var cA = complexity(sA), cB = complexity(sB);
   var avgA = Math.round((a.wkMin+a.wkMax)/2), avgB = Math.round((b.wkMin+b.wkMax)/2);
 
@@ -6250,7 +6250,6 @@ function runCompare() {
   document.getElementById('cmpCompareOut').innerHTML = tableHtml + scoreHtml;
 }
 
-_tt;
 function cmpToast(msg){var el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');clearTimeout(_tt);_tt=setTimeout(()=>el.classList.remove('show'),2600);}
 
 // runCompare() called by cmpInitPage() when panel opens
@@ -6305,7 +6304,7 @@ var aiLoading = false;
 async function sendMessage(text) {
   var input = document.getElementById('chatInput');
   var msg   = (text || input.value).trim();
-  if (!msg || isLoading) return;
+  if (!msg || aiLoading) return;
 
   // Hide welcome screen
   document.getElementById('welcome').style.display = 'none';
@@ -6314,7 +6313,7 @@ async function sendMessage(text) {
   if (!text) { input.value = ''; autoResize(input); }
 
   // Add user message to history and UI
-  messages.push({role:'user', content: msg});
+  aiMessages.push({role:'user', content: msg});
   appendMessage('user', msg);
 
   // Show typing indicator
@@ -6328,7 +6327,7 @@ async function sendMessage(text) {
         model: 'claude-sonnet-4-20250514',
         max_tokens: 1000,
         system: SYSTEM_PROMPT,
-        messages: messages,
+        messages: aiMessages,
       })
     });
 
@@ -6338,7 +6337,7 @@ async function sendMessage(text) {
 
     var reply = (data.content?data.content.map(c => c.text || ''):[]).join('') || 'Sorry, I could not generate a response.';
 
-    messages.push({role:'assistant', content: reply});
+    aiMessages.push({role:'assistant', content: reply});
     setLoading(false);
     appendMessage('ai', reply);
 
@@ -6416,7 +6415,7 @@ function escHtml(s) {
 var typingEl = null;
 
 function setLoading(loading) {
-  isLoading = loading;
+  aiLoading = loading;
   document.getElementById('sendBtn').disabled = loading;
   var container = document.getElementById('messages');
 
@@ -6458,7 +6457,7 @@ function autoResize(el) {
 }
 
 function clearChat() {
-  messages = [];
+  aiMessages = [];
   document.getElementById('messages').innerHTML = '';
   document.getElementById('welcome').style.display = '';
   document.getElementById('messages').appendChild(document.getElementById('welcome'));
@@ -6466,7 +6465,6 @@ function clearChat() {
   aiShowToast('Chat cleared');
 }
 
-_tt;
 function aiShowToast(msg) {
   var t = document.getElementById('toast');
   t.textContent = msg; t.classList.add('show');
@@ -6494,7 +6492,6 @@ function notifSwitchPreview(id, btn) {
   btn.parentElement.querySelectorAll('.prev-tab').forEach(function(b) { b.classList.remove('active'); });
   btn.classList.add('active');
 }
-_tt;
 function notifToast(msg) {
   var t = document.getElementById('toast');
   t.textContent = msg;
@@ -6545,7 +6542,7 @@ function renderDocs() {
   var q = document.getElementById('searchInp').value.trim().toLowerCase();
   var sort = document.getElementById('sortSel').value;
 
-  var filtered = DOCS.filter(function(d) {
+  var filtered = DOCS_DATA.filter(function(d) {
     var matchFolder = currentFolder === 'all' || d.folder === currentFolder;
     var matchSearch = !q || d.name.toLowerCase().indexOf(q) > -1 || d.folder.toLowerCase().indexOf(q) > -1;
     return matchFolder && matchSearch;
@@ -6625,9 +6622,9 @@ function formatDate(d) {
 }
 
 function updateCounts() {
-  var total = DOCS.length;
+  var total = DOCS_DATA.length;
   var byFolder = {};
-  DOCS.forEach(function(d) {
+  DOCS_DATA.forEach(function(d) {
     byFolder[d.folder] = (byFolder[d.folder] || 0) + 1;
   });
 
@@ -6661,14 +6658,14 @@ function setView(view) {
 }
 
 function previewDoc(id) {
-  var doc = DOCS.find(function(d) { return d.id === id; });
+  var doc = DOCS_DATA.find(function(d) { return d.id === id; });
   if (!doc) return;
   docsToast(doc.name + ' — download requires server in production');
 }
 
 function deleteDoc(id) {
   if (!confirm('Delete this document? This cannot be undone.')) return;
-  DOCS = DOCS.filter(function(d) { return d.id !== id; });
+  DOCS_DATA = DOCS_DATA.filter(function(d) { return d.id !== id; });
   renderDocs();
   docsToast('Document deleted');
 }
@@ -6700,7 +6697,7 @@ function docsSaveUpload() {
   var _modal_notes = document.getElementById('docsModalNotes'); var notes = _modal_notes ? _modal_notes.value.trim() : '';
   if (!name) { docsToast('Please enter a file name'); return; }
 
-  if (DOCS.length >= 5) {
+  if (DOCS_DATA.length >= 5) {
     docsToast('Free plan limit reached. Upgrade to Pro for 50 files.');
     docsCloseModal();
     return;
@@ -6708,7 +6705,7 @@ function docsSaveUpload() {
 
   var today = new Date();
   var dateStr = today.getFullYear() + '-' + String(today.getMonth()+1).padStart(2,'0') + '-' + String(today.getDate()).padStart(2,'0');
-  DOCS.push({id: nextId++, name: name, folder: folder, type: 'pdf', size: '—', date: dateStr, notes: notes, isNew: true});
+  DOCS_DATA.push({id: nextId++, name: name, folder: folder, type: 'pdf', size: '—', date: dateStr, notes: notes, isNew: true});
   docsCloseModal();
   var _mn = document.getElementById('docsModalName'); if(_mn) _mn.value = '';
   var _mno = document.getElementById('docsModalNotes'); if(_mno) _mno.value = '';
@@ -6716,7 +6713,6 @@ function docsSaveUpload() {
   docsToast('Document added: ' + name);
 }
 
-_tt;
 function docsToast(msg) {
   var t = document.getElementById('toast');
   t.textContent = msg;
@@ -6773,7 +6769,7 @@ function adminFilterTable() {
 }
 
 function adminViewDentist(id) {
-  var d = DENTISTS.find(function(x){return x.id===id;});
+  var d = ADMIN_DENTISTS.find(function(x){return x.id===id;});
   if (d) adminToast('Opening '+d.name+'\'s roadmap — '+d.from+' \u2192 '+d.to+' ('+d.pct+'% complete)');
 }
 
@@ -6797,7 +6793,6 @@ function adminSendInvite() {
   adminToast('Invitation sent to '+email);
 }
 
-_tt;
 function adminToast(msg) {
   var t = document.getElementById('toast');
   t.textContent = msg;
@@ -6954,7 +6949,7 @@ function settingsInitPage() {
   var selFrom = document.getElementById('s-from');
   var selTo   = document.getElementById('s-to');
   if (!selFrom || selFrom.options.length > 1) return;
-  SETT_ALL_STATES.forEach(function(s) {
+  ALL_STATES.forEach(function(s) {
     var o1 = document.createElement('option'); o1.value=s; o1.textContent=s;
     if (s === (APP.from||'New York')) o1.selected=true;
     selFrom.appendChild(o1);
