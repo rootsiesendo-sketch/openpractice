@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>DentaMove</title>
+<title>OpenPractice</title>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Mulish:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
@@ -2257,6 +2257,7 @@ html{scroll-behavior:smooth}
 .page-panel-scroll{flex:1;overflow-y:auto;background:var(--cream)}
 @media(max-width:900px){.page-panel{left:0}}
 </style>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
@@ -2265,7 +2266,7 @@ html{scroll-behavior:smooth}
 ═══════════════════════════════════ -->
 <div class="page scrollable" id="pg-landing">
   <div style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 24px;text-align:center;background:var(--cream)">
-    <div class="land-logo">DentaMove</div>
+    <div class="land-logo">OpenPractice</div>
     <h1 class="land-h1">Moving states?<br><i>Your license<br>comes with you.</i></h1>
     <p class="land-sub">A step-by-step guide to transferring your dental license — built for dentists who are relocating.</p>
     <button class="btn btn-ink" onclick="go('pg-about')">Get started</button>
@@ -2278,15 +2279,15 @@ html{scroll-behavior:smooth}
 ═══════════════════════════════════ -->
 <div class="page scrollable" id="pg-about">
   <nav class="about-nav">
-    <div class="about-nav-logo" onclick="go('pg-landing')">DentaMove</div>
+    <div class="about-nav-logo" onclick="go('pg-landing')">OpenPractice</div>
     <button class="btn btn-ink btn-sm" onclick="go('pg-signup')">Create account</button>
   </nav>
   <div class="about-content">
 
     <div class="about-hero">
-      <div class="ah-eyebrow">What is DentaMove?</div>
+      <div class="ah-eyebrow">What is OpenPractice?</div>
       <h1 class="ah-h1">The fastest way to get<br><i>licensed in a new state</i></h1>
-      <p class="ah-sub">Moving between states as a dentist means navigating a maze of different boards, requirements, and timelines. DentaMove cuts through all of it and walks you through every step.</p>
+      <p class="ah-sub">Moving between states as a dentist means navigating a maze of different boards, requirements, and timelines. OpenPractice cuts through all of it and walks you through every step.</p>
       <button class="btn btn-teal" onclick="go('pg-signup')">Create your free account</button>
       <div class="ah-scroll"><div class="ah-scroll-line"></div><span>Learn more</span></div>
     </div>
@@ -2341,7 +2342,7 @@ html{scroll-behavior:smooth}
 ═══════════════════════════════════ -->
 <div class="page active" id="pg-signup">
   <div class="signup-card">
-    <div class="sc-logo" onclick="go('pg-landing')">DentaMove</div>
+    <div class="sc-logo" onclick="go('pg-landing')">OpenPractice</div>
     <div class="sc-prog">
       <div class="sc-prog-bar active" id="prog0"></div>
       <div class="sc-prog-bar" id="prog1"></div>
@@ -2428,7 +2429,7 @@ html{scroll-behavior:smooth}
   <!-- Sidebar -->
   <aside class="sidebar">
     <div class="sb-top">
-      <div class="sb-logo" onclick="go('pg-landing')">DentaMove</div>
+      <div class="sb-logo" onclick="go('pg-landing')">OpenPractice</div>
       <div class="sb-user">
         <div class="sb-avatar" id="sbAv">JS</div>
         <div><div class="sb-uname" id="sbName">Dr. Jane Smith</div><div class="sb-urole" id="sbRole">General Dentist</div></div>
@@ -3062,7 +3063,7 @@ html{scroll-behavior:smooth}
               <div class="toggle-row">
                 <div class="toggle-info">
                   <div class="toggle-label">Product updates</div>
-                  <div class="toggle-sub">When DentaMove adds new features or state data relevant to your move.</div>
+                  <div class="toggle-sub">When OpenPractice adds new features or state data relevant to your move.</div>
                 </div>
                 <label class="toggle"><input type="checkbox"/><div class="toggle-track"></div></label>
               </div>
@@ -3339,7 +3340,7 @@ html{scroll-behavior:smooth}
     <!-- Guarantee -->
     <div class="guarantee">
       <div class="guarantee-ico"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
-      <div class="guarantee-text"><strong>14-day money-back guarantee.</strong> If DentaMove Pro doesn't save you time on your license transfer, we will refund you in full — no questions asked.</div>
+      <div class="guarantee-text"><strong>14-day money-back guarantee.</strong> If OpenPractice Pro doesn't save you time on your license transfer, we will refund you in full — no questions asked.</div>
     </div>
 
     <!-- FAQ -->
@@ -3355,7 +3356,7 @@ html{scroll-behavior:smooth}
       </div>
       <div class="faq-item" onclick="toggleFaq(this)">
         <div class="faq-q"><span class="faq-q-text">Is my payment information secure?</span><div class="faq-chev"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div></div>
-        <div class="faq-a">All payments are processed through Stripe, which is PCI DSS Level 1 certified — the highest level of payment security. DentaMove never stores your card details.</div>
+        <div class="faq-a">All payments are processed through Stripe, which is PCI DSS Level 1 certified — the highest level of payment security. OpenPractice never stores your card details.</div>
       </div>
       <div class="faq-item" onclick="toggleFaq(this)">
         <div class="faq-q"><span class="faq-q-text">Can my employer reimburse this?</span><div class="faq-chev"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div></div>
@@ -3377,7 +3378,7 @@ html{scroll-behavior:smooth}
           Back to plans
         </button>
         <div class="co-title">Complete your <i>upgrade</i></div>
-        <div class="co-sub" id="co-sub">You are upgrading to DentaMove Pro — billed monthly. Cancel anytime.</div>
+        <div class="co-sub" id="co-sub">You are upgrading to OpenPractice Pro — billed monthly. Cancel anytime.</div>
 
         <!-- Contact -->
         <div class="co-section">
@@ -3481,7 +3482,7 @@ html{scroll-behavior:smooth}
           <div class="oc-plan">
             <div class="oc-plan-ico"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
             <div>
-              <div class="oc-plan-name" id="oc-plan-name">DentaMove Pro</div>
+              <div class="oc-plan-name" id="oc-plan-name">OpenPractice Pro</div>
               <div class="oc-plan-cycle" id="oc-plan-cycle">Billed monthly</div>
             </div>
           </div>
@@ -3548,7 +3549,7 @@ html{scroll-behavior:smooth}
       <div class="content" style="max-width:1100px">
         <div class="page-eye">Automated emails</div>
     <div class="page-title">Stay on track <i>without thinking about it</i></div>
-    <div class="page-sub">DentaMove sends you the right email at the right time &mdash; a weekly summary every Monday, and an immediate alert if something needs your attention.</div>
+    <div class="page-sub">OpenPractice sends you the right email at the right time &mdash; a weekly summary every Monday, and an immediate alert if something needs your attention.</div>
 
     <div class="tabs">
       <button class="tab active" onclick="notifSwitchTab('settings',this)">Notification settings</button>
@@ -3643,9 +3644,9 @@ html{scroll-behavior:smooth}
           <div id="prev-weekly">
             <div class="email-preview">
               <div class="ep-chrome"><div class="ep-dot" style="background:#ff5f57"></div><div class="ep-dot" style="background:#febc2e"></div><div class="ep-dot" style="background:#28c840"></div><div class="ep-bar">mail.google.com</div></div>
-              <div class="ep-hdr"><div class="ep-from">From: <strong>DentaMove</strong> &lt;<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="f39b969f9f9cb397969d87929e9c8596dd909c9e">[email&#160;protected]</a>&gt;</div><div class="ep-subject">Your weekly licensing update &mdash; NY &rarr; TX</div><div class="ep-date">Monday, March 31 &middot; 8:00 AM</div></div>
+              <div class="ep-hdr"><div class="ep-from">From: <strong>OpenPractice</strong> &lt;<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="f39b969f9f9cb397969d87929e9c8596dd909c9e">[email&#160;protected]</a>&gt;</div><div class="ep-subject">Your weekly licensing update &mdash; NY &rarr; TX</div><div class="ep-date">Monday, March 31 &middot; 8:00 AM</div></div>
               <div class="ep-body">
-                <div class="ep-logo">DentaMove</div>
+                <div class="ep-logo">OpenPractice</div>
                 <div class="ep-h1">Week 3 update, <i>Dr. Smith</i></div>
                 <div class="ep-intro">Here is where your New York &rarr; Texas license transfer stands as of this Monday.</div>
                 <div class="ep-prog">
@@ -3677,9 +3678,9 @@ html{scroll-behavior:smooth}
           <div id="prev-deadline" style="display:none">
             <div class="email-preview">
               <div class="ep-chrome"><div class="ep-dot" style="background:#ff5f57"></div><div class="ep-dot" style="background:#febc2e"></div><div class="ep-dot" style="background:#28c840"></div><div class="ep-bar">mail.google.com</div></div>
-              <div class="ep-hdr"><div class="ep-from">From: <strong>DentaMove</strong> &lt;<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="1a727f7676755a7e7f746e7b77756c7f34797577">[email&#160;protected]</a>&gt;</div><div class="ep-subject">Action required: fingerprinting not yet booked</div><div class="ep-date">Wednesday, April 2 &middot; 9:15 AM</div></div>
+              <div class="ep-hdr"><div class="ep-from">From: <strong>OpenPractice</strong> &lt;<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="1a727f7676755a7e7f746e7b77756c7f34797577">[email&#160;protected]</a>&gt;</div><div class="ep-subject">Action required: fingerprinting not yet booked</div><div class="ep-date">Wednesday, April 2 &middot; 9:15 AM</div></div>
               <div class="ep-body">
-                <div class="ep-logo">DentaMove</div>
+                <div class="ep-logo">OpenPractice</div>
                 <div class="ep-h1">This needs your <i>attention today</i></div>
                 <div class="ep-intro">Dr. Smith &mdash; your background check appointment has not been booked. This is the most common cause of delays in Texas dental licensing.</div>
                 <div class="ep-item ei-urgent" style="margin-bottom:16px;font-size:13px"><div class="ei-dot"></div><div><strong>IdentoGo appointment not booked.</strong> Background check results take 3&ndash;4 weeks to reach the Texas Board. Every day you wait pushes your license date back.</div></div>
@@ -3688,7 +3689,7 @@ html{scroll-behavior:smooth}
                   <div style="font-size:13px;color:var(--ink);line-height:1.75">1. Go to <strong>identogo.com</strong><br>2. Enter agency code <strong>11G2XN</strong><br>3. Select the earliest available slot<br>4. Bring government-issued photo ID</div>
                 </div>
                 <a class="ep-cta" href="#">Book on IdentoGo &rarr;</a>
-                <div style="font-size:12px;color:var(--gray);line-height:1.65">Once booked, log your confirmation number in DentaMove to stop these reminders.</div>
+                <div style="font-size:12px;color:var(--gray);line-height:1.65">Once booked, log your confirmation number in OpenPractice to stop these reminders.</div>
               </div>
               <div class="ep-footer">You are receiving this because deadline reminders are enabled &middot; <a href="#">Manage preferences</a></div>
             </div>
@@ -3697,9 +3698,9 @@ html{scroll-behavior:smooth}
           <div id="prev-milestone" style="display:none">
             <div class="email-preview">
               <div class="ep-chrome"><div class="ep-dot" style="background:#ff5f57"></div><div class="ep-dot" style="background:#febc2e"></div><div class="ep-dot" style="background:#28c840"></div><div class="ep-bar">mail.google.com</div></div>
-              <div class="ep-hdr"><div class="ep-from">From: <strong>DentaMove</strong> &lt;<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="86eee3eaeae9c6e2e3e8f2e7ebe9f0e3a8e5e9eb">[email&#160;protected]</a>&gt;</div><div class="ep-subject">Phase 1 complete &mdash; credentials all sent</div><div class="ep-date">Friday, April 11 &middot; 2:47 PM</div></div>
+              <div class="ep-hdr"><div class="ep-from">From: <strong>OpenPractice</strong> &lt;<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="86eee3eaeae9c6e2e3e8f2e7ebe9f0e3a8e5e9eb">[email&#160;protected]</a>&gt;</div><div class="ep-subject">Phase 1 complete &mdash; credentials all sent</div><div class="ep-date">Friday, April 11 &middot; 2:47 PM</div></div>
               <div class="ep-body">
-                <div class="ep-logo">DentaMove</div>
+                <div class="ep-logo">OpenPractice</div>
                 <div class="ep-h1">Phase 1 <i>complete</i></div>
                 <div class="ep-intro">All your credentials are in motion, Dr. Smith. Every direct-send document has been dispatched to the Texas Board.</div>
                 <div style="background:var(--green-lt);border-radius:9px;padding:14px;margin-bottom:16px">
@@ -4039,7 +4040,7 @@ html{scroll-behavior:smooth}
       <div class="content" style="max-width:1000px">
         <div class="page-eye">Automated emails</div>
     <div class="page-title">Stay on track <i>without thinking about it</i></div>
-    <div class="page-sub">DentaMove sends you the right email at the right time &mdash; a weekly summary every Monday, and an immediate alert if something needs your attention.</div>
+    <div class="page-sub">OpenPractice sends you the right email at the right time &mdash; a weekly summary every Monday, and an immediate alert if something needs your attention.</div>
 
     <div class="tabs">
       <button class="tab active" onclick="switchTab('settings',this)">Notification settings</button>
@@ -4134,9 +4135,9 @@ html{scroll-behavior:smooth}
           <div id="prev-weekly">
             <div class="email-preview">
               <div class="ep-chrome"><div class="ep-dot" style="background:#ff5f57"></div><div class="ep-dot" style="background:#febc2e"></div><div class="ep-dot" style="background:#28c840"></div><div class="ep-bar">mail.google.com</div></div>
-              <div class="ep-hdr"><div class="ep-from">From: <strong>DentaMove</strong> &lt;<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="ddb5b8b1b1b29db9b8b3a9bcb0b2abb8f3beb2b0">[email&#160;protected]</a>&gt;</div><div class="ep-subject">Your weekly licensing update &mdash; NY &rarr; TX</div><div class="ep-date">Monday, March 31 &middot; 8:00 AM</div></div>
+              <div class="ep-hdr"><div class="ep-from">From: <strong>OpenPractice</strong> &lt;<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="ddb5b8b1b1b29db9b8b3a9bcb0b2abb8f3beb2b0">[email&#160;protected]</a>&gt;</div><div class="ep-subject">Your weekly licensing update &mdash; NY &rarr; TX</div><div class="ep-date">Monday, March 31 &middot; 8:00 AM</div></div>
               <div class="ep-body">
-                <div class="ep-logo">DentaMove</div>
+                <div class="ep-logo">OpenPractice</div>
                 <div class="ep-h1">Week 3 update, <i>Dr. Smith</i></div>
                 <div class="ep-intro">Here is where your New York &rarr; Texas license transfer stands as of this Monday.</div>
                 <div class="ep-prog">
@@ -4168,9 +4169,9 @@ html{scroll-behavior:smooth}
           <div id="prev-deadline" style="display:none">
             <div class="email-preview">
               <div class="ep-chrome"><div class="ep-dot" style="background:#ff5f57"></div><div class="ep-dot" style="background:#febc2e"></div><div class="ep-dot" style="background:#28c840"></div><div class="ep-bar">mail.google.com</div></div>
-              <div class="ep-hdr"><div class="ep-from">From: <strong>DentaMove</strong> &lt;<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="ddb5b8b1b1b29db9b8b3a9bcb0b2abb8f3beb2b0">[email&#160;protected]</a>&gt;</div><div class="ep-subject">Action required: fingerprinting not yet booked</div><div class="ep-date">Wednesday, April 2 &middot; 9:15 AM</div></div>
+              <div class="ep-hdr"><div class="ep-from">From: <strong>OpenPractice</strong> &lt;<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="ddb5b8b1b1b29db9b8b3a9bcb0b2abb8f3beb2b0">[email&#160;protected]</a>&gt;</div><div class="ep-subject">Action required: fingerprinting not yet booked</div><div class="ep-date">Wednesday, April 2 &middot; 9:15 AM</div></div>
               <div class="ep-body">
-                <div class="ep-logo">DentaMove</div>
+                <div class="ep-logo">OpenPractice</div>
                 <div class="ep-h1">This needs your <i>attention today</i></div>
                 <div class="ep-intro">Dr. Smith &mdash; your background check appointment has not been booked. This is the most common cause of delays in Texas dental licensing.</div>
                 <div class="ep-item ei-urgent" style="margin-bottom:16px;font-size:13px"><div class="ei-dot"></div><div><strong>IdentoGo appointment not booked.</strong> Background check results take 3&ndash;4 weeks to reach the Texas Board. Every day you wait pushes your license date back.</div></div>
@@ -4179,7 +4180,7 @@ html{scroll-behavior:smooth}
                   <div style="font-size:13px;color:var(--ink);line-height:1.75">1. Go to <strong>identogo.com</strong><br>2. Enter agency code <strong>11G2XN</strong><br>3. Select the earliest available slot<br>4. Bring government-issued photo ID</div>
                 </div>
                 <a class="ep-cta" href="#">Book on IdentoGo &rarr;</a>
-                <div style="font-size:12px;color:var(--gray);line-height:1.65">Once booked, log your confirmation number in DentaMove to stop these reminders.</div>
+                <div style="font-size:12px;color:var(--gray);line-height:1.65">Once booked, log your confirmation number in OpenPractice to stop these reminders.</div>
               </div>
               <div class="ep-footer">You are receiving this because deadline reminders are enabled &middot; <a href="#">Manage preferences</a></div>
             </div>
@@ -4188,9 +4189,9 @@ html{scroll-behavior:smooth}
           <div id="prev-milestone" style="display:none">
             <div class="email-preview">
               <div class="ep-chrome"><div class="ep-dot" style="background:#ff5f57"></div><div class="ep-dot" style="background:#febc2e"></div><div class="ep-dot" style="background:#28c840"></div><div class="ep-bar">mail.google.com</div></div>
-              <div class="ep-hdr"><div class="ep-from">From: <strong>DentaMove</strong> &lt;<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="c7afa2ababa887a3a2a9b3a6aaa8b1a2e9a4a8aa">[email&#160;protected]</a>&gt;</div><div class="ep-subject">Phase 1 complete &mdash; credentials all sent</div><div class="ep-date">Friday, April 11 &middot; 2:47 PM</div></div>
+              <div class="ep-hdr"><div class="ep-from">From: <strong>OpenPractice</strong> &lt;<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="c7afa2ababa887a3a2a9b3a6aaa8b1a2e9a4a8aa">[email&#160;protected]</a>&gt;</div><div class="ep-subject">Phase 1 complete &mdash; credentials all sent</div><div class="ep-date">Friday, April 11 &middot; 2:47 PM</div></div>
               <div class="ep-body">
-                <div class="ep-logo">DentaMove</div>
+                <div class="ep-logo">OpenPractice</div>
                 <div class="ep-h1">Phase 1 <i>complete</i></div>
                 <div class="ep-intro">All your credentials are in motion, Dr. Smith. Every direct-send document has been dispatched to the Texas Board.</div>
                 <div style="background:var(--green-lt);border-radius:9px;padding:14px;margin-bottom:16px">
@@ -4288,7 +4289,7 @@ html{scroll-behavior:smooth}
 <div class="modal-overlay" id="adminInviteModal">
   <div class="modal">
     <div class="modal-title">Invite a <i>dentist</i></div>
-    <div class="modal-sub">They will receive an email invitation to create their DentaMove account under the Sunrise Dental Group practice plan.</div>
+    <div class="modal-sub">They will receive an email invitation to create their OpenPractice account under the Sunrise Dental Group practice plan.</div>
     <div class="mf"><label>Full name</label><input type="text" id="admin-inv-name" placeholder="Dr. First Last"/></div>
     <div class="mf"><label>Email address</label><input type="email" id="admin-inv-email" placeholder="doctor@practice.com"/></div>
     <div class="mf"><label>Specialty</label>
@@ -4314,7 +4315,16 @@ html{scroll-behavior:smooth}
 <!-- Completion overlay -->
 <div class="comp-overlay" id="compOverlay">
   <div class="comp-box">
-    <div class="comp-ico"><svg viewBox="0 0 24 24"><polyline points="2
+    <div class="comp-ico"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div class="comp-title" id="compTitle">Task <i>complete</i></div>
+    <div class="comp-sub" id="compSub">Great progress — keep going.</div>
+    <button class="btn btn-teal" style="width:100%;margin-top:8px" onclick="closeComp()">Continue</button>
+  </div>
+</div>
+<!-- Toast notification -->
+<div class="toast" id="toast"></div>
+
+<script>
 /* ══════════════════════════
    STATES + DATA
 ══════════════════════════ */
@@ -4372,6 +4382,16 @@ var STATE_DB = {
   "Wisconsin":{"fee":300,"wkMin":10,"wkMax":14,"nerb":true,"juris":false,"bg":"State"},
   "Wyoming":{"fee":150,"wkMin":6,"wkMax":10,"nerb":true,"juris":false,"bg":"State"},
 };
+
+/* ══════════════════════════
+   SUPABASE CLIENT
+══════════════════════════ */
+var _supabase = (function(){
+  var url  = 'https://cdeolkktvnjsznejenfn.supabase.co';
+  var key  = 'sb_publishable_xx_VkpA7o3BQ8zKlMbLqgw_FIQw9R6y';
+  var { createClient } = supabase;
+  return createClient(url, key);
+})();
 
 function buildTasks(from,to,info){
   return [
@@ -4446,9 +4466,12 @@ function initReveal(){
    SIGN UP FLOW
 ══════════════════════════ */
 // Populate state selects
-['inp-from','inp-to'].forEach(id=>{
-  var el=document.getElementById(id);
-  ALL_STATES.forEach(s=>{var o=document.createElement('option');o.value=s;o.textContent=s;el.appendChild(o)});
+document.addEventListener('DOMContentLoaded', function() {
+  ['inp-from','inp-to'].forEach(id=>{
+    var el=document.getElementById(id);
+    if(!el) return;
+    ALL_STATES.forEach(s=>{var o=document.createElement('option');o.value=s;o.textContent=s;el.appendChild(o)});
+  });
 });
 
 var scCurrentStep=1;
@@ -4947,7 +4970,7 @@ function buildPortals(from, to, info) {
      steps:[
        {action:'Use PhotoAiD to take or format your photo',detail:'PhotoAiD automatically applies the correct dimensions, white background, and cropping. Free, no account required.'},
        {action:'Or visit CVS, Walgreens, or USPS for an in-store photo',detail:'Same-day service, typically $15–$20. Tell them it is for a state licensing application.'},
-       {action:'Upload your finished photo in the Passport Photo section',detail:'DentaMove will check it meets all requirements before you submit.'},
+       {action:'Upload your finished photo in the Passport Photo section',detail:'OpenPractice will check it meets all requirements before you submit.'},
      ],
      infoNote:'Your photo must be taken within the last 6 months. Plain white or off-white background only. No glasses or head coverings.',
      selfStages:['Not started','Photo taken','Uploaded and verified — ready to submit']
@@ -5568,7 +5591,7 @@ var openPhase = 'phase1'; // default open
 /* ══════════════════════════════════════
    TIMELINE BUILDER
 ══════════════════════════════════════ */
-function buildTimeline(from, to) {
+function buildTimelineDetailed(from, to) {
   var info = STATE_DB[to] || {fee:200,wkMin:10,wkMax:14,nerb:true,juris:true,bg:'State'};
   var avg  = Math.round((info.wkMin + info.wkMax) / 2);
 
@@ -5734,7 +5757,7 @@ function buildTimeline(from, to) {
 ══════════════════════════════════════ */
 function tlRender() {
   var info     = STATE_DB[TO] || {fee:200,wkMin:10,wkMax:14,nerb:true,juris:true,bg:'State'};
-  var timeline = buildTimeline(FROM, TO);
+  var timeline = buildTimelineDetailed(FROM, TO);
   var avg      = Math.round((info.wkMin + info.wkMax) / 2);
   var estDate  = (() => { var d = new Date(); d.setDate(d.getDate() + avg * 7); return d.toLocaleDateString('en-US',{month:'long',year:'numeric'}); })();
 
@@ -5852,7 +5875,7 @@ function tlRender() {
           <div class="tlm-tasks">
             ${m.tasks.map(t => {
               var isDone = t.done || taskDone.has(t.id);
-              return `<div class="tlm-task ${isDone?'done':''}" onclick="toggleTask('${t.id}')">
+              return `<div class="tlm-task ${isDone?'done':''}" onclick="tlToggleTask('${t.id}')">
                 <div class="tlm-task-cb"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
                 <span>${t.label}</span>
               </div>`;
@@ -5943,14 +5966,15 @@ function togglePhase(id) {
   }, 50);
 }
 
-function toggleTask(taskId) {
+function tlToggleTask(taskId) {
   taskDone.has(taskId) ? taskDone.delete(taskId) : taskDone.add(taskId);
   tlRender();
 }
 
 function updateRoute() {
-  var f = document.getElementById('selFrom')&&value;
-  var t = document.getElementById('selTo')&&value;
+  var f = document.getElementById('selFrom');
+  var t = document.getElementById('selTo');
+  if(!f||!t) return;
   if (!f || !t || f === t) {
     showToast('Please select two different states');
     return;
@@ -5959,13 +5983,6 @@ function updateRoute() {
   openPhase = 'phase1';
   tlRender();
   showToast('Timeline updated for '+FROM+' → '+TO);
-}
-
-_tt;
-function showToast(msg) {
-  var t = document.getElementById('toast');
-  t.textContent = msg; t.classList.add('show');
-  clearTimeout(_tt); _tt = setTimeout(() => t.classList.remove('show'), 2600);
 }
 
 // tlRender() called by tlInitPage() when panel opens
@@ -6058,14 +6075,17 @@ function complexityColor(n) {
 /* ══════════════════════════════════════
    INIT SELECTS
 ══════════════════════════════════════ */
-['selA','selB'].forEach((id,i) => {
-  var el = document.getElementById(id);
-  ALL_STATES.forEach(s => {
-    var o = document.createElement('option');
-    o.value = s; o.textContent = s;
-    el.appendChild(o);
+document.addEventListener('DOMContentLoaded', function() {
+  ['selA','selB'].forEach((id,i) => {
+    var el = document.getElementById(id);
+    if(!el) return;
+    ALL_STATES.forEach(s => {
+      var o = document.createElement('option');
+      o.value = s; o.textContent = s;
+      el.appendChild(o);
+    });
+    el.value = i===0 ? 'Texas' : 'California';
   });
-  el.value = i===0 ? 'Texas' : 'California';
 });
 
 /* ══════════════════════════════════════
@@ -6248,7 +6268,7 @@ var USER = {
   to: 'Texas',
 };
 
-var SYSTEM_PROMPT = `You are a dental licensing expert assistant embedded in DentaMove, a platform that helps dentists navigate interstate license transfers in the United States.
+var SYSTEM_PROMPT = `You are a dental licensing expert assistant embedded in OpenPractice, a platform that helps dentists navigate interstate license transfers in the United States.
 
 The dentist you are speaking with is:
 - Name: ${USER.name}
@@ -6764,9 +6784,6 @@ function adminShowInviteModal() {
   document.getElementById('adminInviteModal').classList.add('show');
 }
 
-function docsCloseModal() {
-  document.getElementById('adminInviteModal').classList.remove('show');
-}
 
 function adminSendInvite() {
   var name = document.getElementById('admin-inv-name').value.trim();
@@ -6908,11 +6925,6 @@ function tlTogglePhase(id) {
   }, 50);
 }
 
-function tlToggleTask(taskId) {
-  TL_TASK_DONE.has(taskId) ? TL_TASK_DONE.delete(taskId) : TL_TASK_DONE.add(taskId);
-  tlRender();
-}
-
 /* ── COMPARE INIT ── */
 function cmpInitPage() {
   var selA = document.getElementById('cmp-selA');
@@ -6975,4 +6987,11 @@ function payGoBack() { payShowView('pricing'); }
 function settingsShowPanel(id) {
   document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('active');});
   document.querySelectorAll('.sn-item').forEach(function(n){n.classList.remove('active');});
-  var panel=document.getElemen
+  var panel = document.getElementById('sett-panel-' + id);
+  if (panel) panel.classList.add('active');
+  var nav = document.getElementById('sett-sn-' + id);
+  if (nav) nav.classList.add('active');
+}
+</script>
+</body>
+</html>
