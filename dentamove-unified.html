@@ -2459,13 +2459,6 @@ html{scroll-behavior:smooth}
         <span class="ni-icon"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>
         AI Assistant <span class="ni-badge">Live</span>
       </div>
-      <div class="nav-item" id="nav-timeline" onclick="showPage('timeline')">
-        <span class="ni-icon"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></span>Timeline
-      </div>
-      <div class="nav-item" id="nav-ai" onclick="showPage('ai')">
-        <span class="ni-icon"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>AI Assistant
-        <span class="ni-badge">New</span>
-      </div>
       <div class="nvsec">Account</div>
       <div class="nav-item" id="nav-notifications" onclick="showPage('notifications')">
         <span class="ni-icon"><svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></span>Notifications
@@ -2682,26 +2675,6 @@ html{scroll-behavior:smooth}
     </header>
     <div class="page-panel-scroll">
       <div class="content" id="tlContent" style="max-width:1100px">
-        
-    <div class="page-eye">Your timeline</div>
-    <div class="page-title">Your licensing <i>timeline</i></div>
-    <div class="page-sub">A week-by-week view of everything that needs to happen before your license is in hand. Check off tasks as you go.</div>
-
-    <!-- State selector -->
-    <div class="state-selector" style="background:var(--white);border-radius:12px;border:1px solid var(--gray-lt);padding:16px 20px;margin-bottom:22px;display:flex;align-items:center;gap:14px;flex-wrap:wrap">
-      <div style="font-size:12px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:1.5px;flex-shrink:0">Change states</div>
-      <div style="display:flex;align-items:center;gap:10px;flex:1;flex-wrap:wrap">
-        <div style="position:relative;flex:1;min-width:140px">
-          <select id="tl-selFrom" onchange="tlUpdateRoute()" style="width:100%;padding:9px 32px 9px 12px;border:1.5px solid var(--gray-lt);border-radius:7px;font-size:13px;font-family:'Mulish',sans-serif;color:var(--ink);background:var(--white);outline:none;appearance:none;transition:border-color .2s"></select>
-          <div style="position:absolute;right:11px;top:50%;transform:translateY(-50%);width:0;height:0;border-left:4px solid transparent;border-right:4px solid transparent;border-top:5px solid var(--gray-mid);pointer-events:none"></div>
-        </div>
-        <div style="color:var(--gray-mid)"><svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
-        <div style="position:relative;flex:1;min-width:140px">
-          <select id="tl-selTo" onchange="tlUpdateRoute()" style="width:100%;padding:9px 32px 9px 12px;border:1.5px solid var(--gray-lt);border-radius:7px;font-size:13px;font-family:'Mulish',sans-serif;color:var(--ink);background:var(--white);outline:none;appearance:none;transition:border-color .2s"></select>
-          <div style="position:absolute;right:11px;top:50%;transform:translateY(-50%);width:0;height:0;border-left:4px solid transparent;border-right:4px solid transparent;border-top:5px solid var(--gray-mid);pointer-events:none"></div>
-        </div>
-      </div>
-    </div>
     <div id="tlMainContent" style="animation:fadeUp .35s ease"></div>
       </div>
     </div>
@@ -6886,19 +6859,6 @@ var TL_TASK_DONE = new Set();
 var TL_OPEN_PHASE = 'phase2';
 
 function tlInitPage() {
-  // Populate state selects
-  var selFrom = document.getElementById('tl-selFrom');
-  var selTo   = document.getElementById('tl-selTo');
-  if (!selFrom || selTo.options.length > 1) return; // already initialised
-  
-  TL_ALL_STATES.forEach(function(s) {
-    var o1 = document.createElement('option'); o1.value = s; o1.textContent = s;
-    if (s === TL_FROM) o1.selected = true;
-    selFrom.appendChild(o1);
-    var o2 = document.createElement('option'); o2.value = s; o2.textContent = s;
-    if (s === TL_TO) o2.selected = true;
-    selTo.appendChild(o2);
-  });
   tlRender();
 }
 
