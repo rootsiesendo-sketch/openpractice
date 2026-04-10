@@ -2872,15 +2872,15 @@ html{scroll-behavior:smooth}
             <div class="form-grid">
               <div class="field">
                 <label>First name</label>
-                <input type="text" id="f-first" value="" oninput="updatePreview()"/>
+                <input type="text" id="sett-f-first" value="" oninput="updatePreview()"/>
               </div>
               <div class="field">
                 <label>Last name</label>
-                <input type="text" id="f-last" value="" oninput="updatePreview()"/>
+                <input type="text" id="sett-f-last" value="" oninput="updatePreview()"/>
               </div>
               <div class="field">
                 <label>Email address</label>
-                <input type="email" id="f-email" value=""/>
+                <input type="email" id="sett-f-email" value=""/>
               </div>
               <div class="field">
                 <label>Phone (optional)</label>
@@ -6906,9 +6906,9 @@ function aiInitPage() {
 function settingsInitPage() {
   // Populate profile fields from APP
   var nameParts = (APP.name||'').replace(/^Dr\.?\s*/i,'').trim().split(' ');
-  var fFirst = document.getElementById('f-first'); if(fFirst) fFirst.value = nameParts[0]||'';
-  var fLast  = document.getElementById('f-last');  if(fLast)  fLast.value  = nameParts.slice(1).join(' ')||'';
-  var fEmail = document.getElementById('f-email'); if(fEmail) fEmail.value = APP.email||'';
+  var fFirst = document.getElementById('sett-f-first'); if(fFirst) fFirst.value = nameParts[0]||'';
+  var fLast  = document.getElementById('sett-f-last');  if(fLast)  fLast.value  = nameParts.slice(1).join(' ')||'';
+  var fEmail = document.getElementById('sett-f-email'); if(fEmail) fEmail.value = APP.email||'';
 
   var av     = document.getElementById('avatarLarge');
   var avName = document.getElementById('avatarName');
