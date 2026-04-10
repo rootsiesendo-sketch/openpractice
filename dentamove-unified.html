@@ -2467,9 +2467,6 @@ html{scroll-behavior:smooth}
         <span class="ni-icon"><svg viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></span>Documents
         <span class="ni-badge" id="docCount" style="display:none">0</span>
       </div>
-      <div class="nav-item" id="nav-compare" onclick="showPage('compare')">
-        <span class="ni-icon"><svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span>Compare States
-      </div>
       <div class="nav-item" id="nav-settings" onclick="showPage('settings')">
         <span class="ni-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></span>Settings
       </div>
@@ -4561,6 +4558,7 @@ async function launchApp(){
 
   APP.name = (document.getElementById('inp-first').value.trim()||'Jane')+' '+(document.getElementById('inp-last').value.trim()||'Smith');
   APP.name = 'Dr. '+APP.name;
+  APP.email = document.getElementById('inp-email').value.trim();
   APP.specialty = document.getElementById('inp-spec').value||'General Dentist';
   APP.from = document.getElementById('inp-from').value||'New York';
   APP.to   = document.getElementById('inp-to').value||'Texas';
@@ -6906,6 +6904,27 @@ function aiInitPage() {
 
 /* ── SETTINGS INIT ── */
 function settingsInitPage() {
+  // Populate profile fields from APP
+  var nameParts = (APP.name||'').replace(/^Dr\.?\s*/i,'').trim().split(' ');
+  var fFirst = document.getElementById('f-first'); if(fFirst) fFirst.value = nameParts[0]||'';
+  var fLast  = document.getElementById('f-last');  if(fLast)  fLast.value  = nameParts.slice(1).join(' ')||'';
+  var fEmail = document.getElementById('f-email'); if(fEmail) fEmail.value = APP.email||'';
+
+  var av     = document.getElementById('avatarLarge');
+  var avName = document.getElementById('avatarName');
+  var avSub  = document.getElementById('avatarSub');
+  var initials = (APP.name||'JS').replace(/^Dr\.?\s*/i,'').trim().split(' ').map(function(w){return w[0]||'';}).join('').toUpperCase().slice(0,2)||'DR';
+  if(av)     av.textContent     = initials;
+  if(avName) avName.textContent = APP.name||'';
+  if(avSub)  avSub.textContent  = (APP.specialty||'')+(APP.from&&APP.to?' · '+APP.from+' → '+APP.to:'');
+
+  var specGrid = document.getElementById('specGrid');
+  if(specGrid) {
+    specGrid.querySelectorAll('.spec-opt').forEach(function(btn){
+      btn.classList.toggle('sel', btn.textContent.trim() === (APP.specialty||''));
+    });
+  }
+
   var selFrom = document.getElementById('s-from');
   var selTo   = document.getElementById('s-to');
   if (!selFrom || selFrom.options.length > 1) return;
