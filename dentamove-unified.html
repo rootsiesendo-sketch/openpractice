@@ -2872,15 +2872,15 @@ html{scroll-behavior:smooth}
             <div class="form-grid">
               <div class="field">
                 <label>First name</label>
-                <input type="text" id="f-first" value="Jane" oninput="updatePreview()"/>
+                <input type="text" id="f-first" value="" oninput="updatePreview()"/>
               </div>
               <div class="field">
                 <label>Last name</label>
-                <input type="text" id="f-last" value="Smith" oninput="updatePreview()"/>
+                <input type="text" id="f-last" value="" oninput="updatePreview()"/>
               </div>
               <div class="field">
                 <label>Email address</label>
-                <input type="email" id="f-email" value="jane.smith@dental.com"/>
+                <input type="email" id="f-email" value=""/>
               </div>
               <div class="field">
                 <label>Phone (optional)</label>
@@ -5425,10 +5425,10 @@ function renderChecklist() {
 
 // Auto-launch with demo data so app opens directly on the dashboard
 (function(){
-  APP.name      = 'Dr. Jane Smith';
-  APP.specialty = 'General Dentist';
-  APP.from      = 'New York';
-  APP.to        = 'Texas';
+  APP.specialty = APP.specialty || 'General Dentist';
+  APP.from      = APP.from      || 'New York';
+  APP.to        = APP.to        || 'Texas';
+  // APP.name and APP.email intentionally left to be set by real signup only
 
   var info = STATE_DB[APP.to] || {fee:200,wkMin:10,wkMax:14,nerb:true,juris:true,bg:'FBI + TX DPS'};
   APP.tasks    = buildTasks(APP.from, APP.to, info);
@@ -6925,17 +6925,19 @@ function settingsInitPage() {
     });
   }
 
+  // State selects — only populate once
   var selFrom = document.getElementById('s-from');
   var selTo   = document.getElementById('s-to');
-  if (!selFrom || selFrom.options.length > 1) return;
-  ALL_STATES.forEach(function(s) {
-    var o1 = document.createElement('option'); o1.value=s; o1.textContent=s;
-    if (s === (APP.from||'New York')) o1.selected=true;
-    selFrom.appendChild(o1);
-    var o2 = document.createElement('option'); o2.value=s; o2.textContent=s;
-    if (s === (APP.to||'Texas')) o2.selected=true;
-    selTo.appendChild(o2);
-  });
+  if (selFrom && selFrom.options.length <= 1) {
+    ALL_STATES.forEach(function(s) {
+      var o1 = document.createElement('option'); o1.value=s; o1.textContent=s;
+      selFrom.appendChild(o1);
+      var o2 = document.createElement('option'); o2.value=s; o2.textContent=s;
+      selTo.appendChild(o2);
+    });
+  }
+  if(selFrom) selFrom.value = APP.from||'New York';
+  if(selTo)   selTo.value   = APP.to||'Texas';
 }
 
 
