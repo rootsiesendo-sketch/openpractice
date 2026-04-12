@@ -2431,8 +2431,8 @@ html{scroll-behavior:smooth}
     <div class="sb-top">
       <div class="sb-logo" onclick="go('pg-landing')">OpenPractice</div>
       <div class="sb-user">
-        <div class="sb-avatar" id="sbAv">JS</div>
-        <div><div class="sb-uname" id="sbName">Dr. Jane Smith</div><div class="sb-urole" id="sbRole">General Dentist</div></div>
+        <div class="sb-avatar" id="sbAv"></div>
+        <div><div class="sb-uname" id="sbName"></div><div class="sb-urole" id="sbRole">General Dentist</div></div>
       </div>
       <div class="sb-move" id="sbMove"><span id="sbFrom">NY</span><span class="sb-sep">→</span><span id="sbTo">TX</span></div>
     </div>
@@ -2819,7 +2819,7 @@ html{scroll-behavior:smooth}
       <div class="tb-left">
         <div class="tb-title">Settings</div>
         <div class="tb-sep"></div>
-        <div class="tb-sub" id="tb-sub-settings">Dr. Jane Smith</div>
+        <div class="tb-sub" id="tb-sub-settings"></div>
       </div>
     </header>
     <div class="page-panel-scroll">
@@ -2864,7 +2864,7 @@ html{scroll-behavior:smooth}
             <div class="avatar-row">
               <div class="avatar-large" id="avatarLarge">JS</div>
               <div class="avatar-info">
-                <div class="avatar-name" id="avatarName">Dr. Jane Smith</div>
+                <div class="avatar-name" id="avatarName"></div>
                 <div class="avatar-sub" id="avatarSub">General Dentist · New York → Texas</div>
               </div>
               <button class="avatar-change" onclick="toast('Photo upload — coming with full account system')">Change photo</button>
@@ -3358,10 +3358,10 @@ html{scroll-behavior:smooth}
           </div>
           <div class="co-section-body">
             <div class="field-row" style="margin-bottom:14px">
-              <div class="field" style="margin-bottom:0"><label>First name</label><input type="text" value="Jane"/></div>
-              <div class="field" style="margin-bottom:0"><label>Last name</label><input type="text" value="Smith"/></div>
+              <div class="field" style="margin-bottom:0"><label>First name</label><input type="text" value=""/></div>
+              <div class="field" style="margin-bottom:0"><label>Last name</label><input type="text" value=""/></div>
             </div>
-            <div class="field"><label>Email address</label><input type="email" value="jane.smith@dental.com"/></div>
+            <div class="field"><label>Email address</label><input type="email" value=""/></div>
           </div>
         </div>
 
@@ -4403,7 +4403,7 @@ function buildTimeline(from,to,info){
    APP STATE
 ══════════════════════════ */
 var APP = {
-  name:'Dr. Jane Smith', specialty:'General Dentist',
+  name:'', specialty:'General Dentist',
   from:'New York', to:'Texas',
   done: new Set(),
   tasks:[], timeline:[],
@@ -5441,12 +5441,10 @@ function renderChecklist() {
       : {stageIdx: 0, notes:''};
   });
 
-  // Sidebar
-  document.getElementById('sbAv').textContent  = 'JS';
-  document.getElementById('sbName').textContent  = APP.name;
-  document.getElementById('sbRole').textContent  = APP.specialty;
-  document.getElementById('sbFrom').textContent  = 'NY';
-  document.getElementById('sbTo').textContent  = 'TX';
+  // Sidebar — only set role/route, leave name/avatar for launchApp() to set from real signup
+  document.getElementById('sbRole').textContent = APP.specialty;
+  document.getElementById('sbFrom').textContent = APP.from.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
+  document.getElementById('sbTo').textContent   = APP.to.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
 
   // Topbar + fact box
   document.getElementById('tbSub').textContent = APP.from + ' → ' + APP.to;
@@ -5469,6 +5467,216 @@ function renderChecklist() {
   renderDashboard();
   renderCreds();
 })();
+
+/* ══ SETTINGS FUNCTIONS ══ */
+
+function selSpec(btn) {
+  var grid = btn.closest('#specGrid') || btn.parentElement;
+  grid.querySelectorAll('.spec-opt').forEach(function(b){ b.classList.remove('sel'); });
+  btn.classList.add('sel');
+}
+
+function updatePreview() {
+  var first = (document.getElementById('sett-f-first')||{}).value || '';
+  var last  = (document.getElementById('sett-f-last')||{}).value  || '';
+  var full  = ('Dr. ' + first + ' ' + last).trim();
+  var av    = document.getElementById('avatarLarge');
+  var avName= document.getElementById('avatarName');
+  var initials = (first[0]||'') + (last[0]||'');
+  if (av)     av.textContent     = initials.toUpperCase() || 'DR';
+  if (avName) avName.textContent = full || APP.name || '';
+}
+
+function saveProfile() {
+  var first = (document.getElementById('sett-f-first')||{}).value||'';
+  var last  = (document.getElementById('sett-f-last')||{}).value||'';
+  var email = (document.getElementById('sett-f-email')||{}).value||'';
+  var specBtn = document.querySelector('#specGrid .spec-opt.sel');
+  var spec  = specBtn ? specBtn.textContent.trim() : APP.specialty;
+
+  if (!first || !last) { showToast('Please enter your first and last name'); return; }
+
+  APP.name      = 'Dr. ' + first + ' ' + last;
+  APP.email     = email;
+  APP.specialty = spec;
+
+  // Update sidebar
+  var sbAv   = document.getElementById('sbAv');
+  var sbName = document.getElementById('sbName');
+  var sbRole = document.getElementById('sbRole');
+  var initials = (first[0]||'')+(last[0]||'');
+  if (sbAv)   sbAv.textContent   = initials.toUpperCase();
+  if (sbName) sbName.textContent = APP.name;
+  if (sbRole) sbRole.textContent = APP.specialty;
+
+  // Update settings header
+  var sub = document.getElementById('tb-sub-settings');
+  if (sub) sub.textContent = APP.name;
+  var avSub = document.getElementById('avatarSub');
+  if (avSub) avSub.textContent = APP.specialty + (APP.from && APP.to ? ' · ' + APP.from + ' → ' + APP.to : '');
+
+  showToast('Profile saved');
+}
+
+function saveMove() {
+  var selFrom = document.getElementById('s-from');
+  var selTo   = document.getElementById('s-to');
+  if (!selFrom || !selTo) return;
+
+  var newFrom = selFrom.value;
+  var newTo   = selTo.value;
+  if (newFrom === newTo) { showToast('Origin and destination must be different'); return; }
+
+  APP.from = newFrom;
+  APP.to   = newTo;
+
+  // Update sidebar abbreviations
+  var sbFrom = document.getElementById('sbFrom');
+  var sbTo   = document.getElementById('sbTo');
+  if (sbFrom) sbFrom.textContent = newFrom.split(' ').map(function(w){return w[0];}).join('').toUpperCase().slice(0,2);
+  if (sbTo)   sbTo.textContent   = newTo.split(' ').map(function(w){return w[0];}).join('').toUpperCase().slice(0,2);
+
+  // Rebuild roadmap data
+  var info = STATE_DB[newTo] || {fee:200,wkMin:10,wkMax:14,nerb:true,juris:true,bg:'State'};
+  APP.tasks    = buildTasks(newFrom, newTo, info);
+  APP.timeline = buildTimeline(newFrom, newTo, info);
+  APP.portals  = buildPortals(newFrom, newTo, info);
+  APP.done     = new Set();
+
+  renderDashboard();
+  renderCreds();
+  showToast('Route updated to ' + newFrom + ' → ' + newTo);
+}
+
+function saveWithStatus(statusId) {
+  showToast('Preferences saved');
+  var el = document.getElementById(statusId);
+  if (el) { el.style.display = 'inline'; setTimeout(function(){ el.style.display = 'none'; }, 2500); }
+}
+
+function checkStateChange() {
+  // Called when s-from or s-to changes — just a hook, saveMove() does the work
+}
+
+/* ══ NOTIFICATIONS FUNCTIONS ══ */
+
+function switchTab(tabName, btn) {
+  // Toggle tab active state
+  var tabs = btn.closest('.tab-row') || btn.parentElement;
+  tabs.querySelectorAll('.tab').forEach(function(t){ t.classList.remove('active'); });
+  btn.classList.add('active');
+
+  // Show/hide sections
+  var settingsSection = document.getElementById('notif-settings-section');
+  var previewsSection = document.getElementById('notif-previews-section');
+  if (settingsSection) settingsSection.style.display = tabName === 'settings' ? '' : 'none';
+  if (previewsSection) previewsSection.style.display = tabName === 'previews' ? '' : 'none';
+}
+
+function switchPreview(previewName, btn) {
+  var row = btn.closest('.prev-tabs') || btn.parentElement;
+  row.querySelectorAll('.prev-tab').forEach(function(t){ t.classList.remove('active'); });
+  btn.classList.add('active');
+
+  // Show matching preview
+  document.querySelectorAll('.email-preview').forEach(function(p){
+    p.style.display = p.dataset.preview === previewName ? '' : 'none';
+  });
+}
+
+function toggleCard(cardId) {
+  var card = document.getElementById(cardId);
+  if (!card) return;
+  var body = card.querySelector('.nc-body');
+  var chev = card.querySelector('.nc-chev');
+  if (!body) return;
+  var isOpen = body.style.display !== 'none' && body.style.display !== '';
+  body.style.display = isOpen ? 'none' : '';
+  if (chev) chev.style.transform = isOpen ? '' : 'rotate(180deg)';
+}
+
+/* ══ PAYMENTS FUNCTIONS ══ */
+
+function setBilling(cycle) {
+  var monthly = cycle === 'monthly';
+  var lblM = document.getElementById('lbl-monthly');
+  var lblA = document.getElementById('lbl-annual');
+  var tog  = document.getElementById('billing-toggle');
+  if (lblM) lblM.classList.toggle('active', monthly);
+  if (lblA) lblA.classList.toggle('active', !monthly);
+  if (tog)  tog.checked = !monthly;
+
+  // Update plan prices displayed
+  document.querySelectorAll('[data-monthly]').forEach(function(el){
+    el.textContent = monthly ? el.dataset.monthly : el.dataset.annual;
+  });
+}
+
+function goToCheckout(plan) {
+  // Show checkout section, hide plan grid
+  var planGrid = document.getElementById('plan-grid');
+  var checkout = document.getElementById('checkout-section');
+  if (planGrid) planGrid.style.display = 'none';
+  if (checkout) checkout.style.display = '';
+
+  // Set plan name in checkout
+  var planNames = { pro: 'OpenPractice Pro', practice: 'OpenPractice Practice' };
+  var tog = document.getElementById('billing-toggle');
+  var cycle = tog && tog.checked ? 'annual' : 'monthly';
+  var oc = document.getElementById('oc-plan-name');
+  var oc2 = document.getElementById('oc-plan-cycle');
+  if (oc)  oc.textContent  = planNames[plan] || plan;
+  if (oc2) oc2.textContent = cycle === 'annual' ? 'Billed annually' : 'Billed monthly';
+}
+
+function showModal(modalId) {
+  var modal = document.getElementById('modal-' + modalId);
+  if (!modal) { showToast('Coming soon'); return; }
+  modal.style.display = 'flex';
+}
+
+function toggleFaq(el) {
+  var answer = el.querySelector('.faq-a');
+  var chev   = el.querySelector('.faq-chev');
+  if (!answer) return;
+  var isOpen = el.classList.contains('open');
+  // Close all
+  document.querySelectorAll('.faq-item').forEach(function(item){
+    item.classList.remove('open');
+    var a = item.querySelector('.faq-a');
+    var c = item.querySelector('.faq-chev');
+    if (a) a.style.display = 'none';
+    if (c) c.style.transform = '';
+  });
+  // Open this one if it was closed
+  if (!isOpen) {
+    el.classList.add('open');
+    answer.style.display = '';
+    if (chev) chev.style.transform = 'rotate(180deg)';
+  }
+}
+
+function applyPromo() {
+  var input = document.querySelector('.promo-input');
+  if (!input || !input.value.trim()) { showToast('Enter a promo code'); return; }
+  var code = input.value.trim().toUpperCase();
+  // Placeholder — connect to Stripe when payments go live
+  if (code === 'LAUNCH50') {
+    showToast('50% discount applied!');
+  } else {
+    showToast('Invalid promo code');
+  }
+}
+
+function processPayment() {
+  // Placeholder — will route to Stripe checkout
+  var btn = document.getElementById('payBtn');
+  if (btn) { btn.textContent = 'Redirecting to Stripe…'; btn.disabled = true; }
+  setTimeout(function(){
+    showToast('Stripe integration coming soon');
+    if (btn) { btn.textContent = 'Complete payment'; btn.disabled = false; }
+  }, 1500);
+}
 
 /* ══ MOBILE MENU ══ */
 function openMobMenu() {
@@ -5497,7 +5705,6 @@ function bnNav(secId, btn) {
 /* ══════════════════════════════════════
    STATE DATABASE
 ══════════════════════════════════════ */
-var TL_ALL_STATES = ["Alabama","Alaska","Arizona","Arkansas","California","Colorado","Connecticut","Delaware","Florida","Georgia","Hawaii","Idaho","Illinois","Indiana","Iowa","Kansas","Kentucky","Louisiana","Maine","Maryland","Massachusetts","Michigan","Minnesota","Mississippi","Missouri","Montana","Nebraska","Nevada","New Hampshire","New Jersey","New Mexico","New York","North Carolina","North Dakota","Ohio","Oklahoma","Oregon","Pennsylvania","Rhode Island","South Carolina","South Dakota","Tennessee","Texas","Utah","Vermont","Virginia","Washington","West Virginia","Wisconsin","Wyoming"];
 
 var TL_STATE_DB = {
   "Alabama":       {fee:200,wkMin:10,wkMax:14,nerb:true, juris:true, bg:"SBI"},
@@ -6232,7 +6439,7 @@ function cmpToast(msg){var el=document.getElementById('toast');el.textContent=ms
    STATE
 ══════════════════════════════════════ */
 var USER = {
-  name: 'Dr. Jane Smith',
+  name: '',
   specialty: 'General Dentist',
   from: 'New York',
   to: 'Texas',
@@ -6698,7 +6905,7 @@ function docsToast(msg) {
 /* ── ADMIN JS ── */
 
 var ADMIN_DENTISTS = [
-  {id:1,name:'Dr. Jane Smith',spec:'General Dentist',from:'New York',to:'Texas',pct:62,steps:10,total:16,status:'active',estDate:'Jun 2024',color:'#1a7f74',blocked:false,urgent:false},
+  {id:1,name:'Dr. Emily Chen',spec:'General Dentist',from:'New York',to:'Texas',pct:62,steps:10,total:16,status:'active',estDate:'Jun 2024',color:'#1a7f74',blocked:false,urgent:false},
   {id:2,name:'Dr. Priya Patel',spec:'Orthodontist',from:'California',to:'Florida',pct:34,steps:5,total:16,status:'blocked',estDate:'Jul 2024',color:'#c93b3b',blocked:true,urgent:true},
   {id:3,name:'Dr. James Kim',spec:'Periodontist',from:'Illinois',to:'Texas',pct:28,steps:4,total:16,status:'waiting',estDate:'Aug 2024',color:'#c97a0a',blocked:false,urgent:true},
   {id:4,name:'Dr. Maria Rodriguez',spec:'General Dentist',from:'New Jersey',to:'Texas',pct:69,steps:11,total:16,status:'active',estDate:'May 2024',color:'#3b6fd4',blocked:false,urgent:true},
