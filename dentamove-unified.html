@@ -2247,7 +2247,7 @@ html{scroll-behavior:smooth}
 
 
 /* ═══ PAGE PANELS ═══ */
-.page-panel{display:none;flex-direction:column;height:100vh;overflow:hidden;position:fixed;top:0;left:var(--sidebar);right:0;bottom:0;background:var(--cream);z-index:10;animation:fadeUp .3s ease}
+.page-panel{display:none;flex-direction:column;height:100vh;overflow:hidden;position:fixed;top:0;left:var(--sidebar);right:0;bottom:0;background:var(--cream);z-index:100;animation:fadeUp .3s ease}
 .page-panel.active{display:flex}
 .page-panel-scroll{flex:1;overflow-y:auto;background:var(--cream)}
 @media(max-width:900px){.page-panel{left:0}}
@@ -2484,13 +2484,12 @@ html{scroll-behavior:smooth}
 
   <!-- App main -->
   <div class="app-main">
-    <header class="topbar">
+    <header class="topbar" id="appTopbar">
       <button class="mob-menu-btn" onclick="openMobMenu()" aria-label="Open menu">
         <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
       </button>
       <div class="tb-left">
         <div class="tb-title" id="tbTitle">My Roadmap</div>
-        <div class="tb-sep"></div>
         <div class="tb-sub" id="tbSub"></div>
       </div>
       <div class="tb-right">
@@ -6958,8 +6957,10 @@ function showPage(pageId) {
   if (pageId === 'main') {
     if (mainView) mainView.style.display = 'block';
     var _vmShow2 = document.getElementById('view-main'); if(_vmShow2) { _vmShow2.style.display=''; _vmShow2.classList.add('active'); }
+    var appMain = document.getElementById('appTopbar'); if(appMain) appMain.style.display = '';
   } else {
     if (mainView) mainView.style.display = 'none';
+    var appMain = document.getElementById('appTopbar'); if(appMain) appMain.style.display = 'none';
     var panel = document.getElementById('panel-' + pageId);
     if (panel) {
       panel.style.display = 'flex';
