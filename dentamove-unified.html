@@ -2897,7 +2897,7 @@ html{scroll-behavior:smooth}
           </div>
           <div class="s-card-body">
             <div class="avatar-row">
-              <div class="avatar-large" id="avatarLarge">JS</div>
+              <div class="avatar-large" id="avatarLarge"></div>
               <div class="avatar-info">
                 <div class="avatar-name" id="avatarName"></div>
                 <div class="avatar-sub" id="avatarSub">General Dentist · New York → Texas</div>
@@ -4230,11 +4230,12 @@ async function signIn() {
   try {
     var { data, error } = await _supabase.auth.signInWithPassword({ email, password: pw });
     if (error) { showLoginError(error.message); btn.textContent = 'Sign in'; btn.disabled = false; return; }
-    // Fetch fresh user to ensure metadata is populated
     var { data: freshData } = await _supabase.auth.getUser();
     restoreSession(freshData.user || data.user);
+    btn.textContent = 'Sign in';
+    btn.disabled = false;
   } catch(e) {
-    showLoginError('Unexpected error. Please try again.');
+    showLoginError('Unexpected error: ' + (e.message || 'Please try again.'));
     btn.textContent = 'Sign in';
     btn.disabled = false;
   }
@@ -4250,16 +4251,6 @@ function showLoginError(msg) {
 ══════════════════════════ */
 function restoreSession(user) {
   if (!user) return;
-
-  // If metadata is missing, fetch the full user object
-  if (!user.user_metadata || !user.user_metadata.name) {
-    _supabase.auth.getUser().then(function(res) {
-      if (res.data && res.data.user) {
-        restoreSession(res.data.user);
-      }
-    });
-    return;
-  }
 
   var meta = user.user_metadata || {};
 
