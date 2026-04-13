@@ -2284,6 +2284,7 @@ html{scroll-behavior:smooth}
       <h1 class="ah-h1">The fastest way to get<br><i>licensed in a new state</i></h1>
       <p class="ah-sub">Moving between states as a dentist means navigating a maze of different boards, requirements, and timelines. OpenPractice cuts through all of it and walks you through every step.</p>
       <button class="btn btn-teal" onclick="go('pg-signup')">Create your free account</button>
+      <div style="margin-top:14px;font-size:13px;color:var(--gray)">Already have an account? <span onclick="go('pg-login')" style="color:var(--teal);font-weight:600;cursor:pointer">Sign in →</span></div>
       <div class="ah-scroll"><div class="ah-scroll-line"></div><span>Learn more</span></div>
     </div>
 
@@ -2335,6 +2336,40 @@ html{scroll-behavior:smooth}
 <!-- ═══════════════════════════════════
      PAGE 3: SIGN UP / LOGIN
 ═══════════════════════════════════ -->
+<div class="page" id="pg-login">
+  <div class="sc-logo" onclick="go('pg-landing')" style="cursor:pointer">OpenPractice</div>
+  <div style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:40px 20px;background:var(--cream)">
+    <div style="width:100%;max-width:420px">
+      <div style="text-align:center;margin-bottom:32px">
+        <div style="font-family:'Fraunces',serif;font-size:28px;font-weight:400;color:var(--ink);margin-bottom:8px">Welcome back</div>
+        <div style="font-size:14px;color:var(--gray)">Sign in to continue your roadmap</div>
+      </div>
+      <div style="background:var(--white);border-radius:16px;border:1px solid var(--gray-lt);padding:32px">
+        <div class="field" style="margin-bottom:16px">
+          <label style="font-size:11px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--gray);display:block;margin-bottom:6px">Email address</label>
+          <input type="email" id="login-email" placeholder="jane@dental.com" autocomplete="email"
+            style="width:100%;padding:11px 14px;border:1.5px solid var(--gray-lt);border-radius:8px;font-size:14px;font-family:'Mulish',sans-serif;outline:none;box-sizing:border-box"
+            onkeydown="if(event.key==='Enter')signIn()"/>
+        </div>
+        <div class="field" style="margin-bottom:24px">
+          <label style="font-size:11px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--gray);display:block;margin-bottom:6px">Password</label>
+          <input type="password" id="login-pw" placeholder="••••••••" autocomplete="current-password"
+            style="width:100%;padding:11px 14px;border:1.5px solid var(--gray-lt);border-radius:8px;font-size:14px;font-family:'Mulish',sans-serif;outline:none;box-sizing:border-box"
+            onkeydown="if(event.key==='Enter')signIn()"/>
+        </div>
+        <div id="login-error" style="display:none;background:#fef2f2;border:1px solid #fecaca;border-radius:8px;padding:10px 14px;font-size:13px;color:#dc2626;margin-bottom:16px"></div>
+        <button id="login-btn" onclick="signIn()"
+          style="width:100%;padding:13px;background:var(--teal);color:var(--white);border:none;border-radius:8px;font-size:15px;font-weight:700;font-family:'Mulish',sans-serif;cursor:pointer;transition:opacity .2s">
+          Sign in
+        </button>
+        <div style="text-align:center;margin-top:20px;font-size:13px;color:var(--gray)">
+          Don't have an account? <span onclick="go('pg-signup')" style="color:var(--teal);font-weight:600;cursor:pointer">Get started →</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="page active" id="pg-signup">
   <div class="signup-card">
     <div class="sc-logo" onclick="go('pg-landing')">OpenPractice</div>
@@ -2471,7 +2506,7 @@ html{scroll-behavior:smooth}
       <div id="nav-payments" onclick="showPage('payments')">
         <span class="ni-icon"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></span>Upgrade to Pro
       </div>
-      <div class="nav-item" onclick="go('pg-landing')">
+      <div class="nav-item" onclick="signOut()">
         <span class="ni-icon"><svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></span>Log out
       </div>
     </nav>
@@ -4382,6 +4417,100 @@ function stateAbbr(s){ return STATE_ABBR[s] || s.split(' ').map(function(w){retu
 /* ══════════════════════════
    PAGE ROUTING
 ══════════════════════════ */
+/* ══════════════════════════
+   AUTH — SIGN IN
+══════════════════════════ */
+async function signIn() {
+  var email = document.getElementById('login-email').value.trim();
+  var pw    = document.getElementById('login-pw').value;
+  var btn   = document.getElementById('login-btn');
+  var err   = document.getElementById('login-error');
+
+  if (!email || !pw) { showLoginError('Please enter your email and password.'); return; }
+
+  btn.textContent = 'Signing in…';
+  btn.disabled = true;
+  err.style.display = 'none';
+
+  try {
+    var { data, error } = await _supabase.auth.signInWithPassword({ email, password: pw });
+    if (error) { showLoginError(error.message); btn.textContent = 'Sign in'; btn.disabled = false; return; }
+    restoreSession(data.user);
+  } catch(e) {
+    showLoginError('Unexpected error. Please try again.');
+    btn.textContent = 'Sign in';
+    btn.disabled = false;
+  }
+}
+
+function showLoginError(msg) {
+  var err = document.getElementById('login-error');
+  if (err) { err.textContent = msg; err.style.display = 'block'; }
+}
+
+/* ══════════════════════════
+   AUTH — RESTORE SESSION
+══════════════════════════ */
+function restoreSession(user) {
+  if (!user) return;
+  var meta = user.user_metadata || {};
+
+  APP.name      = meta.name      || '';
+  APP.email     = user.email     || '';
+  APP.specialty = meta.specialty || 'General Dentist';
+  APP.from      = meta.from      || 'New York';
+  APP.to        = meta.to        || 'Texas';
+
+  FROM = APP.from;
+  TO   = APP.to;
+
+  var info = STATE_DB[APP.to] || {fee:200,wkMin:10,wkMax:14,nerb:true,juris:true,bg:'State'};
+  APP.tasks    = buildTasks(APP.from, APP.to, info);
+  APP.timeline = buildTimeline(APP.from, APP.to, info);
+  APP.portals  = buildPortals(APP.from, APP.to, info);
+  APP.done     = new Set();
+  APP.portals.forEach(p => {
+    APP.credState[p.id] = p.stages
+      ? {stages: p.stages.map(() => ({done:false, date:'', conf:''})), notes:''}
+      : {stageIdx:0, notes:''};
+  });
+
+  // Update sidebar
+  var initials = (APP.name||'').replace(/^Dr\.?\s*/i,'').trim().split(' ').map(w=>w[0]||'').join('').toUpperCase().slice(0,2) || 'DR';
+  var sbAv = document.getElementById('sbAv'); if(sbAv) sbAv.textContent = initials;
+  var sbName = document.getElementById('sbName'); if(sbName) sbName.textContent = APP.name;
+  var sbRole = document.getElementById('sbRole'); if(sbRole) sbRole.textContent = APP.specialty;
+  var sbFrom = document.getElementById('sbFrom'); if(sbFrom) sbFrom.textContent = stateAbbr(APP.from);
+  var sbTo   = document.getElementById('sbTo');   if(sbTo)   sbTo.textContent   = stateAbbr(APP.to);
+  var tbSub  = document.getElementById('tbSub');  if(tbSub)  tbSub.textContent  = APP.from + ' → ' + APP.to;
+
+  renderDashboard();
+  renderCreds();
+  go('pg-app');
+}
+
+/* ══════════════════════════
+   AUTH — SIGN OUT
+══════════════════════════ */
+async function signOut() {
+  await _supabase.auth.signOut();
+  APP = {name:'',email:'',specialty:'General Dentist',from:'New York',to:'Texas',
+         done:new Set(),tasks:[],timeline:[],portals:[],credState:{}};
+  go('pg-landing');
+}
+
+/* ══════════════════════════
+   AUTH — AUTO RESTORE ON LOAD
+══════════════════════════ */
+(function checkExistingSession(){
+  _supabase.auth.getSession().then(function(res){
+    var session = res.data && res.data.session;
+    if (session && session.user) {
+      restoreSession(session.user);
+    }
+  });
+})();
+
 function go(pageId, mode) {
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.getElementById(pageId).classList.add('active');
@@ -4508,7 +4637,18 @@ async function launchApp(){
   btn3.disabled = true;
 
   try {
-    var { data, error } = await _supabase.auth.signUp({ email, password });
+    var { data, error } = await _supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: {
+          name:      'Dr. ' + document.getElementById('inp-first').value.trim() + ' ' + document.getElementById('inp-last').value.trim(),
+          specialty: document.getElementById('inp-spec').value || 'General Dentist',
+          from:      document.getElementById('inp-from').value || 'New York',
+          to:        document.getElementById('inp-to').value   || 'Texas',
+        }
+      }
+    });
     if (error) {
       alert('Sign-up error: ' + error.message);
       btn3.classList.remove('loading');
