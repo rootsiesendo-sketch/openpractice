@@ -714,7 +714,7 @@ html,body{min-height:100%;background:var(--cream);color:var(--ink);font-family:'
 .tp-phase-lbl{font-size:10px;color:var(--gray-mid);font-weight:600;text-transform:uppercase;letter-spacing:1px}
 
 /* ── TIMELINE MAIN ── */
-.tl-layout{display:grid;grid-template-columns:1fr 320px;gap:22px;align-items:start}
+.tl-layout{display:grid;grid-template-columns:1fr 320px;gap:22px;align-items:start;width:100%}
 
 /* ── TIMELINE TRACK ── */
 .tl-track{position:relative}
@@ -815,12 +815,7 @@ html,body{min-height:100%;background:var(--cream);color:var(--ink);font-family:'
 .toast{position:fixed;bottom:22px;right:22px;z-index:800;background:var(--ink);color:var(--white);padding:10px 18px;border-radius:100px;font-size:13px;font-weight:600;box-shadow:0 4px 16px rgba(13,27,42,.2);transform:translateY(12px);opacity:0;transition:all .28s;pointer-events:none}
 .toast.show{transform:translateY(0);opacity:1}
 
-@media(max-width:900px){.tl-layout{grid-template-columns:1fr}}
-@media(max-width:800px){.sidebar{display:none}}
-@media(max-width:900px){
-  .tl-layout{grid-template-columns:1fr}
-  .tl-sidebar{position:static}
-}
+@media(max-width:900px){.tl-layout{grid-template-columns:1fr;} .tl-sidebar{position:static}}
 @media(max-width:800px){
   .sidebar{display:none}
   .content{padding:16px 14px 40px}
@@ -2438,7 +2433,7 @@ html{scroll-behavior:smooth}
     </div>
     <nav class="sb-nav">
       <div class="nav-sec">Main</div>
-      <div class="nav-item active" id="nav-main" onclick="showPage('main')" onclick="scrollSec('sec-roadmap',this)">
+      <div class="nav-item active" id="nav-main" onclick="scrollSec('sec-roadmap',this)">
         <span class="ni-icon"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>My Roadmap
       </div>
       <div class="nav-item" id="nav-creds" onclick="scrollSec('sec-creds',this)">
@@ -2660,19 +2655,17 @@ html{scroll-behavior:smooth}
 
   <!-- TIMELINE PAGE -->
   <div class="page-panel" id="panel-timeline" style="display:none">
-    <header class="topbar">
-      <button class="mob-menu-btn" onclick="openMobMenu()" aria-label="Open menu">
-        <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    <div style="height:60px;background:#fff;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;padding:0 26px;gap:12px;flex-shrink:0;width:100%">
+      <button class="mob-menu-btn" onclick="openMobMenu()" aria-label="Open menu" style="display:none">
+        <svg viewBox="0 0 24 24" style="width:20px;height:20px;stroke:#1a2332;fill:none;stroke-width:2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
       </button>
-      <div class="tb-left">
-        <div class="tb-title">Timeline</div>
-        <div class="tb-sep"></div>
-        <div class="tb-sub" id="tb-sub-timeline">Week-by-week progress</div>
-      </div>
-    </header>
-    <div class="page-panel-scroll">
-      <div class="content" id="tlContent" style="max-width:1100px">
-    <div id="tlMainContent" style="animation:fadeUp .35s ease"></div>
+      <div style="font-family:'Fraunces',serif;font-size:17px;font-weight:600;color:#1a2332">Timeline</div>
+      <div style="width:1px;height:16px;background:#e5e7eb"></div>
+      <div style="font-size:13px;color:#9ca3af" id="tb-sub-timeline">Week-by-week progress</div>
+    </div>
+    <div style="flex:1;overflow-y:auto;background:#f5f0e8">
+      <div style="padding:26px 26px 60px;width:100%;box-sizing:border-box">
+        <div id="tlMainContent" style="width:100%"></div>
       </div>
     </div>
   </div>
@@ -4622,7 +4615,10 @@ async function launchApp(){
 function scrollSec(secId, navEl){
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
   if(navEl) navEl.classList.add('active');
-  document.getElementById(secId)&&scrollIntoView({behavior:'smooth', block:'start'});
+  // Make sure we're on the main view first
+  showPage('main');
+  var el = document.getElementById(secId);
+  if(el) el.scrollIntoView({behavior:'smooth', block:'start'});
   var titles={'sec-roadmap':'My Roadmap','sec-creds':'Credentials & Portals','sec-photo':'Passport Photo'};
   document.getElementById('tbTitle').textContent=titles[secId]||'My Roadmap';
 }
