@@ -2251,6 +2251,37 @@ html{scroll-behavior:smooth}
 .page-panel.active{display:flex}
 .page-panel-scroll{flex:1;overflow-y:auto;background:var(--cream)}
 @media(max-width:900px){.page-panel{left:0}}
+
+/* Mobile panel fixes */
+@media(max-width:900px){
+  /* Panel scroll areas need bottom padding for bottom nav */
+  .panel-scroll-area{padding-bottom:72px}
+
+  /* Toast clears bottom nav */
+  .toast{bottom:80px}
+
+  /* Panel topbars — tighter on mobile */
+  .page-panel > div:first-child {
+    padding:0 14px !important;
+    gap:8px !important;
+  }
+
+  /* Panel content — tighter padding */
+  .page-panel .panel-scroll-area > div {
+    padding:16px 14px 80px !important;
+  }
+
+  /* Signup/login pages — full width on mobile */
+  #pg-login > div > div { max-width:100% !important; }
+  #pg-login > div > div > div { border-radius:0 !important; border-left:none !important; border-right:none !important; }
+}
+
+@media(max-width:480px){
+  /* Stats cards single column on very small */
+  .stats-row{grid-template-columns:1fr 1fr}
+  /* Hide Export PDF and Add Document buttons on mobile */
+  .tb-btn{display:none}
+}
 </style>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
@@ -2662,19 +2693,16 @@ html{scroll-behavior:smooth}
   </div><!-- /app-main -->
   <nav class="bottom-nav" id="bottomNav">
     <button class="bn-item active" onclick="bnNav('sec-roadmap',this)">
-      <div class="bn-icon-wrap"><svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
+      <div class="bn-icon-wrap"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
       Roadmap
     </button>
-    <button class="bn-item" onclick="bnNav('sec-creds',this)">
-      <div class="bn-icon-wrap">
-        <svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-        <span class="bn-badge" id="bnCredBadge" style="display:none">!</span>
-      </div>
-      Portals
+    <button class="bn-item" onclick="bnNav('panel-timeline',this)">
+      <div class="bn-icon-wrap"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+      Timeline
     </button>
-    <button class="bn-item" onclick="bnNav('sec-photo',this)">
-      <div class="bn-icon-wrap"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
-      Photo
+    <button class="bn-item" onclick="bnNav('panel-ai',this)">
+      <div class="bn-icon-wrap"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+      AI
     </button>
     <button class="bn-item" onclick="openMobMenu()">
       <div class="bn-icon-wrap"><svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></div>
@@ -2690,14 +2718,14 @@ html{scroll-behavior:smooth}
   <!-- TIMELINE PAGE -->
   <div class="page-panel" id="panel-timeline" style="display:none">
     <div style="height:60px;background:#fff;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;padding:0 26px;gap:12px;flex-shrink:0;width:100%">
-      <button class="mob-menu-btn" onclick="openMobMenu()" aria-label="Open menu" style="display:none">
+      <button class="mob-menu-btn" onclick="openMobMenu()" aria-label="Open menu">
         <svg viewBox="0 0 24 24" style="width:20px;height:20px;stroke:#1a2332;fill:none;stroke-width:2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
       </button>
       <div style="font-family:'Fraunces',serif;font-size:17px;font-weight:600;color:#1a2332">Timeline</div>
       <div style="width:1px;height:16px;background:#e5e7eb"></div>
       <div style="font-size:13px;color:#9ca3af" id="tb-sub-timeline">Week-by-week progress</div>
     </div>
-    <div style="flex:1;overflow-y:auto;background:#f5f0e8">
+    <div class="panel-scroll-area" style="flex:1;overflow-y:auto;background:#f5f0e8">
       <div style="padding:26px 26px 60px;width:100%;box-sizing:border-box">
         <div id="tlMainContent" style="width:100%"></div>
       </div>
@@ -2710,7 +2738,7 @@ html{scroll-behavior:smooth}
       <div style="width:1px;height:16px;background:#e5e7eb"></div>
       <div style="font-size:13px;color:#9ca3af" id="tb-sub-compare">All 50 states side by side</div>
     </div>
-    <div style="flex:1;overflow-y:auto;background:#f5f0e8">
+    <div class="panel-scroll-area" style="flex:1;overflow-y:auto;background:#f5f0e8">
       <div style="padding:26px 26px 60px;width:100%;box-sizing:border-box">
         <div class="page-eye">State comparison</div>
         <div class="page-title">Compare any two <i>destination states</i></div>
@@ -2829,7 +2857,7 @@ html{scroll-behavior:smooth}
       <div style="width:1px;height:16px;background:#e5e7eb"></div>
       <div style="font-size:13px;color:#9ca3af;flex:1" id="tb-sub-settings"></div>
     </div>
-    <div style="flex:1;overflow-y:auto;background:#f5f0e8">
+    <div class="panel-scroll-area" style="flex:1;overflow-y:auto;background:#f5f0e8">
       <div style="padding:26px 26px 60px;width:100%;box-sizing:border-box;display:grid;grid-template-columns:200px 1fr;gap:28px;align-items:start">
         <!-- Settings nav -->
     <nav class="settings-nav">
@@ -3219,7 +3247,7 @@ html{scroll-behavior:smooth}
       <div style="width:1px;height:16px;background:#e5e7eb"></div>
       <div style="font-size:13px;color:#9ca3af;flex:1" id="tb-sub-payments">Choose your plan</div>
     </div>
-    <div style="flex:1;overflow-y:auto;background:#f5f0e8">
+    <div class="panel-scroll-area" style="flex:1;overflow-y:auto;background:#f5f0e8">
       <div style="padding:26px 26px 60px;width:100%;box-sizing:border-box;max-width:880px">
         <!-- PRICING VIEW -->
   <div class="view active" id="view-pricing">
@@ -3517,7 +3545,7 @@ html{scroll-behavior:smooth}
         <div class="tb-sub" id="tb-sub-notifications">Manage preferences</div>
       </div>
     </header>
-    <div style="flex:1;overflow-y:auto;background:#f5f0e8">
+    <div class="panel-scroll-area" style="flex:1;overflow-y:auto;background:#f5f0e8">
       <div style="padding:26px 26px 60px;width:100%;box-sizing:border-box;max-width:1100px">
         <div class="page-eye">Automated emails</div>
     <div class="page-title">Stay on track <i>without thinking about it</i></div>
@@ -3745,7 +3773,7 @@ html{scroll-behavior:smooth}
       <div style="width:1px;height:16px;background:#e5e7eb"></div>
       <div style="font-size:13px;color:#9ca3af;flex:1" id="tb-sub-documents">Your uploaded files</div>
     </div>
-    <div style="flex:1;overflow-y:auto;background:#f5f0e8">
+    <div class="panel-scroll-area" style="flex:1;overflow-y:auto;background:#f5f0e8">
       <div style="padding:26px 26px 60px;width:100%;box-sizing:border-box;max-width:1100px">
         <!-- Storage bar -->
     <div class="storage-bar-wrap">
@@ -3853,7 +3881,7 @@ html{scroll-behavior:smooth}
       <div style="width:1px;height:16px;background:#e5e7eb"></div>
       <div style="font-size:13px;color:#9ca3af;flex:1" id="tb-sub-admin">Manage your team</div>
     </div>
-    <div style="flex:1;overflow-y:auto;background:#f5f0e8">
+    <div class="panel-scroll-area" style="flex:1;overflow-y:auto;background:#f5f0e8">
       <div style="padding:26px 26px 60px;width:100%;box-sizing:border-box;max-width:1100px">
         <!-- Stats -->
     <div class="stats-row">
@@ -3992,7 +4020,7 @@ html{scroll-behavior:smooth}
       <div style="width:1px;height:16px;background:#e5e7eb"></div>
       <div style="font-size:13px;color:#9ca3af;flex:1" id="tb-sub-notifications">Alerts & preferences</div>
     </div>
-    <div style="flex:1;overflow-y:auto;background:#f5f0e8">
+    <div class="panel-scroll-area" style="flex:1;overflow-y:auto;background:#f5f0e8">
       <div style="padding:26px 26px 60px;width:100%;box-sizing:border-box;max-width:1000px">
         <div class="page-eye">Automated emails</div>
     <div class="page-title">Stay on track <i>without thinking about it</i></div>
@@ -5874,11 +5902,20 @@ function closeMobMenu() {
   document.getElementById('mobOverlay').classList.remove('show');
   document.body.style.overflow = '';
 }
-function bnNav(secId, btn) {
+function bnNav(target, btn) {
   document.querySelectorAll('.bn-item').forEach(function(b){b.classList.remove('active');});
-  btn.classList.add('active');
-  var el = document.getElementById(secId);
-  if (el) el.scrollIntoView({behavior:'smooth', block:'start'});
+  if (btn) btn.classList.add('active');
+
+  // If it's a panel, use showPage
+  if (target.indexOf('panel-') === 0) {
+    showPage(target.replace('panel-', ''));
+    return;
+  }
+
+  // Otherwise scroll to section on main view
+  showPage('main');
+  var el = document.getElementById(target);
+  if (el) setTimeout(function(){ el.scrollIntoView({behavior:'smooth', block:'start'}); }, 100);
 }
 
 /* ═══════════════════════════════════════
@@ -7188,6 +7225,8 @@ function showPage(pageId) {
     if (mainView) mainView.style.display = 'block';
     var _vmShow2 = document.getElementById('view-main'); if(_vmShow2) { _vmShow2.style.display=''; _vmShow2.classList.add('active'); }
     var appMain = document.getElementById('appTopbar'); if(appMain) appMain.style.display = '';
+    // Reset bottom nav to Roadmap
+    document.querySelectorAll('.bn-item').forEach(function(b,i){ b.classList.toggle('active', i===0); });
   } else {
     if (mainView) mainView.style.display = 'none';
     var appMain = document.getElementById('appTopbar'); if(appMain) appMain.style.display = 'none';
