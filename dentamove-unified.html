@@ -5632,6 +5632,28 @@ function processPayment() {
   }, 1500);
 }
 
+/* ══ UTILITY FUNCTIONS ══ */
+
+function toast(msg) {
+  showToast(msg);
+}
+
+function formatCard(input) {
+  var v = input.value.replace(/\D/g, '').slice(0, 16);
+  input.value = v.replace(/(.{4})/g, '$1 ').trim();
+}
+
+function formatExp(input) {
+  var v = input.value.replace(/\D/g, '').slice(0, 4);
+  if (v.length >= 2) v = v.slice(0,2) + ' / ' + v.slice(2);
+  input.value = v;
+}
+
+function viewDentist(id) {
+  var d = (ADMIN_DENTISTS || []).find(function(x){ return x.id === id; });
+  if (d) showToast('Opening ' + d.name + '\u2019s roadmap \u2014 ' + d.from + ' \u2192 ' + d.to + ' (' + d.pct + '% complete)');
+}
+
 /* ══ MOBILE MENU ══ */
 function openMobMenu() {
   document.querySelector('.sidebar').classList.add('mob-open');
@@ -5716,7 +5738,7 @@ var TL_STATE_DB = {
 /* ══════════════════════════════════════
    APP STATE
 ══════════════════════════════════════ */
-var FROM = 'New York', TO = 'Texas';
+var FROM = APP.from || 'New York', TO = APP.to || 'Texas';
 var taskDone = new Set();
 var openPhase = 'phase1'; // default open
 
@@ -7019,6 +7041,9 @@ var TL_TASK_DONE = new Set();
 var TL_OPEN_PHASE = 'phase2';
 
 function tlInitPage() {
+  // Always sync from APP state
+  FROM = APP.from || FROM;
+  TO   = APP.to   || TO;
   tlRender();
 }
 
