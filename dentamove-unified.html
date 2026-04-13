@@ -4289,6 +4289,7 @@ function restoreSession(user) {
   renderDashboard();
   renderCreds();
   saveProgress(); // Persist profile data immediately
+  saveProgress(); // Ensure metadata is persisted
   go('pg-app');
 }
 
@@ -7125,15 +7126,15 @@ function aiInitPage() {
 /* ── SETTINGS INIT ── */
 function settingsInitPage() {
   // Populate profile fields from APP
-  var nameParts = (APP.name||'').replace(/^Dr\.?\s*/i,'').trim().split(' ');
-  var fFirst = document.getElementById('sett-f-first'); if(fFirst) fFirst.value = nameParts[0]||'';
+  var fullName = (APP.name||'').replace(/^Dr\.?\s*/i,'').trim();
+  var nameParts = fullName ? fullName.split(' ') : [];
   var fLast  = document.getElementById('sett-f-last');  if(fLast)  fLast.value  = nameParts.slice(1).join(' ')||'';
   var fEmail = document.getElementById('sett-f-email'); if(fEmail) fEmail.value = APP.email||'';
 
   var av     = document.getElementById('avatarLarge');
   var avName = document.getElementById('avatarName');
   var avSub  = document.getElementById('avatarSub');
-  var initials = (APP.name||'JS').replace(/^Dr\.?\s*/i,'').trim().split(' ').map(function(w){return w[0]||'';}).join('').toUpperCase().slice(0,2)||'DR';
+  var initials = fullName ? fullName.split(' ').map(function(w){return w[0]||'';}).join('').toUpperCase().slice(0,2) : (APP.email||'DR')[0].toUpperCase();
   if(av)     av.textContent     = initials;
   if(avName) avName.textContent = APP.name||'';
   if(avSub)  avSub.textContent  = (APP.specialty||'')+(APP.from&&APP.to?' · '+APP.from+' → '+APP.to:'');
