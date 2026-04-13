@@ -2210,7 +2210,7 @@ html,body{min-height:100%;background:var(--cream);color:var(--ink);font-family:'
 
 .toast{position:fixed;bottom:22px;right:22px;z-index:800;background:var(--ink);color:var(--white);padding:10px 18px;border-radius:100px;font-size:13px;font-weight:600;box-shadow:0 4px 16px rgba(13,27,42,.2);transform:translateY(12px);opacity:0;transition:all .28s;pointer-events:none}
 .toast.show{transform:translateY(0);opacity:1}
-@media(max-width:1100px){.admin-layout{grid-template-columns:1fr}.right-col{position:static}.stats-row{grid-template-columns:1fr 1fr}}
+@media(max-width:900px){.admin-layout{grid-template-columns:1fr}.right-col{position:static}.stats-row{grid-template-columns:1fr 1fr}}
 @media(max-width:800px){.sidebar{display:none}.stats-row{grid-template-columns:1fr 1fr}}
 @media(max-width:600px){
   .content{padding:16px 14px 40px}
@@ -2671,56 +2671,41 @@ html{scroll-behavior:smooth}
   </div>
   <!-- COMPARE PAGE -->
   <div class="page-panel" id="panel-compare" style="display:none">
-    <header class="topbar">
-      <button class="mob-menu-btn" onclick="openMobMenu()" aria-label="Open menu">
-        <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-      </button>
-      <div class="tb-left">
-        <div class="tb-title">Compare States</div>
-        <div class="tb-sep"></div>
-        <div class="tb-sub" id="tb-sub-compare">All 50 states side by side</div>
-      </div>
-    </header>
-    <div class="page-panel-scroll">
-      <div class="content" style="max-width:1100px">
-        <div class="page-eye">State comparison</div>
-    <div class="page-title">Compare any two <i>destination states</i></div>
-    <div class="page-sub">See fees, timelines, exam requirements, and complexity side by side for any two states. Useful if you are deciding where to relocate or want to understand what makes one state harder than another.</div>
-
-    <!-- Selector -->
-    <div class="selector-row">
-      <div class="sel-group">
-        <label class="sel-lbl" style="color:var(--teal)">State A</label>
-        <div class="sel-wrap">
-          <select class="sel-select" id="cmp-selA" onchange="runCompare()" style="border-color:var(--teal)"></select>
-        </div>
-      </div>
-      <div class="sel-vs"><div class="sel-vs-text">VS</div></div>
-      <div class="sel-group">
-        <label class="sel-lbl" style="color:var(--amber)">State B</label>
-        <div class="sel-wrap">
-          <select class="sel-select" id="cmp-selB" onchange="runCompare()" style="border-color:var(--amber)"></select>
-        </div>
-      </div>
+    <div style="height:60px;background:#fff;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;padding:0 26px;gap:12px;flex-shrink:0;width:100%">
+      <div style="font-family:'Fraunces',serif;font-size:17px;font-weight:600;color:#1a2332">Compare States</div>
+      <div style="width:1px;height:16px;background:#e5e7eb"></div>
+      <div style="font-size:13px;color:#9ca3af" id="tb-sub-compare">All 50 states side by side</div>
     </div>
-
-    <!-- Comparison output -->
-    <div id="cmpCompareOut"></div>
+    <div style="flex:1;overflow-y:auto;background:#f5f0e8">
+      <div style="padding:26px 26px 60px;width:100%;box-sizing:border-box">
+        <div class="page-eye">State comparison</div>
+        <div class="page-title">Compare any two <i>destination states</i></div>
+        <div class="page-sub">See fees, timelines, exam requirements, and complexity side by side for any two states.</div>
+        <div class="selector-row">
+          <div class="sel-group">
+            <label class="sel-lbl" style="color:var(--teal)">State A</label>
+            <div class="sel-wrap">
+              <select class="sel-select" id="cmp-selA" onchange="runCompare()" style="border-color:var(--teal)"></select>
+            </div>
+          </div>
+          <div class="sel-vs"><div class="sel-vs-text">VS</div></div>
+          <div class="sel-group">
+            <label class="sel-lbl" style="color:var(--amber)">State B</label>
+            <div class="sel-wrap">
+              <select class="sel-select" id="cmp-selB" onchange="runCompare()" style="border-color:var(--amber)"></select>
+            </div>
+          </div>
+        </div>
+        <div id="cmpCompareOut"></div>
       </div>
     </div>
   </div>
-  <!-- AI PAGE -->
   <div class="page-panel" id="panel-ai" style="display:none">
-    <header class="topbar">
-      <button class="mob-menu-btn" onclick="openMobMenu()" aria-label="Open menu">
-        <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-      </button>
-      <div class="tb-left">
-        <div class="tb-title">AI Assistant</div>
-        <div class="tb-sep"></div>
-        <div class="tb-sub" id="tb-sub-ai">New York → Texas</div>
-      </div>
-    </header>
+    <div style="height:60px;background:#fff;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;padding:0 26px;gap:12px;flex-shrink:0;width:100%;box-sizing:border-box">
+      <div style="font-family:'Fraunces',serif;font-size:17px;font-weight:600;color:#1a2332">AI Assistant</div>
+      <div style="width:1px;height:16px;background:#e5e7eb"></div>
+      <div style="font-size:13px;color:#9ca3af;flex:1" id="tb-sub-ai">Powered by Claude</div><span style="background:#16a34a;color:#fff;font-size:11px;font-weight:700;padding:2px 8px;border-radius:100px;margin-left:4px">Live</span>
+    </div>
     
     <div style="display:flex;flex-direction:column;height:calc(100vh - 60px);overflow:hidden">
       <div class="chat-wrap">
@@ -2805,18 +2790,13 @@ html{scroll-behavior:smooth}
   </div>
   <!-- SETTINGS PAGE -->
   <div class="page-panel" id="panel-settings" style="display:none">
-    <header class="topbar">
-      <button class="mob-menu-btn" onclick="openMobMenu()" aria-label="Open menu">
-        <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-      </button>
-      <div class="tb-left">
-        <div class="tb-title">Settings</div>
-        <div class="tb-sep"></div>
-        <div class="tb-sub" id="tb-sub-settings"></div>
-      </div>
-    </header>
-    <div class="page-panel-scroll">
-      <div class="content" style="max-width:1100px">
+    <div style="height:60px;background:#fff;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;padding:0 26px;gap:12px;flex-shrink:0;width:100%;box-sizing:border-box">
+      <div style="font-family:'Fraunces',serif;font-size:17px;font-weight:600;color:#1a2332">Settings</div>
+      <div style="width:1px;height:16px;background:#e5e7eb"></div>
+      <div style="font-size:13px;color:#9ca3af;flex:1" id="tb-sub-settings"></div>
+    </div>
+    <div style="flex:1;overflow-y:auto;background:#f5f0e8">
+      <div style="padding:26px 26px 60px;width:100%;box-sizing:border-box;max-width:1100px">
         <!-- Settings nav -->
     <nav class="settings-nav">
       <div class="sn-item active" id="sett-sn-profile" onclick="settingsShowPanel('profile')">
@@ -3200,18 +3180,13 @@ html{scroll-behavior:smooth}
   </div>
   <!-- PAYMENTS PAGE -->
   <div class="page-panel" id="panel-payments" style="display:none">
-    <header class="topbar">
-      <button class="mob-menu-btn" onclick="openMobMenu()" aria-label="Open menu">
-        <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-      </button>
-      <div class="tb-left">
-        <div class="tb-title">Upgrade to Pro</div>
-        <div class="tb-sep"></div>
-        <div class="tb-sub" id="tb-sub-payments">Choose your plan</div>
-      </div>
-    </header>
-    <div class="page-panel-scroll">
-      <div class="content" style="max-width:880px">
+    <div style="height:60px;background:#fff;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;padding:0 26px;gap:12px;flex-shrink:0;width:100%;box-sizing:border-box">
+      <div style="font-family:'Fraunces',serif;font-size:17px;font-weight:600;color:#1a2332">Plans & Billing</div>
+      <div style="width:1px;height:16px;background:#e5e7eb"></div>
+      <div style="font-size:13px;color:#9ca3af;flex:1" id="tb-sub-payments">Choose your plan</div>
+    </div>
+    <div style="flex:1;overflow-y:auto;background:#f5f0e8">
+      <div style="padding:26px 26px 60px;width:100%;box-sizing:border-box;max-width:880px">
         <!-- PRICING VIEW -->
   <div class="view active" id="view-pricing">
     <div class="pricing-header">
@@ -3508,8 +3483,8 @@ html{scroll-behavior:smooth}
         <div class="tb-sub" id="tb-sub-notifications">Manage preferences</div>
       </div>
     </header>
-    <div class="page-panel-scroll">
-      <div class="content" style="max-width:1100px">
+    <div style="flex:1;overflow-y:auto;background:#f5f0e8">
+      <div style="padding:26px 26px 60px;width:100%;box-sizing:border-box;max-width:1100px">
         <div class="page-eye">Automated emails</div>
     <div class="page-title">Stay on track <i>without thinking about it</i></div>
     <div class="page-sub">OpenPractice sends you the right email at the right time &mdash; a weekly summary every Monday, and an immediate alert if something needs your attention.</div>
@@ -3731,18 +3706,13 @@ html{scroll-behavior:smooth}
   </div>
   <!-- DOCUMENTS PAGE -->
   <div class="page-panel" id="panel-documents" style="display:none">
-    <header class="topbar">
-      <button class="mob-menu-btn" onclick="openMobMenu()" aria-label="Open menu">
-        <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-      </button>
-      <div class="tb-left">
-        <div class="tb-title">Documents</div>
-        <div class="tb-sep"></div>
-        <div class="tb-sub" id="tb-sub-documents">New York → Texas</div>
-      </div>
-    </header>
-    <div class="page-panel-scroll">
-      <div class="content" style="max-width:1100px">
+    <div style="height:60px;background:#fff;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;padding:0 26px;gap:12px;flex-shrink:0;width:100%;box-sizing:border-box">
+      <div style="font-family:'Fraunces',serif;font-size:17px;font-weight:600;color:#1a2332">Documents</div>
+      <div style="width:1px;height:16px;background:#e5e7eb"></div>
+      <div style="font-size:13px;color:#9ca3af;flex:1" id="tb-sub-documents">Your uploaded files</div>
+    </div>
+    <div style="flex:1;overflow-y:auto;background:#f5f0e8">
+      <div style="padding:26px 26px 60px;width:100%;box-sizing:border-box;max-width:1100px">
         <!-- Storage bar -->
     <div class="storage-bar-wrap">
       <div class="sb-info">
@@ -3844,18 +3814,13 @@ html{scroll-behavior:smooth}
   </div>
   <!-- ADMIN PAGE -->
   <div class="page-panel" id="panel-admin" style="display:none">
-    <header class="topbar">
-      <button class="mob-menu-btn" onclick="openMobMenu()" aria-label="Open menu">
-        <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-      </button>
-      <div class="tb-left">
-        <div class="tb-title">Practice Dashboard</div>
-        <div class="tb-sep"></div>
-        <div class="tb-sub" id="tb-sub-admin">Sunrise Dental Group</div>
-      </div>
-    </header>
-    <div class="page-panel-scroll">
-      <div class="content" style="max-width:1100px">
+    <div style="height:60px;background:#fff;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;padding:0 26px;gap:12px;flex-shrink:0;width:100%;box-sizing:border-box">
+      <div style="font-family:'Fraunces',serif;font-size:17px;font-weight:600;color:#1a2332">Practice Admin</div>
+      <div style="width:1px;height:16px;background:#e5e7eb"></div>
+      <div style="font-size:13px;color:#9ca3af;flex:1" id="tb-sub-admin">Manage your team</div>
+    </div>
+    <div style="flex:1;overflow-y:auto;background:#f5f0e8">
+      <div style="padding:26px 26px 60px;width:100%;box-sizing:border-box;max-width:1100px">
         <!-- Stats -->
     <div class="stats-row">
       <div class="stat-card sc-teal">
@@ -3989,18 +3954,13 @@ html{scroll-behavior:smooth}
   </div>
   <!-- NOTIFICATIONS PAGE -->
   <div class="page-panel" id="panel-notifications" style="display:none">
-    <header class="topbar">
-      <button class="mob-menu-btn" onclick="openMobMenu()" aria-label="Open menu">
-        <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-      </button>
-      <div class="tb-left">
-        <div class="tb-title">Email Notifications</div>
-        <div class="tb-sep"></div>
-        <div class="tb-sub" id="tb-sub-notifications">Manage preferences</div>
-      </div>
-    </header>
-    <div class="page-panel-scroll">
-      <div class="content" style="max-width:1000px">
+    <div style="height:60px;background:#fff;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;padding:0 26px;gap:12px;flex-shrink:0;width:100%;box-sizing:border-box">
+      <div style="font-family:'Fraunces',serif;font-size:17px;font-weight:600;color:#1a2332">Notifications</div>
+      <div style="width:1px;height:16px;background:#e5e7eb"></div>
+      <div style="font-size:13px;color:#9ca3af;flex:1" id="tb-sub-notifications">Alerts & preferences</div>
+    </div>
+    <div style="flex:1;overflow-y:auto;background:#f5f0e8">
+      <div style="padding:26px 26px 60px;width:100%;box-sizing:border-box;max-width:1000px">
         <div class="page-eye">Automated emails</div>
     <div class="page-title">Stay on track <i>without thinking about it</i></div>
     <div class="page-sub">OpenPractice sends you the right email at the right time &mdash; a weekly summary every Monday, and an immediate alert if something needs your attention.</div>
