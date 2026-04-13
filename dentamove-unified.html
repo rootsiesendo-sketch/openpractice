@@ -2284,7 +2284,7 @@ html{scroll-behavior:smooth}
       <h1 class="ah-h1">The fastest way to get<br><i>licensed in a new state</i></h1>
       <p class="ah-sub">Moving between states as a dentist means navigating a maze of different boards, requirements, and timelines. OpenPractice cuts through all of it and walks you through every step.</p>
       <button class="btn btn-teal" onclick="go('pg-signup')">Create your free account</button>
-      <div style="margin-top:14px;font-size:13px;color:var(--gray)">Already have an account? <span onclick="go('pg-login')" style="color:var(--teal);font-weight:600;cursor:pointer">Sign in →</span></div>
+      <div style="margin-top:14px;font-size:13px;color:var(--gray)">Already have an account? <span onclick="_supabase.auth.signOut().then(()=>go('pg-login'))" style="color:var(--teal);font-weight:600;cursor:pointer">Sign in →</span></div>
       <div class="ah-scroll"><div class="ah-scroll-line"></div><span>Learn more</span></div>
     </div>
 
@@ -2402,7 +2402,7 @@ html{scroll-behavior:smooth}
       </div>
       <button class="sc-submit" onclick="scNext(2)"><span class="sc-text">Continue</span><div class="sc-loading"><div class="spin"></div></div></button>
       <div class="sc-terms">By continuing you agree to our <a href="#">Terms</a> and <a href="#">Privacy Policy</a></div>
-      <div class="sc-switch">Already have an account? <a onclick="go('pg-app')">Log in</a></div>
+      <div class="sc-switch">Already have an account? <a onclick="_supabase.auth.signOut().then(()=>go('pg-login'))">Log in</a></div>
     </div>
 
     <!-- Step 2 -->
@@ -4506,6 +4506,9 @@ async function signOut() {
    AUTH — AUTO RESTORE ON LOAD
 ══════════════════════════ */
 (function checkExistingSession(){
+  // Don't auto-restore if user is on login or signup page intentionally
+  var hash = window.location.hash;
+  if (hash === '#pg-login' || hash === '#pg-signup') return;
   _supabase.auth.getSession().then(function(res){
     var session = res.data && res.data.session;
     if (session && session.user) {
