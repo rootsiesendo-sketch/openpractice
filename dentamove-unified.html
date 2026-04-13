@@ -4475,6 +4475,9 @@ function restoreSession(user) {
       : {stageIdx:0, notes:''};
   });
 
+  // Restore saved progress
+  loadProgress(meta);
+
   // Update sidebar
   var initials = (APP.name||'').replace(/^Dr\.?\s*/i,'').trim().split(' ').map(w=>w[0]||'').join('').toUpperCase().slice(0,2) || 'DR';
   var sbAv = document.getElementById('sbAv'); if(sbAv) sbAv.textContent = initials;
@@ -4820,9 +4823,10 @@ function toggleTask(id){
   APP.done.has(id)?APP.done.delete(id):(APP.done.add(id),checkPhaseComplete(id));
   renderDashboard();
   setTimeout(()=>{document.getElementById('rhFill').style.width=getPct()+'%'},50);
+  saveProgress();
 }
-function completeTask(id){APP.done.add(id);checkPhaseComplete(id);renderDashboard();setTimeout(()=>{document.getElementById('rhFill').style.width=getPct()+'%'},50)}
-function skipTask(id){APP.done.add(id);renderDashboard();setTimeout(()=>{document.getElementById('rhFill').style.width=getPct()+'%'},50);showToast('Skipped — uncheck it in the checklist anytime')}
+function completeTask(id){APP.done.add(id);checkPhaseComplete(id);renderDashboard();saveProgress();setTimeout(()=>{document.getElementById('rhFill').style.width=getPct()+'%'},50)}
+function skipTask(id){APP.done.add(id);renderDashboard();saveProgress();setTimeout(()=>{document.getElementById('rhFill').style.width=getPct()+'%'},50);showToast('Skipped — uncheck it in the checklist anytime')}
 
 function checkPhaseComplete(id){
   var task=APP.tasks.find(t=>t.id===id);
@@ -5297,6 +5301,7 @@ function setCredSelf(pid,idx){
   var p=PORTALS.find(x=>x.id===pid);
   showToast((p.selfStages||[])[idx]||'');
   renderCreds();
+  saveProgress();
 }
 
 function saveCredNotes(pid,val){if(APP.credState[pid]) APP.credState[pid].notes=val;}
@@ -5627,7 +5632,7 @@ function saveProfile() {
   var avSub = document.getElementById('avatarSub');
   if (avSub) avSub.textContent = APP.specialty + (APP.from && APP.to ? ' · ' + APP.from + ' → ' + APP.to : '');
 
-  showToast('Profile saved');
+  showToast('Profile saved'); saveProgress();
 }
 
 function saveMove() {
@@ -5657,7 +5662,7 @@ function saveMove() {
 
   renderDashboard();
   renderCreds();
-  showToast('Route updated to ' + newFrom + ' → ' + newTo);
+  showToast('Route updated to ' + newFrom + ' → ' + newTo); saveProgress();
 }
 
 function saveWithStatus(statusId) {
@@ -5810,6 +5815,49 @@ function formatExp(input) {
 function viewDentist(id) {
   var d = (ADMIN_DENTISTS || []).find(function(x){ return x.id === id; });
   if (d) showToast('Opening ' + d.name + '\u2019s roadmap \u2014 ' + d.from + ' \u2192 ' + d.to + ' (' + d.pct + '% complete)');
+}
+
+/* ══════════════════════════
+   PROGRESS PERSISTENCE
+══════════════════════════ */
+var _saveTimer = null;
+
+function saveProgress() {
+  // Debounce — save 1.5s after last change
+  clearTimeout(_saveTimer);
+  _saveTimer = setTimeout(async function() {
+    try {
+      var { data: { user } } = await _supabase.auth.getUser();
+      if (!user) return;
+      await _supabase.auth.updateUser({
+        data: {
+          name:       APP.name,
+          specialty:  APP.specialty,
+          from:       APP.from,
+          to:         APP.to,
+          done:       Array.from(APP.done),
+          taskDone:   Array.from(taskDone),
+          credState:  JSON.stringify(APP.credState),
+        }
+      });
+    } catch(e) { console.warn('saveProgress error:', e); }
+  }, 1500);
+}
+
+function loadProgress(meta) {
+  if (!meta) return;
+  // Restore done sets
+  if (Array.isArray(meta.done))     meta.done.forEach(id => APP.done.add(id));
+  if (Array.isArray(meta.taskDone)) meta.taskDone.forEach(id => taskDone.add(id));
+  // Restore credState
+  if (meta.credState) {
+    try {
+      var saved = JSON.parse(meta.credState);
+      Object.keys(saved).forEach(function(k) {
+        if (APP.credState[k]) APP.credState[k] = saved[k];
+      });
+    } catch(e) {}
+  }
 }
 
 /* ══ MOBILE MENU ══ */
@@ -6281,6 +6329,7 @@ function togglePhase(id) {
 function tlToggleTask(taskId) {
   taskDone.has(taskId) ? taskDone.delete(taskId) : taskDone.add(taskId);
   tlRender();
+  saveProgress();
 }
 
 function updateRoute() {
