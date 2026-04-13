@@ -2933,7 +2933,7 @@ html{scroll-behavior:smooth}
             </div>
           </div>
           <div class="s-card-body">
-            <div class="spec-grid" id="specGrid">
+            <div class="spec-grid" id="settSpecGrid">
               <button class="spec-opt sel" onclick="selSpec(this)">General Dentist</button>
               <button class="spec-opt" onclick="selSpec(this)">Orthodontist</button>
               <button class="spec-opt" onclick="selSpec(this)">Periodontist</button>
@@ -3534,239 +3534,6 @@ html{scroll-behavior:smooth}
     </div>
   </div>
   <!-- NOTIFICATIONS PAGE -->
-  <div class="page-panel" id="sett-panel-notifications" style="display:none">
-    <header class="topbar">
-      <button class="mob-menu-btn" onclick="openMobMenu()" aria-label="Open menu">
-        <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-      </button>
-      <div class="tb-left">
-        <div class="tb-title">Email Notifications</div>
-        <div class="tb-sep"></div>
-        <div class="tb-sub" id="tb-sub-notifications">Manage preferences</div>
-      </div>
-    </header>
-    <div class="panel-scroll-area" style="flex:1;overflow-y:auto;background:#f5f0e8">
-      <div style="padding:26px 26px 60px;width:100%;box-sizing:border-box;max-width:1100px">
-        <div class="page-eye">Automated emails</div>
-    <div class="page-title">Stay on track <i>without thinking about it</i></div>
-    <div class="page-sub">OpenPractice sends you the right email at the right time &mdash; a weekly summary every Monday, and an immediate alert if something needs your attention.</div>
-
-    <div class="tabs">
-      <button class="tab active" onclick="notifSwitchTab('settings',this)">Notification settings</button>
-      <button class="tab" onclick="notifSwitchTab('previews',this)">Email previews</button>
-    </div>
-
-    <div class="layout">
-      <div>
-
-        <!-- SETTINGS TAB -->
-        <div class="tab-panel active" id="tab-settings">
-
-          <div class="notif-card" id="nc-weekly">
-            <div class="nc-head" onclick="notifToggleCard('nc-weekly')">
-              <div class="nc-icon nci-teal"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
-              <div class="nc-info"><div class="nc-title">Weekly progress summary</div><div class="nc-sub">Monday morning briefing on your checklist, upcoming deadlines, and items needing attention.</div></div>
-              <span class="nc-freq">Every Monday</span>
-              <label class="toggle" onclick="event.stopPropagation()"><input type="checkbox" checked onchange="showToast('Weekly summary ' + (this.checked ? 'enabled' : 'disabled'))"/><div class="toggle-track"></div></label>
-            </div>
-            <div class="nc-body">
-              <div class="nc-body-lbl">What's included</div>
-              <div class="nc-body-items">
-                <div class="nc-body-item">Overall progress and steps completed this week</div>
-                <div class="nc-body-item">Credentials pending more than 10 days</div>
-                <div class="nc-body-item">This week's key tasks</div>
-                <div class="nc-body-item">Estimated weeks remaining to licensure</div>
-              </div>
-              <div style="margin-top:10px;font-size:12px;color:var(--gray)">Sent every Monday at 8:00 AM in your local timezone.</div>
-            </div>
-          </div>
-
-          <div class="notif-card" id="nc-deadline">
-            <div class="nc-head" onclick="notifToggleCard('nc-deadline')">
-              <div class="nc-icon nci-amber"><svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
-              <div class="nc-info"><div class="nc-title">Deadline reminders</div><div class="nc-sub">Immediate alerts when a credential has been pending too long or a critical step is overdue.</div></div>
-              <span class="nc-freq">As needed</span>
-              <label class="toggle" onclick="event.stopPropagation()"><input type="checkbox" checked onchange="showToast('Deadline reminders ' + (this.checked ? 'enabled' : 'disabled'))"/><div class="toggle-track"></div></label>
-            </div>
-            <div class="nc-body">
-              <div class="nc-body-lbl">What triggers a reminder</div>
-              <div class="nc-body-items">
-                <div class="nc-body-item">A credential in progress for more than 14 days</div>
-                <div class="nc-body-item">Fingerprinting not booked within 3 days of application submission</div>
-                <div class="nc-body-item">Application mailed 3+ weeks ago with no receipt confirmation</div>
-                <div class="nc-body-item">License expiry within 60 days and no renewal initiated</div>
-              </div>
-              <div style="margin-top:10px;font-size:12px;color:var(--gray)">Maximum one reminder per issue per week.</div>
-            </div>
-          </div>
-
-          <div class="notif-card" id="nc-milestone">
-            <div class="nc-head" onclick="notifToggleCard('nc-milestone')">
-              <div class="nc-icon nci-green"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
-              <div class="nc-info"><div class="nc-title">Milestone completions</div><div class="nc-sub">A confirmation when you complete a full phase and a summary of what comes next.</div></div>
-              <span class="nc-freq">On completion</span>
-              <label class="toggle" onclick="event.stopPropagation()"><input type="checkbox" checked onchange="showToast('Milestone alerts ' + (this.checked ? 'enabled' : 'disabled'))"/><div class="toggle-track"></div></label>
-            </div>
-            <div class="nc-body">
-              <div class="nc-body-lbl">When you'll receive this</div>
-              <div class="nc-body-items">
-                <div class="nc-body-item">Phase 1 complete &mdash; all credentials gathered and sent</div>
-                <div class="nc-body-item">Phase 2 complete &mdash; application submitted and confirmed</div>
-                <div class="nc-body-item">Phase 3 complete &mdash; jurisprudence exam passed (if required)</div>
-                <div class="nc-body-item">License issued &mdash; your Texas dental license is ready</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="notif-card" id="nc-board">
-            <div class="nc-head" onclick="notifToggleCard('nc-board')">
-              <div class="nc-icon nci-ink"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
-              <div class="nc-info"><div class="nc-title">Texas Board processing updates</div><div class="nc-sub">Alerts if the Texas Board's average processing time changes significantly.</div></div>
-              <span class="nc-freq">As needed</span>
-              <label class="toggle" onclick="event.stopPropagation()"><input type="checkbox" onchange="showToast('Board updates ' + (this.checked ? 'enabled' : 'disabled'))"/><div class="toggle-track"></div></label>
-            </div>
-            <div class="nc-body">
-              <div class="nc-body-lbl">About this alert</div>
-              <div style="font-size:13px;color:var(--ink);line-height:1.65">We monitor reported processing times and alert you if there is a significant change &mdash; useful for adjusting your start date planning. Typically 2&ndash;4 times per year.</div>
-            </div>
-          </div>
-
-        </div>
-
-        <!-- PREVIEWS TAB -->
-        <div class="tab-panel" id="tab-previews">
-          <div class="prev-tabs">
-            <button class="prev-tab active" onclick="notifSwitchPreview('weekly',this)">Weekly summary</button>
-            <button class="prev-tab" onclick="notifSwitchPreview('deadline',this)">Deadline reminder</button>
-            <button class="prev-tab" onclick="notifSwitchPreview('milestone',this)">Milestone complete</button>
-          </div>
-
-          <div id="prev-weekly">
-            <div class="email-preview">
-              <div class="ep-chrome"><div class="ep-dot" style="background:#ff5f57"></div><div class="ep-dot" style="background:#febc2e"></div><div class="ep-dot" style="background:#28c840"></div><div class="ep-bar">mail.google.com</div></div>
-              <div class="ep-hdr"><div class="ep-from">From: <strong>OpenPractice</strong> &lt;<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="f39b969f9f9cb397969d87929e9c8596dd909c9e">[email&#160;protected]</a>&gt;</div><div class="ep-subject">Your weekly licensing update &mdash; NY &rarr; TX</div><div class="ep-date">Monday, March 31 &middot; 8:00 AM</div></div>
-              <div class="ep-body">
-                <div class="ep-logo">OpenPractice</div>
-                <div class="ep-h1">Week 3 update, <i>Dr. Smith</i></div>
-                <div class="ep-intro">Here is where your New York &rarr; Texas license transfer stands as of this Monday.</div>
-                <div class="ep-prog">
-                  <div class="ep-prog-row"><span style="font-weight:600">Overall progress</span><span style="font-weight:700;color:var(--teal)">31%</span></div>
-                  <div class="ep-prog-bar"><div class="ep-prog-fill" style="width:31%"></div></div>
-                  <div class="ep-prog-sub">5 of 16 steps complete &middot; est. 10 weeks remaining</div>
-                </div>
-                <div class="ep-sec">
-                  <div class="ep-sec-lbl">Needs your attention</div>
-                  <div class="ep-item ei-urgent"><div class="ei-dot"></div><div><strong>IdentoGo fingerprinting not yet booked.</strong> Background checks take 3&ndash;4 weeks. Book today to avoid delays.</div></div>
-                  <div class="ep-item ei-warn"><div class="ei-dot"></div><div><strong>NY license verification pending 11 days.</strong> Consider following up with the NY Office of Professions.</div></div>
-                </div>
-                <div class="ep-sec">
-                  <div class="ep-sec-lbl">Completed this week</div>
-                  <div class="ep-item ei-ok"><div class="ei-dot"></div><div>NERB score transcript requested &mdash; conf. #NRB-2024-8821</div></div>
-                  <div class="ep-item ei-ok"><div class="ei-dot"></div><div>Parchment transcript order placed &mdash; dental school confirmed sent</div></div>
-                </div>
-                <div class="ep-sec">
-                  <div class="ep-sec-lbl">This week's focus</div>
-                  <div class="ep-item ei-info"><div class="ei-dot"></div><div>Book IdentoGo appointment &mdash; identogo.com &middot; agency code <strong>11G2XN</strong></div></div>
-                  <div class="ep-item ei-info"><div class="ei-dot"></div><div>Complete and notarise the TSBDE application</div></div>
-                </div>
-                <a class="ep-cta" href="#">Go to my roadmap &rarr;</a>
-              </div>
-              <div class="ep-footer">You are receiving this because weekly summaries are enabled &middot; <a href="#">Unsubscribe</a> &middot; <a href="#">Manage preferences</a></div>
-            </div>
-          </div>
-
-          <div id="prev-deadline" style="display:none">
-            <div class="email-preview">
-              <div class="ep-chrome"><div class="ep-dot" style="background:#ff5f57"></div><div class="ep-dot" style="background:#febc2e"></div><div class="ep-dot" style="background:#28c840"></div><div class="ep-bar">mail.google.com</div></div>
-              <div class="ep-hdr"><div class="ep-from">From: <strong>OpenPractice</strong> &lt;<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="1a727f7676755a7e7f746e7b77756c7f34797577">[email&#160;protected]</a>&gt;</div><div class="ep-subject">Action required: fingerprinting not yet booked</div><div class="ep-date">Wednesday, April 2 &middot; 9:15 AM</div></div>
-              <div class="ep-body">
-                <div class="ep-logo">OpenPractice</div>
-                <div class="ep-h1">This needs your <i>attention today</i></div>
-                <div class="ep-intro">Dr. Smith &mdash; your background check appointment has not been booked. This is the most common cause of delays in Texas dental licensing.</div>
-                <div class="ep-item ei-urgent" style="margin-bottom:16px;font-size:13px"><div class="ei-dot"></div><div><strong>IdentoGo appointment not booked.</strong> Background check results take 3&ndash;4 weeks to reach the Texas Board. Every day you wait pushes your license date back.</div></div>
-                <div style="background:var(--cream);border-radius:8px;padding:14px;margin-bottom:16px">
-                  <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--gray);margin-bottom:8px">How to book</div>
-                  <div style="font-size:13px;color:var(--ink);line-height:1.75">1. Go to <strong>identogo.com</strong><br>2. Enter agency code <strong>11G2XN</strong><br>3. Select the earliest available slot<br>4. Bring government-issued photo ID</div>
-                </div>
-                <a class="ep-cta" href="#">Book on IdentoGo &rarr;</a>
-                <div style="font-size:12px;color:var(--gray);line-height:1.65">Once booked, log your confirmation number in OpenPractice to stop these reminders.</div>
-              </div>
-              <div class="ep-footer">You are receiving this because deadline reminders are enabled &middot; <a href="#">Manage preferences</a></div>
-            </div>
-          </div>
-
-          <div id="prev-milestone" style="display:none">
-            <div class="email-preview">
-              <div class="ep-chrome"><div class="ep-dot" style="background:#ff5f57"></div><div class="ep-dot" style="background:#febc2e"></div><div class="ep-dot" style="background:#28c840"></div><div class="ep-bar">mail.google.com</div></div>
-              <div class="ep-hdr"><div class="ep-from">From: <strong>OpenPractice</strong> &lt;<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="86eee3eaeae9c6e2e3e8f2e7ebe9f0e3a8e5e9eb">[email&#160;protected]</a>&gt;</div><div class="ep-subject">Phase 1 complete &mdash; credentials all sent</div><div class="ep-date">Friday, April 11 &middot; 2:47 PM</div></div>
-              <div class="ep-body">
-                <div class="ep-logo">OpenPractice</div>
-                <div class="ep-h1">Phase 1 <i>complete</i></div>
-                <div class="ep-intro">All your credentials are in motion, Dr. Smith. Every direct-send document has been dispatched to the Texas Board.</div>
-                <div style="background:var(--green-lt);border-radius:9px;padding:14px;margin-bottom:16px">
-                  <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--green-mid);margin-bottom:10px">What's been sent</div>
-                  <div class="ep-item ei-ok" style="margin-bottom:5px"><div class="ei-dot"></div><div>NY license verification &mdash; sent by NY Office of Professions</div></div>
-                  <div class="ep-item ei-ok" style="margin-bottom:5px"><div class="ei-dot"></div><div>NERB score transcript &mdash; sent by NERB</div></div>
-                  <div class="ep-item ei-ok" style="margin-bottom:5px"><div class="ei-dot"></div><div>Dental school transcript &mdash; sent via Parchment</div></div>
-                  <div class="ep-item ei-ok"><div class="ei-dot"></div><div>IdentoGo fingerprinting &mdash; completed, results sent</div></div>
-                </div>
-                <div style="font-size:14px;font-weight:600;color:var(--ink);margin-bottom:6px">What's next &mdash; Phase 2</div>
-                <div style="font-size:13px;color:var(--gray);line-height:1.65;margin-bottom:16px">Complete and notarise your TSBDE application and mail it with the $200 fee. Your file goes into board review.</div>
-                <a class="ep-cta" href="#">Continue to Phase 2 &rarr;</a>
-              </div>
-              <div class="ep-footer">You are receiving this because milestone notifications are enabled &middot; <a href="#">Manage preferences</a></div>
-            </div>
-          </div>
-
-        </div>
-      </div>
-
-      <!-- RIGHT PANEL -->
-      <div style="display:flex;flex-direction:column;position:sticky;top:82px">
-        <div class="next-email">
-          <div class="ne-lbl">Next scheduled email</div>
-          <div class="ne-title">Weekly <i>summary</i></div>
-          <div class="ne-when">Monday, March 31 &middot; 8:00 AM</div>
-          <div class="ne-bar"><div class="ne-fill" style="width:72%"></div></div>
-          <div class="ne-sub">5 days away</div>
-        </div>
-
-        <div class="rp-card">
-          <div class="rp-hdr"><div class="rp-title">Email schedule</div></div>
-          <div class="rp-body">
-            <div class="sched-item"><div class="sched-day">Monday</div><div><div class="sched-pill sp-t">Weekly summary</div><div class="sched-desc">Progress, pending items, this week's tasks</div></div></div>
-            <div class="sched-item"><div class="sched-day">As needed</div><div><div class="sched-pill sp-a">Deadline reminder</div><div class="sched-desc">Fired when something is overdue</div></div></div>
-            <div class="sched-item"><div class="sched-day">Instant</div><div><div class="sched-pill sp-g">Milestone complete</div><div class="sched-desc">Sent immediately when you finish a phase</div></div></div>
-          </div>
-        </div>
-
-        <div class="rp-card">
-          <div class="rp-hdr"><div class="rp-title">This month</div></div>
-          <div class="rp-body">
-            <div class="stat-row">
-              <div class="stat-box"><div class="stat-val">3</div><div class="stat-lbl">Sent</div></div>
-              <div class="stat-box"><div class="stat-val">2</div><div class="stat-lbl">Opened</div></div>
-              <div class="stat-box"><div class="stat-val">1</div><div class="stat-lbl">Actioned</div></div>
-            </div>
-            <div style="font-size:12px;color:var(--gray)">Last opened: Weekly summary, March 24</div>
-          </div>
-        </div>
-
-        <div class="rp-card">
-          <div class="rp-hdr"><div class="rp-title">Delivery address</div></div>
-          <div class="rp-body">
-            <div style="font-size:14px;font-weight:600;color:var(--ink);margin-bottom:4px"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="294348474c075a44405d41694d4c475d4845074a4644">[email&#160;protected]</a></div>
-            <div style="font-size:12px;color:var(--gray);margin-bottom:12px">All notifications sent here</div>
-            <button onclick="showToast('Update email in Settings')" style="padding:8px 16px;border:1.5px solid var(--gray-lt);border-radius:6px;font-size:12px;font-weight:600;font-family:'Mulish',sans-serif;cursor:pointer;background:var(--white);color:var(--gray);transition:all .18s" onmouseover="this.style.borderColor='var(--teal)';this.style.color='var(--teal)'" onmouseout="this.style.borderColor='var(--gray-lt)';this.style.color='var(--gray)'">Change email address</button>
-          </div>
-        </div>
-      </div>
-
-    </div>
-      </div>
-    </div>
-  </div>
-  <!-- DOCUMENTS PAGE -->
   <div class="page-panel" id="panel-documents" style="display:none">
     <div style="height:60px;background:#fff;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;padding:0 26px;gap:12px;flex-shrink:0;width:100%;box-sizing:border-box">
       <div style="font-family:'Fraunces',serif;font-size:17px;font-weight:600;color:#1a2332">Documents</div>
@@ -4463,7 +4230,9 @@ async function signIn() {
   try {
     var { data, error } = await _supabase.auth.signInWithPassword({ email, password: pw });
     if (error) { showLoginError(error.message); btn.textContent = 'Sign in'; btn.disabled = false; return; }
-    restoreSession(data.user);
+    // Fetch fresh user to ensure metadata is populated
+    var { data: freshData } = await _supabase.auth.getUser();
+    restoreSession(freshData.user || data.user);
   } catch(e) {
     showLoginError('Unexpected error. Please try again.');
     btn.textContent = 'Sign in';
@@ -4481,6 +4250,17 @@ function showLoginError(msg) {
 ══════════════════════════ */
 function restoreSession(user) {
   if (!user) return;
+
+  // If metadata is missing, fetch the full user object
+  if (!user.user_metadata || !user.user_metadata.name) {
+    _supabase.auth.getUser().then(function(res) {
+      if (res.data && res.data.user) {
+        restoreSession(res.data.user);
+      }
+    });
+    return;
+  }
+
   var meta = user.user_metadata || {};
 
   APP.name      = meta.name      || '';
@@ -4517,6 +4297,7 @@ function restoreSession(user) {
 
   renderDashboard();
   renderCreds();
+  saveProgress(); // Persist profile data immediately
   go('pg-app');
 }
 
@@ -4534,13 +4315,11 @@ async function signOut() {
    AUTH — AUTO RESTORE ON LOAD
 ══════════════════════════ */
 (function checkExistingSession(){
-  // Don't auto-restore if user is on login or signup page intentionally
   var hash = window.location.hash;
   if (hash === '#pg-login' || hash === '#pg-signup') return;
-  _supabase.auth.getSession().then(function(res){
-    var session = res.data && res.data.session;
-    if (session && session.user) {
-      restoreSession(session.user);
+  _supabase.auth.getUser().then(function(res){
+    if (res.data && res.data.user) {
+      restoreSession(res.data.user);
     }
   });
 })();
@@ -5619,7 +5398,7 @@ function renderChecklist() {
 /* ══ SETTINGS FUNCTIONS ══ */
 
 function selSpec(btn) {
-  var grid = btn.closest('#specGrid') || btn.parentElement;
+  var grid = btn.closest('#settSpecGrid') || btn.parentElement;
   grid.querySelectorAll('.spec-opt').forEach(function(b){ b.classList.remove('sel'); });
   btn.classList.add('sel');
 }
@@ -5639,7 +5418,7 @@ function saveProfile() {
   var first = (document.getElementById('sett-f-first')||{}).value||'';
   var last  = (document.getElementById('sett-f-last')||{}).value||'';
   var email = (document.getElementById('sett-f-email')||{}).value||'';
-  var specBtn = document.querySelector('#specGrid .spec-opt.sel');
+  var specBtn = document.querySelector('#settSpecGrid .spec-opt.sel');
   var spec  = specBtn ? specBtn.textContent.trim() : APP.specialty;
 
   if (!first || !last) { showToast('Please enter your first and last name'); return; }
@@ -5677,8 +5456,8 @@ function saveMove() {
 
   APP.from = newFrom;
   APP.to   = newTo;
-
-  // Update sidebar abbreviations
+  FROM = newFrom;
+  TO   = newTo;
   var sbFrom = document.getElementById('sbFrom');
   var sbTo   = document.getElementById('sbTo');
   if (sbFrom) sbFrom.textContent = stateAbbr(newFrom);
@@ -7354,7 +7133,7 @@ function settingsInitPage() {
   if(avName) avName.textContent = APP.name||'';
   if(avSub)  avSub.textContent  = (APP.specialty||'')+(APP.from&&APP.to?' · '+APP.from+' → '+APP.to:'');
 
-  var specGrid = document.getElementById('specGrid');
+  var specGrid = document.getElementById('settSpecGrid');
   if(specGrid) {
     specGrid.querySelectorAll('.spec-opt').forEach(function(btn){
       btn.classList.toggle('sel', btn.textContent.trim() === (APP.specialty||''));
