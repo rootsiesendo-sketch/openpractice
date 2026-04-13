@@ -4289,7 +4289,16 @@ function restoreSession(user) {
   renderDashboard();
   renderCreds();
   saveProgress(); // Persist profile data immediately
-  saveProgress(); // Ensure metadata is persisted
+
+  // Ensure view-main is visible and panels are hidden
+  document.querySelectorAll('.page-panel').forEach(function(p){
+    p.style.display = 'none'; p.classList.remove('active');
+  });
+  var viewMain = document.getElementById('view-main');
+  if (viewMain) { viewMain.style.display = ''; viewMain.classList.add('active'); }
+  var appTopbar = document.getElementById('appTopbar');
+  if (appTopbar) appTopbar.style.display = '';
+
   go('pg-app');
 }
 
@@ -5357,6 +5366,8 @@ function renderChecklist() {
 
 
 // Auto-launch with demo data so app opens directly on the dashboard
+// Note: checkExistingSession() is async - if user is logged in, restoreSession()
+// will run AFTER this IIFE and overwrite these values correctly.
 (function(){
   APP.specialty = APP.specialty || 'General Dentist';
   APP.from      = APP.from      || 'New York';
