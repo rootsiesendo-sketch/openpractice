@@ -3649,7 +3649,7 @@ html{scroll-behavior:smooth}
       <div style="font-size:13px;color:#9ca3af;flex:1" id="tb-sub-admin">Manage your team</div>
     </div>
     <div class="panel-scroll-area" style="flex:1;overflow-y:auto;background:#f5f0e8">
-      <div style="padding:26px 26px 60px;width:100%;box-sizing:border-box;max-width:1100px">
+      <div style="padding:26px 26px 60px;width:100%;box-sizing:border-box">
         <!-- Stats -->
     <div class="stats-row">
       <div class="stat-card sc-teal">
@@ -4297,8 +4297,22 @@ function restoreSession(user) {
 ══════════════════════════ */
 async function signOut() {
   await _supabase.auth.signOut();
+  // Reset APP state
   APP = {name:'',email:'',specialty:'General Dentist',from:'New York',to:'Texas',
          done:new Set(),tasks:[],timeline:[],portals:[],credState:{}};
+  FROM = 'New York'; TO = 'Texas';
+  // Hide all panels
+  document.querySelectorAll('.page-panel').forEach(function(p){
+    p.style.display = 'none'; p.classList.remove('active');
+  });
+  // Show main topbar in case it was hidden
+  var appTopbar = document.getElementById('appTopbar');
+  if (appTopbar) appTopbar.style.display = '';
+  // Hide view-main
+  var viewMain = document.getElementById('view-main');
+  if (viewMain) viewMain.style.display = 'none';
+  // Close mobile menu
+  closeMobMenu();
   go('pg-landing');
 }
 
