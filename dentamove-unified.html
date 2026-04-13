@@ -1222,7 +1222,7 @@ html,body{min-height:100%;background:var(--cream);color:var(--ink);font-family:'
 @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 
 /* ── SETTINGS NAV ── */
-.settings-nav{display:flex;flex-direction:column;gap:2px;position:sticky;top:86px}
+.settings-nav{display:flex;flex-direction:column;gap:2px;position:sticky;top:86px;background:var(--cream)}
 .sn-item{display:flex;align-items:center;gap:9px;padding:9px 12px;border-radius:8px;font-size:13px;font-weight:500;color:var(--gray);cursor:pointer;transition:all .18s;border:1px solid transparent}
 .sn-item:hover{background:var(--white);color:var(--ink)}
 .sn-item.active{background:var(--white);color:var(--ink);border-color:var(--gray-lt);font-weight:600}
@@ -2795,7 +2795,7 @@ html{scroll-behavior:smooth}
       <div style="font-size:13px;color:#9ca3af;flex:1" id="tb-sub-settings"></div>
     </div>
     <div style="flex:1;overflow-y:auto;background:#f5f0e8">
-      <div style="padding:26px 26px 60px;width:100%;box-sizing:border-box;max-width:1100px">
+      <div style="padding:26px 26px 60px;width:100%;box-sizing:border-box;display:grid;grid-template-columns:200px 1fr;gap:28px;align-items:start">
         <!-- Settings nav -->
     <nav class="settings-nav">
       <div class="sn-item active" id="sett-sn-profile" onclick="settingsShowPanel('profile')">
