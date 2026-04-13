@@ -2110,7 +2110,7 @@ html,body{min-height:100%;background:var(--cream);color:var(--ink);font-family:'
 .stat-sub{font-size:12px;color:var(--gray);margin-top:4px}
 
 /* LAYOUT */
-.admin-layout{display:grid;grid-template-columns:1fr 300px;gap:20px;align-items:start}
+.admin-layout{display:grid;grid-template-columns:1fr 260px;gap:20px;align-items:start}
 
 /* DENTIST TABLE */
 .dentist-table-wrap{background:var(--white);border-radius:13px;border:1px solid var(--gray-lt);overflow:hidden}
@@ -3860,14 +3860,13 @@ html{scroll-behavior:smooth}
             <table class="dt-table" id="dentistTable">
               <thead>
                 <tr>
-                  <th>Dentist</th>
-                  <th>Route</th>
-                  <th>Progress</th>
-                  <th>Status</th>
-                  <th>Est. license</th>
-                  <th></th>
-                </tr>
-              </thead>
+                 <tr>
+                   <th>Name &amp; Route</th>
+                   <th>Progress</th>
+                   <th>Status</th>
+                   <th>Est. license</th>
+                   <th></th>
+                 </tr>
               <tbody id="dentistTbody"></tbody>
             </table>
           </div>
@@ -6883,8 +6882,7 @@ function adminRenderTable(list) {
     var progColor = d.pct >= 60 ? 'var(--green)' : d.pct >= 30 ? 'var(--teal)' : 'var(--amber)';
     if (d.blocked) progColor = 'var(--red)';
     return '<tr>' +
-      '<td><div class="dentist-cell"><div class="d-av" style="background:'+d.color+'">'+initials(d.name)+'</div><div><div class="d-name">'+d.name+'</div><div class="d-spec">'+d.spec+'</div></div></div></td>' +
-      '<td><div class="route-cell">'+d.from+'<span class="route-arrow">&#x2192;</span>'+d.to+'</div></td>' +
+      '<td><div class="dentist-cell"><div class="d-av" style="background:'+d.color+'">'+initials(d.name)+'</div><div><div class="d-name">'+d.name+'</div><div class="d-spec" style="font-size:11px;color:var(--gray)">'+d.from+' → '+d.to+'</div></div></div></td>' +
       '<td><div class="prog-cell"><div class="prog-row"><span class="prog-pct">'+d.pct+'%</span><span class="prog-steps">'+d.steps+'/'+d.total+' steps</span></div><div class="prog-bar"><div class="prog-fill" style="width:'+d.pct+'%;background:'+progColor+'"></div></div></div></td>' +
       '<td><span class="status-badge '+STATUS_CLASSES[d.status]+'">'+STATUS_LABELS[d.status]+'</span></td>' +
       '<td style="font-size:13px;color:var(--gray);white-space:nowrap">'+d.estDate+'</td>' +
