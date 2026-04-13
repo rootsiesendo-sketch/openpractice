@@ -7142,6 +7142,7 @@ function settingsInitPage() {
   // Populate profile fields from APP
   var fullName = (APP.name||'').replace(/^Dr\.?\s*/i,'').trim();
   var nameParts = fullName ? fullName.split(' ') : [];
+  var fFirst = document.getElementById('sett-f-first'); if(fFirst) fFirst.value = nameParts[0]||'';
   var fLast  = document.getElementById('sett-f-last');  if(fLast)  fLast.value  = nameParts.slice(1).join(' ')||'';
   var fEmail = document.getElementById('sett-f-email'); if(fEmail) fEmail.value = APP.email||'';
 
