@@ -6460,14 +6460,17 @@ function cmpToast(msg){var el=document.getElementById('toast');el.textContent=ms
 /* ══════════════════════════════════════
    STATE
 ══════════════════════════════════════ */
+// USER is a live view of APP for the AI system prompt
 var USER = {
-  name: '',
-  specialty: 'General Dentist',
-  from: 'New York',
-  to: 'Texas',
+  get name()      { return APP.name      || ''; },
+  get specialty() { return APP.specialty || 'General Dentist'; },
+  get from()      { return APP.from      || 'New York'; },
+  get to()        { return APP.to        || 'Texas'; },
 };
 
-var SYSTEM_PROMPT = `You are a dental licensing expert assistant embedded in OpenPractice, a platform that helps dentists navigate interstate license transfers in the United States.
+function getSystemPrompt() {
+  var info = STATE_DB[USER.to] || {fee:200,wkMin:10,wkMax:14,nerb:true,juris:true,bg:'State'};
+  return `You are a dental licensing expert assistant embedded in OpenPractice, a platform that helps dentists navigate interstate license transfers in the United States.
 
 The dentist you are speaking with is:
 - Name: ${USER.name}
@@ -6493,7 +6496,18 @@ Key facts about ${USER.to} licensing for a dentist from ${USER.from}:
 - Transcripts typically sent via Parchment, NSC, or e-Scrip-Safe (not hand-carried)
 - Do not use certified mail with signature confirmation for mailing applications
 
-Format your responses clearly. Use short paragraphs. Use bullet points or numbered lists when listing steps or multiple items. Keep answers focused and practical.`;
+Format your responses clearly. Use short paragraphs. Use bullet points or numbered lists when listing steps or multiple items. Keep answers focused and practical.
+
+Current destination state details:
+- Application fee: ${info.fee}
+- NERB/CRDTS accepted: ${info.nerb ? 'Yes' : 'No'}
+- Jurisprudence exam: ${info.juris ? 'Required' : 'Not required'}
+- Background check: ${info.bg}
+- Estimated processing: ${info.wkMin}–${info.wkMax} weeks
+`;
+}
+var SYSTEM_PROMPT = getSystemPrompt();
+
 
 var aiMessages = []; // conversation history
 var aiLoading = false;
@@ -6520,13 +6534,13 @@ async function sendMessage(text) {
   setLoading(true);
 
   try {
-    var response = await fetch('https://api.anthropic.com/v1/messages', {
+    var response = await fetch('https://www.openpractice.health/api/chat', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
         model: 'claude-sonnet-4-20250514',
         max_tokens: 1000,
-        system: SYSTEM_PROMPT,
+        system: getSystemPrompt(),
         messages: aiMessages,
       })
     });
